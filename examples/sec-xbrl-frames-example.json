@@ -1,0 +1,35 @@
+{
+  "taxonomy": "us-gaap",
+  "tag": "AccountsPayableCurrent",
+  "ccp": "CY2023Q1I",
+  "uom": "USD",
+  "label": "Accounts Payable, Current",
+  "description": "Carrying value as of the balance sheet date of liabilities incurred (and for which invoices have typically been received) and payable to vendors for goods and services received that are used in an entity's business. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).",
+  "pts": 3421,
+  "data": [
+    {
+      "accn": "0000320193-23-000006",
+      "cik": 320193,
+      "entityName": "Apple Inc.",
+      "loc": "10-Q",
+      "end": "2023-04-01",
+      "val": 64115000000
+    },
+    {
+      "accn": "0001018724-23-007697",
+      "cik": 1018724,
+      "entityName": "Amazon.com, Inc.",
+      "loc": "10-Q",
+      "end": "2023-03-31",
+      "val": 72190000000
+    },
+    {
+      "accn": "0001652044-23-000039",
+      "cik": 1652044,
+      "entityName": "Alphabet Inc.",
+      "loc": "10-Q",
+      "end": "2023-03-31",
+      "val": 5493000000
+    }
+  ]
+}

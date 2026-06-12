@@ -51,7 +51,11 @@ apis:
       - type: Documentation
         url: https://www.sec.gov/edgar/sec-api-documentation
       - type: OpenAPI
-        url: https://efts.sec.gov/LATEST/search-index/openapi.json
+        url: openapi/sec-edgar-data-openapi.yml
+      - type: JSONSchema
+        url: json-schema/sec-company-submissions.json
+      - type: JSONSchema
+        url: json-schema/sec-xbrl-fact-value.json
 
   - aid: https://raw.githubusercontent.com/api-evangelist/sec/refs/heads/main/apis.yml:sec-edgar-full-text-search-api
     name: SEC EDGAR Full-Text Search API
@@ -71,6 +75,8 @@ apis:
     properties:
       - type: Documentation
         url: https://www.sec.gov/edgar/sec-api-documentation
+      - type: OpenAPI
+        url: openapi/sec-edgar-full-text-search-openapi.yml
 
   - aid: https://raw.githubusercontent.com/api-evangelist/sec/refs/heads/main/apis.yml:sec-edgar-filer-api
     name: SEC EDGAR Filer Management API
@@ -92,6 +98,8 @@ apis:
     properties:
       - type: Documentation
         url: https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
+      - type: OpenAPI
+        url: openapi/sec-edgar-filer-openapi.yml
 
 common:
   - type: Website
@@ -116,6 +124,12 @@ common:
     url: rate-limits/sec-rate-limits.yml
   - type: FinOps
     url: finops/sec-finops.yml
+  - type: Vocabulary
+    url: vocabulary/sec-vocabulary.yml
+  - type: JSONLDContext
+    url: json-ld/sec-context.jsonld
+  - type: Blogs
+    url: blogs/blogs.json
 
 maintainers:
   - FN: Kin Lane

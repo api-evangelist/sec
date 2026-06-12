@@ -1,0 +1,34 @@
+{
+  "name": "SEC EDGAR Blogs",
+  "description": "Blog and news feed sources for SEC EDGAR developer resources and SEC newsroom",
+  "url": "https://www.sec.gov/newsroom",
+  "created": "2026-06-12",
+  "modified": "2026-06-12",
+  "feeds": [
+    {
+      "name": "SEC Press Releases",
+      "description": "Official announcements highlighting recent actions taken by the SEC and other newsworthy information",
+      "url": "https://www.sec.gov/rss/news/pressreleases.rss",
+      "type": "RSS",
+      "language": "en-us",
+      "confirmed": true
+    },
+    {
+      "name": "SEC Newsroom",
+      "description": "SEC newsroom covering regulatory actions, investor alerts, and policy announcements",
+      "url": "https://www.sec.gov/newsroom",
+      "type": "HTML",
+      "language": "en-us",
+      "confirmed": true
+    },
+    {
+      "name": "SEC Developer Resources",
+      "description": "SEC developer portal covering EDGAR APIs, data access, and technical documentation",
+      "url": "https://www.sec.gov/about/developer-resources",
+      "type": "HTML",
+      "language": "en-us",
+      "confirmed": true
+    }
+  ],
+  "posts": []
+}

@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/sec/main/json-schema/sec-xbrl-fact-value.json",
+  "title": "SEC EDGAR XBRL Fact Value",
+  "description": "Schema for a single XBRL fact value as returned in companyfacts and companyconcept endpoint responses",
+  "type": "object",
+  "required": ["end", "val", "accn", "form", "filed"],
+  "properties": {
+    "start": {
+      "type": "string",
+      "format": "date",
+      "description": "Period start date for duration concepts (e.g., income statement items). Absent for instant/point-in-time concepts.",
+      "examples": ["2022-09-25"]
+    },
+    "end": {
+      "type": "string",
+      "format": "date",
+      "description": "Period end date for duration concepts, or instant date for balance sheet concepts.",
+      "examples": ["2023-09-30"]
+    },
+    "val": {
+      "description": "The reported value. Typically a number for financial concepts, but may be a string for non-numeric concepts.",
+      "oneOf": [
+        { "type": "number" },
+        { "type": "string" }
+      ],
+      "examples": [62611000000]
+    },
+    "accn": {
+      "type": "string",
+      "description": "Accession number of the EDGAR filing that reported this value.",
+      "pattern": "^\\d{10}-\\d{2}-\\d{6}$",
+      "examples": ["0000320193-23-000106"]
+    },
+    "fy": {
+      "type": "integer",
+      "description": "Fiscal year associated with this fact.",
+      "examples": [2023]
+    },
+    "fp": {
+      "type": "string",
+      "description": "Fiscal period code.",
+      "enum": ["FY", "Q1", "Q2", "Q3", "Q4"],
+      "examples": ["FY"]
+    },
+    "form": {
+      "type": "string",
+      "description": "Form type of the filing reporting this value.",
+      "examples": ["10-K", "10-Q"]
+    },
+    "filed": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the filing was accepted by EDGAR.",
+      "examples": ["2023-11-03"]
+    },
+    "frame": {
+      "type": "string",
+      "description": "Calendar period frame reference for use with the /api/xbrl/frames/ endpoint. Present only when the value aligns to a standard calendar period.",
+      "pattern": "^CY\\d{4}(Q[1-4]I?)?$",
+      "examples": ["CY2023Q3I", "CY2023"]
+    }
+  }
+}

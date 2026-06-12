@@ -1,0 +1,294 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/sec/main/json-schema/sec-company-submissions.json",
+  "title": "SEC EDGAR Company Submissions",
+  "description": "Schema for the SEC EDGAR company submissions endpoint response (data.sec.gov/submissions/CIK{cik}.json)",
+  "type": "object",
+  "required": ["cik", "name", "filings"],
+  "properties": {
+    "cik": {
+      "type": "string",
+      "description": "Central Index Key as a string",
+      "pattern": "^\\d{10}$",
+      "examples": ["0000320193"]
+    },
+    "entityType": {
+      "type": "string",
+      "description": "SEC entity classification type",
+      "examples": ["operating"]
+    },
+    "sic": {
+      "type": "string",
+      "description": "Standard Industrial Classification code",
+      "pattern": "^\\d{4}$",
+      "examples": ["3571"]
+    },
+    "sicDescription": {
+      "type": "string",
+      "description": "Human-readable SIC description",
+      "examples": ["Electronic Computers"]
+    },
+    "ownerOrg": {
+      "type": "string",
+      "description": "SEC division/office responsible for oversight",
+      "examples": ["06 Technology"]
+    },
+    "insiderTransactionForOwnerExists": {
+      "type": "integer",
+      "enum": [0, 1],
+      "description": "Whether insider transaction forms exist where entity is the owner"
+    },
+    "insiderTransactionForIssuerExists": {
+      "type": "integer",
+      "enum": [0, 1],
+      "description": "Whether insider transaction forms exist where entity is the issuer"
+    },
+    "name": {
+      "type": "string",
+      "description": "Company legal name",
+      "examples": ["Apple Inc."]
+    },
+    "tickers": {
+      "type": "array",
+      "description": "Stock ticker symbols",
+      "items": {
+        "type": "string"
+      },
+      "examples": [["AAPL"]]
+    },
+    "exchanges": {
+      "type": "array",
+      "description": "Stock exchanges listing the company",
+      "items": {
+        "type": "string"
+      },
+      "examples": [["Nasdaq"]]
+    },
+    "ein": {
+      "type": "string",
+      "description": "Employer Identification Number",
+      "examples": ["942404110"]
+    },
+    "lei": {
+      "type": ["string", "null"],
+      "description": "Legal Entity Identifier (ISO 17442)",
+      "examples": [null]
+    },
+    "description": {
+      "type": "string",
+      "description": "Company description"
+    },
+    "website": {
+      "type": "string",
+      "description": "Company website URL"
+    },
+    "investorWebsite": {
+      "type": "string",
+      "description": "Investor relations website URL"
+    },
+    "category": {
+      "type": "string",
+      "description": "SEC filer category",
+      "examples": ["Large accelerated filer"]
+    },
+    "fiscalYearEnd": {
+      "type": "string",
+      "description": "Fiscal year end in MMDD format",
+      "pattern": "^(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])$",
+      "examples": ["0926"]
+    },
+    "stateOfIncorporation": {
+      "type": "string",
+      "description": "State or country of incorporation code",
+      "examples": ["CA"]
+    },
+    "stateOfIncorporationDescription": {
+      "type": "string",
+      "description": "State or country of incorporation description",
+      "examples": ["CA"]
+    },
+    "addresses": {
+      "type": "object",
+      "description": "Company addresses",
+      "properties": {
+        "mailing": {
+          "$ref": "#/$defs/Address"
+        },
+        "business": {
+          "$ref": "#/$defs/Address"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "description": "Company phone number",
+      "examples": ["(408) 996-1010"]
+    },
+    "flags": {
+      "type": "string",
+      "description": "Special flags associated with the company"
+    },
+    "formerNames": {
+      "type": "array",
+      "description": "Previous legal names of the company",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "to": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "filings": {
+      "type": "object",
+      "description": "Filing history container",
+      "required": ["recent"],
+      "properties": {
+        "recent": {
+          "$ref": "#/$defs/FilingList"
+        },
+        "files": {
+          "type": "array",
+          "description": "References to paginated filing history files",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Filename for additional filing history JSON"
+              },
+              "filingCount": {
+                "type": "integer",
+                "description": "Number of filings in this file"
+              },
+              "filingFrom": {
+                "type": "string",
+                "format": "date",
+                "description": "Earliest filing date in this file"
+              },
+              "filingTo": {
+                "type": "string",
+                "format": "date",
+                "description": "Latest filing date in this file"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "Address": {
+      "type": "object",
+      "description": "Physical or mailing address",
+      "properties": {
+        "street1": {
+          "type": "string"
+        },
+        "street2": {
+          "type": ["string", "null"]
+        },
+        "city": {
+          "type": "string"
+        },
+        "stateOrCountry": {
+          "type": "string"
+        },
+        "zipCode": {
+          "type": "string"
+        },
+        "stateOrCountryDescription": {
+          "type": "string"
+        },
+        "isForeignLocation": {
+          "type": ["integer", "null"]
+        }
+      }
+    },
+    "FilingList": {
+      "type": "object",
+      "description": "Parallel arrays of filing metadata indexed by position",
+      "properties": {
+        "accessionNumber": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "SEC accession numbers (XXXXXXXXXX-YY-ZZZZZZ)"
+        },
+        "filingDate": {
+          "type": "array",
+          "items": { "type": "string", "format": "date" },
+          "description": "Filing acceptance dates"
+        },
+        "reportDate": {
+          "type": "array",
+          "items": { "type": "string", "format": "date" },
+          "description": "Period of report end dates"
+        },
+        "acceptanceDateTime": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "EDGAR acceptance timestamps"
+        },
+        "act": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Securities act reference"
+        },
+        "form": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Form types (10-K, 10-Q, 8-K, etc.)"
+        },
+        "fileNumber": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "SEC file numbers"
+        },
+        "filmNumber": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Film numbers for Securities Act filings"
+        },
+        "items": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "8-K items disclosed"
+        },
+        "size": {
+          "type": "array",
+          "items": { "type": "integer" },
+          "description": "Filing sizes in bytes"
+        },
+        "isXBRL": {
+          "type": "array",
+          "items": { "type": "integer", "enum": [0, 1] },
+          "description": "XBRL inclusion flag"
+        },
+        "isInlineXBRL": {
+          "type": "array",
+          "items": { "type": "integer", "enum": [0, 1] },
+          "description": "Inline XBRL flag"
+        },
+        "primaryDocument": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Primary document filenames"
+        },
+        "primaryDocDescription": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Primary document descriptions"
+        }
+      }
+    }
+  }
+}

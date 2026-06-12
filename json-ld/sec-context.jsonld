@@ -1,0 +1,178 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "schema": "https://schema.org/",
+    "sec": "https://www.sec.gov/ns/",
+    "edgar": "https://efts.sec.gov/ns/",
+    "gaap": "http://fasb.org/us-gaap/",
+    "ifrs": "http://xbrl.ifrs.org/taxonomy/",
+    "dei": "http://xbrl.sec.gov/dei/",
+
+    "CompanySubmissions": "sec:CompanySubmissions",
+    "CompanyFacts": "sec:CompanyFacts",
+    "XBRLFrame": "sec:XBRLFrame",
+    "Filing": "sec:Filing",
+    "FactValue": "sec:FactValue",
+
+    "cik": {
+      "@id": "sec:centralIndexKey",
+      "@type": "xsd:string"
+    },
+    "entityName": {
+      "@id": "schema:legalName",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+    "sic": {
+      "@id": "sec:sicCode",
+      "@type": "xsd:string"
+    },
+    "sicDescription": {
+      "@id": "sec:sicDescription",
+      "@type": "xsd:string"
+    },
+    "ein": {
+      "@id": "sec:employerIdentificationNumber",
+      "@type": "xsd:string"
+    },
+    "lei": {
+      "@id": "schema:leiCode",
+      "@type": "xsd:string"
+    },
+    "tickers": {
+      "@id": "sec:tickerSymbol",
+      "@container": "@list"
+    },
+    "exchanges": {
+      "@id": "sec:exchange",
+      "@container": "@list"
+    },
+    "fiscalYearEnd": {
+      "@id": "sec:fiscalYearEnd",
+      "@type": "xsd:string"
+    },
+    "stateOfIncorporation": {
+      "@id": "sec:stateOfIncorporation",
+      "@type": "xsd:string"
+    },
+    "accessionNumber": {
+      "@id": "sec:accessionNumber",
+      "@type": "xsd:string"
+    },
+    "form": {
+      "@id": "sec:formType",
+      "@type": "xsd:string"
+    },
+    "filingDate": {
+      "@id": "sec:filingDate",
+      "@type": "xsd:date"
+    },
+    "reportDate": {
+      "@id": "sec:reportDate",
+      "@type": "xsd:date"
+    },
+    "filed": {
+      "@id": "sec:acceptanceDate",
+      "@type": "xsd:date"
+    },
+    "isXBRL": {
+      "@id": "sec:isXBRL",
+      "@type": "xsd:boolean"
+    },
+    "facts": {
+      "@id": "sec:facts",
+      "@type": "@id"
+    },
+    "taxonomy": {
+      "@id": "sec:taxonomy",
+      "@type": "xsd:string"
+    },
+    "tag": {
+      "@id": "sec:xbrlTag",
+      "@type": "xsd:string"
+    },
+    "label": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+    "description": {
+      "@id": "schema:description",
+      "@type": "xsd:string"
+    },
+    "units": {
+      "@id": "sec:reportingUnits",
+      "@type": "@id"
+    },
+    "val": {
+      "@id": "sec:reportedValue"
+    },
+    "start": {
+      "@id": "sec:periodStart",
+      "@type": "xsd:date"
+    },
+    "end": {
+      "@id": "sec:periodEnd",
+      "@type": "xsd:date"
+    },
+    "fy": {
+      "@id": "sec:fiscalYear",
+      "@type": "xsd:integer"
+    },
+    "fp": {
+      "@id": "sec:fiscalPeriod",
+      "@type": "xsd:string"
+    },
+    "frame": {
+      "@id": "sec:calendarPeriodFrame",
+      "@type": "xsd:string"
+    },
+    "ccp": {
+      "@id": "sec:calendarPeriod",
+      "@type": "xsd:string"
+    },
+    "uom": {
+      "@id": "sec:unitOfMeasure",
+      "@type": "xsd:string"
+    },
+    "pts": {
+      "@id": "sec:pointCount",
+      "@type": "xsd:integer"
+    },
+    "data": {
+      "@id": "sec:frameData",
+      "@container": "@list"
+    },
+    "filings": {
+      "@id": "sec:filings",
+      "@type": "@id"
+    },
+    "addresses": {
+      "@id": "schema:address",
+      "@type": "@id"
+    },
+    "phone": {
+      "@id": "schema:telephone",
+      "@type": "xsd:string"
+    },
+    "website": {
+      "@id": "schema:url",
+      "@type": "@id"
+    },
+    "entityType": {
+      "@id": "sec:entityType",
+      "@type": "xsd:string"
+    },
+    "ownerOrg": {
+      "@id": "sec:ownerOrg",
+      "@type": "xsd:string"
+    },
+    "loc": {
+      "@id": "sec:xbrlLocation",
+      "@type": "xsd:string"
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "cik": "0000320193",
+  "entityType": "operating",
+  "sic": "3571",
+  "sicDescription": "Electronic Computers",
+  "ownerOrg": "06 Technology",
+  "insiderTransactionForOwnerExists": 0,
+  "insiderTransactionForIssuerExists": 1,
+  "name": "Apple Inc.",
+  "tickers": ["AAPL"],
+  "exchanges": ["Nasdaq"],
+  "ein": "942404110",
+  "lei": null,
+  "description": "",
+  "website": "",
+  "investorWebsite": "",
+  "category": "Large accelerated filer",
+  "fiscalYearEnd": "0926",
+  "stateOfIncorporation": "CA",
+  "stateOfIncorporationDescription": "CA",
+  "addresses": {
+    "mailing": {
+      "street1": "ONE APPLE PARK WAY",
+      "street2": null,
+      "city": "CUPERTINO",
+      "stateOrCountry": "CA",
+      "zipCode": "95014",
+      "stateOrCountryDescription": "CA",
+      "isForeignLocation": 0
+    },
+    "business": {
+      "street1": "ONE APPLE PARK WAY",
+      "street2": null,
+      "city": "CUPERTINO",
+      "stateOrCountry": "CA",
+      "zipCode": "95014",
+      "stateOrCountryDescription": "CA",
+      "isForeignLocation": null
+    }
+  },
+  "phone": "(408) 996-1010",
+  "flags": "",
+  "formerNames": [
+    {
+      "name": "APPLE INC",
+      "from": "2007-01-10T05:00:00.000Z",
+      "to": "2019-08-05T04:00:00.000Z"
+    },
+    {
+      "name": "APPLE COMPUTER INC",
+      "from": "1994-01-26T05:00:00.000Z",
+      "to": "2007-01-04T05:00:00.000Z"
+    }
+  ],
+  "filings": {
+    "recent": {
+      "accessionNumber": [
+        "0000320193-23-000106",
+        "0000320193-23-000077",
+        "0000320193-23-000064"
+      ],
+      "filingDate": [
+        "2023-11-03",
+        "2023-08-04",
+        "2023-05-05"
+      ],
+      "reportDate": [
+        "2023-09-30",
+        "2023-07-01",
+        "2023-04-01"
+      ],
+      "acceptanceDateTime": [
+        "2023-11-03T18:01:14.000Z",
+        "2023-08-04T18:04:43.000Z",
+        "2023-05-05T18:02:53.000Z"
+      ],
+      "act": ["34", "34", "34"],
+      "form": ["10-K", "10-Q", "10-Q"],
+      "fileNumber": ["001-36743", "001-36743", "001-36743"],
+      "filmNumber": ["231368452", "231153986", "231072012"],
+      "items": ["", "", ""],
+      "size": [13271720, 7728392, 7571492],
+      "isXBRL": [1, 1, 1],
+      "isInlineXBRL": [1, 1, 1],
+      "primaryDocument": [
+        "aapl-20230930.htm",
+        "aapl-20230701.htm",
+        "aapl-20230401.htm"
+      ],
+      "primaryDocDescription": [
+        "Form 10-K",
+        "Form 10-Q",
+        "Form 10-Q"
+      ]
+    },
+    "files": []
+  }
+}

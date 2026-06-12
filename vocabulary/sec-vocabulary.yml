@@ -1,0 +1,278 @@
+vocabulary:
+  name: SEC EDGAR API Vocabulary
+  description: >
+    Controlled vocabulary and term definitions for the SEC EDGAR REST API,
+    covering company data, XBRL financial concepts, filing metadata, and
+    filer management terminology.
+  version: 1.0.0
+  source: https://www.sec.gov/edgar/sec-api-documentation
+  maintainer: api-evangelist
+
+namespaces:
+  - prefix: sec
+    uri: https://www.sec.gov/ns/
+    description: SEC EDGAR core namespace
+  - prefix: gaap
+    uri: http://fasb.org/us-gaap/
+    description: US Generally Accepted Accounting Principles XBRL taxonomy
+  - prefix: ifrs
+    uri: http://xbrl.ifrs.org/taxonomy/
+    description: International Financial Reporting Standards XBRL taxonomy
+  - prefix: dei
+    uri: http://xbrl.sec.gov/dei/
+    description: Document and Entity Information taxonomy
+
+terms:
+
+  # --- Core Identifiers ---
+  - term: CIK
+    label: Central Index Key
+    definition: >
+      A unique numeric identifier assigned by the SEC to each registrant or filer.
+      CIKs are used to identify companies, individuals, and other entities throughout
+      EDGAR. In API requests, CIKs must be zero-padded to 10 digits.
+    example: "0000320193"
+    related: [accessionNumber, entityName]
+
+  - term: accessionNumber
+    label: Accession Number
+    definition: >
+      A unique identifier for each filing submitted to EDGAR, in the format
+      XXXXXXXXXX-YY-ZZZZZZ where XXXXXXXXXX is the filer's CIK, YY is the
+      two-digit year, and ZZZZZZ is a sequence number.
+    example: "0000320193-23-000106"
+    related: [CIK, formType, filingDate]
+
+  - term: entityName
+    label: Entity Name
+    definition: >
+      The legal name of a company or individual as registered with the SEC EDGAR
+      system. May differ from the common trade name or DBA name.
+    example: "Apple Inc."
+
+  - term: SIC
+    label: Standard Industrial Classification
+    definition: >
+      A four-digit numerical code assigned by the SEC to classify companies by
+      industry. Used for grouping companies in the same sector for regulatory
+      and analytical purposes.
+    example: "3571"
+    related: [sicDescription]
+
+  - term: sicDescription
+    label: SIC Description
+    definition: >
+      The textual description of the Standard Industrial Classification code
+      assigned to a company.
+    example: "Electronic Computers"
+
+  - term: EIN
+    label: Employer Identification Number
+    definition: >
+      A nine-digit federal tax ID number assigned by the IRS and used by the SEC
+      to identify business entities in filings.
+    example: "942404110"
+
+  - term: LEI
+    label: Legal Entity Identifier
+    definition: >
+      A 20-character alphanumeric code that uniquely identifies legally distinct
+      entities engaging in financial transactions. Assigned by the Global LEI
+      Foundation. May be null if the entity has not obtained an LEI.
+    example: "HWUPKR0MPOU8FGXBT394"
+
+  # --- Filing Concepts ---
+  - term: formType
+    label: Form Type
+    definition: >
+      The type of regulatory form filed with the SEC. Common form types include
+      10-K (annual report), 10-Q (quarterly report), 8-K (current report),
+      DEF 14A (proxy statement), S-1 (registration statement), and 4 (insider
+      ownership change).
+    example: "10-K"
+    related: [filingDate, accessionNumber]
+
+  - term: filingDate
+    label: Filing Date
+    definition: >
+      The date on which a filing was accepted and processed by EDGAR.
+      Returned in ISO 8601 date format (YYYY-MM-DD).
+    example: "2023-11-03"
+
+  - term: reportDate
+    label: Report Date
+    definition: >
+      The end date of the reporting period covered by a filing, also known as
+      the period of report. For annual reports, this is the fiscal year end date.
+    example: "2023-09-30"
+
+  - term: primaryDocument
+    label: Primary Document
+    definition: >
+      The main document within an EDGAR filing submission, typically the main
+      form or report file (e.g., aapl-20230930.htm for an Apple 10-K).
+    example: "aapl-20230930.htm"
+
+  - term: fiscalYearEnd
+    label: Fiscal Year End
+    definition: >
+      The month and day (MMDD format) on which a company's fiscal year ends.
+      Used to align XBRL reporting periods to the company's fiscal calendar.
+    example: "0926"
+
+  # --- XBRL Concepts ---
+  - term: XBRL
+    label: eXtensible Business Reporting Language
+    definition: >
+      An open international standard for digital business reporting. The SEC
+      mandates XBRL tagging for financial statements filed by public companies.
+      EDGAR stores and serves XBRL data through the company facts and frames APIs.
+    related: [taxonomy, tag, FactValue]
+
+  - term: taxonomy
+    label: XBRL Taxonomy
+    definition: >
+      A dictionary of financial reporting concepts used to classify and define
+      XBRL tags. The SEC EDGAR API supports four taxonomies: us-gaap (US GAAP),
+      ifrs-full (IFRS), dei (Document and Entity Information), and srt (SEC
+      Reporting Taxonomy).
+    allowedValues:
+      - value: us-gaap
+        description: US Generally Accepted Accounting Principles taxonomy
+      - value: ifrs-full
+        description: International Financial Reporting Standards taxonomy
+      - value: dei
+        description: Document and Entity Information taxonomy
+      - value: srt
+        description: SEC Reporting Taxonomy
+
+  - term: tag
+    label: XBRL Concept Tag
+    definition: >
+      The name of a specific concept within an XBRL taxonomy used to tag a
+      financial data element. Tags follow camelCase naming conventions.
+    examples:
+      - AccountsPayableCurrent
+      - Assets
+      - Revenues
+      - EarningsPerShareBasic
+      - NetIncomeLoss
+      - StockholdersEquity
+
+  - term: FactValue
+    label: XBRL Fact Value
+    definition: >
+      A single reported value for an XBRL concept within a specific period,
+      linked to the filing accession number, fiscal period, and unit of measure.
+    properties:
+      - start: Period start date (duration concepts only)
+      - end: Period end or instant date
+      - val: The reported numeric or string value
+      - accn: Accession number of the source filing
+      - fy: Fiscal year
+      - fp: Fiscal period code (FY, Q1, Q2, Q3, Q4)
+      - form: Form type of source filing
+      - filed: Filing acceptance date
+      - frame: Calendar period frame reference
+
+  - term: unitOfMeasure
+    label: Unit of Measure
+    definition: >
+      The measurement unit for an XBRL fact value. Monetary concepts use currency
+      codes (USD, EUR), share counts use "shares", ratios use "pure", and per-share
+      values use compound units like "USD-per-shares".
+    examples:
+      - USD
+      - shares
+      - pure
+      - USD-per-shares
+
+  - term: calendarPeriod
+    label: Calendar Period
+    definition: >
+      A standardized period identifier used in the EDGAR frames API to retrieve
+      cross-company data. Annual periods use CY{year} format, quarterly durations
+      use CY{year}Q{n} format, and quarterly instants (balance sheet) use
+      CY{year}Q{n}I format.
+    format: "CY{YYYY}[Q{1-4}][I]"
+    examples:
+      - CY2023
+      - CY2023Q1
+      - CY2023Q1I
+
+  - term: fiscalPeriod
+    label: Fiscal Period
+    definition: >
+      The fiscal reporting period for an XBRL fact. Values indicate the position
+      within the fiscal year.
+    allowedValues:
+      - value: FY
+        description: Full fiscal year
+      - value: Q1
+        description: First fiscal quarter
+      - value: Q2
+        description: Second fiscal quarter
+      - value: Q3
+        description: Third fiscal quarter
+      - value: Q4
+        description: Fourth fiscal quarter
+
+  # --- Filer API Concepts ---
+  - term: FilerAPIToken
+    label: Filer API Token
+    definition: >
+      A bearer JWT token required to authenticate API requests to the EDGAR
+      Filer Management API and Submission API. Obtained through the EDGAR Next
+      account management system. Required for all filer API operations.
+    related: [UserAPIToken, EDGAR Next]
+
+  - term: UserAPIToken
+    label: User API Token
+    definition: >
+      A bearer JWT token representing an individual user within a filer
+      organization. Required alongside the Filer API Token for submission
+      operations. Represents the individual responsible for the filing.
+    related: [FilerAPIToken]
+
+  - term: CCC
+    label: CIK Confirmation Code
+    definition: >
+      An eight-character alphanumeric code used as a secondary credential
+      when submitting filings to EDGAR. The CCC is associated with a specific
+      CIK and must match the CIK in the filing. Can be generated or customized
+      via the Filer Management API.
+
+  - term: transmissionStatus
+    label: Transmission Status
+    definition: >
+      The outcome status of a filing transmission to EDGAR through the
+      Submission API.
+    allowedValues:
+      - value: RECEIVED
+        description: Accepted by EDGAR; accession number assigned; processing will begin
+      - value: REJECTED
+        description: Rejected by EDGAR; filing will not be processed
+      - value: FAILED
+        description: Transmission failed; filing was not delivered to EDGAR
+
+  - term: messageType
+    label: Message Type
+    definition: >
+      Classification of an API response message by severity or informational value.
+    allowedValues:
+      - value: INFO
+        description: Informational message; no action required
+      - value: NOTICE
+        description: Human attention may be needed; filing not blocked
+      - value: WARNING
+        description: Issue detected; may or may not block filing
+      - value: ERROR
+        description: Error prevented filing submission or processing
+
+  - term: delegation
+    label: Delegation
+    definition: >
+      A grant of authority from one EDGAR filer account to another, allowing
+      the delegated account to file on behalf of the delegating account. Delegations
+      are established through the EDGAR Next Filer Management dashboard or API.
+    related: [CIK, FilerAPIToken]

@@ -1,0 +1,81 @@
+name: SEC EDGAR API FinOps
+description: >
+  Financial operations guidance for integrating with the SEC EDGAR API.
+  Because the EDGAR API is a free government public service with no usage
+  fees, direct API cost is zero. FinOps considerations center on
+  infrastructure costs for consuming, storing, and processing the data,
+  and on compliance with the SEC Fair Access policy to avoid service
+  disruption.
+specificationVersion: '1.0'
+url: https://www.sec.gov/edgar/sec-api-documentation
+
+costs:
+  directAPICost:
+    amount: 0.00
+    currency: USD
+    description: >
+      The SEC EDGAR API has no usage fees, subscription costs, or per-request
+      charges. It is a free public service of the U.S. federal government.
+
+  infrastructureCosts:
+    - category: Compute
+      description: >
+        Server or serverless compute for running API consumers, data
+        transformation pipelines, and scheduled jobs that poll EDGAR
+        for new filings.
+      estimationNote: >
+        Highly variable based on polling frequency and data volume.
+        Use bulk DERA downloads for large historical datasets to reduce
+        compute costs compared to real-time API polling.
+
+    - category: Storage
+      description: >
+        Object storage, database, or data lake costs for persisting EDGAR
+        filing documents, XBRL financial data, and processed datasets.
+      estimationNote: >
+        EDGAR hosts tens of millions of filings. Selective storage of
+        relevant form types (10-K, 10-Q, 8-K) significantly reduces cost.
+
+    - category: Egress / Transfer
+      description: >
+        Network data transfer costs if consuming EDGAR data in a cloud
+        environment and transferring to other regions or services.
+      estimationNote: >
+        Prefer co-located compute near SEC data endpoints or use bulk
+        downloads rather than per-request streaming for large ingestions.
+
+optimization:
+  - name: Use Bulk Downloads for Historical Data
+    description: >
+      The SEC DERA bulk download ZIP archives (quarterly XBRL financial
+      datasets) are the preferred method for obtaining large volumes of
+      historical data and avoid high request counts against the live API.
+    url: https://www.sec.gov/dera/data
+
+  - name: Respect Rate Limits to Avoid Disruption
+    description: >
+      Staying within the 10 req/s limit prevents IP blocks that would
+      force fallback to alternative (potentially paid) data sources.
+      Implement exponential backoff and client-side rate limiting.
+
+  - name: Cache CIK Mappings
+    description: >
+      The company_tickers.json bulk file providing ticker-to-CIK mappings
+      should be cached locally and refreshed periodically rather than
+      fetched per-lookup. This reduces unnecessary API traffic.
+
+  - name: Selective Form-Type Filtering
+    description: >
+      Use the submissions API to identify relevant form types before
+      downloading full filing documents, reducing storage and transfer
+      costs for targeted use cases.
+
+compliance:
+  - name: SEC Fair Access Policy
+    url: https://www.sec.gov/about/developer-resources
+    description: >
+      Callers must comply with the SEC Fair Access policy, which includes
+      the 10 req/s rate limit, mandatory User-Agent identification, and
+      prohibition on systematic downloading of all filings. Commercial
+      redistribution of EDGAR data is generally permitted as the data
+      is in the public domain.

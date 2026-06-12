@@ -1,0 +1,50 @@
+name: SEC EDGAR API Rate Limits
+description: >
+  The SEC EDGAR API enforces Fair Access rate limits to ensure equitable
+  availability of public financial data for all users. Limits apply per
+  IP address regardless of the number of machines used. Violations result
+  in HTTP 429 responses and temporary IP-level blocking.
+specificationVersion: '0.1'
+url: https://www.sec.gov/about/developer-resources
+
+rateLimits:
+  - name: Request Rate Limit
+    scope: per-ip
+    limit: 10
+    period: second
+    description: >
+      Each IP address may make no more than 10 requests per second to any
+      EDGAR API endpoint. This limit applies collectively across all machines
+      an organization uses to access the API.
+    enforcement:
+      onExceedance: HTTP 429 Too Many Requests; possible temporary IP block lasting approximately 10 minutes
+      headers:
+        - Retry-After
+    notes:
+      - Applies to data.sec.gov and efts.sec.gov endpoints
+      - Applies regardless of the number of machines submitting requests from the same IP range
+      - Automated scripts and crawlers should implement exponential backoff on 429 responses
+
+  - name: User-Agent Requirement
+    scope: per-request
+    description: >
+      All requests must include a descriptive User-Agent HTTP header
+      identifying the requesting application and a valid contact email.
+      Requests missing a User-Agent header may be rate-limited or blocked
+      immediately.
+    required: true
+    format: "AppName/Version (contact@example.com)"
+    example: "MyFinancialApp/1.0 (admin@mycompany.com)"
+
+updateLatency:
+  submissions: less than 1 second typical
+  xbrlApis: less than 60 seconds typical
+
+bulkDataAlternatives:
+  - name: DERA Bulk Downloads
+    url: https://www.sec.gov/dera/data
+    description: >
+      For high-volume data needs, bulk ZIP downloads of XBRL financial
+      datasets are available from the SEC DERA (Division of Economic and
+      Risk Analysis) data page. Preferred over high-frequency API polling
+      for large dataset requirements.

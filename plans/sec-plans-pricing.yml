@@ -1,0 +1,38 @@
+name: SEC EDGAR API Plans and Pricing
+description: >
+  The SEC EDGAR REST API is a free public service provided by the U.S.
+  Securities and Exchange Commission. There are no pricing tiers, subscription
+  plans, API keys, or payment requirements. All data available through the
+  EDGAR API is public by statute, as the SEC is a U.S. government agency
+  funded by taxpayers and filing fees from registrants.
+specificationVersion: '0.1'
+url: https://www.sec.gov/edgar/sec-api-documentation
+
+plans:
+  - name: Public Free Access
+    description: >
+      Full access to all EDGAR REST API endpoints at no cost. No registration,
+      API key, or account is required. Callers must include a descriptive
+      User-Agent header identifying their application and contact email per
+      the SEC Fair Access policy.
+    url: https://www.sec.gov/about/developer-resources
+    price: 0.00
+    currency: USD
+    billing: none
+    features:
+      - All company submissions endpoints (data.sec.gov/submissions/)
+      - All XBRL company facts endpoints (data.sec.gov/api/xbrl/companyfacts/)
+      - All XBRL company concept endpoints (data.sec.gov/api/xbrl/companyconcept/)
+      - All XBRL frames endpoints (data.sec.gov/api/xbrl/frames/)
+      - Bulk CIK ticker mapping (data.sec.gov/files/company_tickers.json)
+      - Full-text search (efts.sec.gov)
+      - Bulk data downloads (www.sec.gov/dera/data)
+    rateLimits:
+      requestsPerSecond: 10
+      note: Per IP address; exceeding triggers 429 response and possible temporary block
+    authentication:
+      type: none
+      required: false
+      note: >
+        No API key required. Requests must include a User-Agent header with
+        company/app name and contact email per SEC Fair Access guidelines.

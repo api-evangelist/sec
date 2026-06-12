@@ -1,0 +1,122 @@
+aid: https://raw.githubusercontent.com/api-evangelist/sec/refs/heads/main/apis.yml
+name: SEC EDGAR
+description: >
+  The U.S. Securities and Exchange Commission (SEC) EDGAR (Electronic Data
+  Gathering, Analysis, and Retrieval) system provides free public access to
+  corporate financial filings submitted to the SEC. The EDGAR REST API at
+  data.sec.gov delivers JSON-formatted data without requiring authentication
+  or API keys, covering company submissions, XBRL financial facts, and
+  company concept data. Endpoints support CIK lookups, full filing history,
+  structured XBRL financial disclosures across reporting periods, and
+  cross-company comparative frames for US-GAAP and IFRS taxonomies.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/sec/refs/heads/main/apis.yml
+created: '2026-06-12'
+modified: '2026-06-12'
+specificationVersion: '0.19'
+tags:
+  - Financial Data
+  - SEC
+  - EDGAR
+  - Public Company Filings
+  - XBRL
+  - Regulatory
+  - Government
+  - Financial Reporting
+  - Company Submissions
+  - Securities
+
+apis:
+  - aid: https://raw.githubusercontent.com/api-evangelist/sec/refs/heads/main/apis.yml:sec-edgar-data-api
+    name: SEC EDGAR Data API
+    description: >
+      The EDGAR Data API at data.sec.gov provides RESTful access to public
+      company financial filings, XBRL structured financial data, and company
+      metadata. The submissions endpoint returns a company's complete filing
+      history and metadata identified by Central Index Key (CIK). The company
+      facts endpoint returns all XBRL disclosures for a company across all
+      reporting periods. The company concept endpoint returns historical values
+      for a single XBRL concept, and the frames endpoint returns data for a
+      given concept across all companies for a specific period.
+    humanURL: https://www.sec.gov/edgar/sec-api-documentation
+    baseURL: https://data.sec.gov
+    tags:
+      - Company Submissions
+      - XBRL Financial Data
+      - Company Facts
+      - CIK Lookup
+      - Financial Filings
+    properties:
+      - type: Documentation
+        url: https://www.sec.gov/edgar/sec-api-documentation
+      - type: OpenAPI
+        url: https://efts.sec.gov/LATEST/search-index/openapi.json
+
+  - aid: https://raw.githubusercontent.com/api-evangelist/sec/refs/heads/main/apis.yml:sec-edgar-full-text-search-api
+    name: SEC EDGAR Full-Text Search API
+    description: >
+      The EDGAR full-text search API allows searching across the complete
+      text of filings submitted to EDGAR. The API supports filtering by
+      filing date ranges, form types, entity names, and ticker symbols.
+      Results include document metadata and links to the actual filing
+      documents. This endpoint is hosted at efts.sec.gov and is useful
+      for research and analysis requiring discovery of filings by content.
+    humanURL: https://efts.sec.gov/LATEST/search-index/openapi.json
+    baseURL: https://efts.sec.gov
+    tags:
+      - Full-Text Search
+      - Filing Search
+      - Document Discovery
+    properties:
+      - type: Documentation
+        url: https://www.sec.gov/edgar/sec-api-documentation
+
+  - aid: https://raw.githubusercontent.com/api-evangelist/sec/refs/heads/main/apis.yml:sec-edgar-filer-api
+    name: SEC EDGAR Filer Management API
+    description: >
+      The EDGAR Filer Management API at api.edgarfiling.sec.gov provides
+      machine-to-machine access for registered EDGAR filers to submit
+      filings, check submission status, and manage filer accounts. This API
+      requires EDGAR Next authentication via API tokens. Available operations
+      include live and test filing submissions, submission status checks,
+      operational status verification, and user management for filer
+      accounts.
+    humanURL: https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
+    baseURL: https://api.edgarfiling.sec.gov
+    tags:
+      - Filing Submission
+      - Filer Management
+      - EDGAR Next
+      - Authenticated
+    properties:
+      - type: Documentation
+        url: https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
+
+common:
+  - type: Website
+    url: https://www.sec.gov
+  - type: Documentation
+    url: https://www.sec.gov/edgar/sec-api-documentation
+  - type: Developer
+    url: https://www.sec.gov/about/developer-resources
+  - type: GitHubOrg
+    url: https://github.com/sec-gov
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/us-securities-and-exchange-commission
+  - type: Blog
+    url: https://www.sec.gov/newsroom
+  - type: Pricing
+    url: https://www.sec.gov/edgar/sec-api-documentation
+  - type: X
+    url: https://x.com/SEC_News
+  - type: Plans
+    url: plans/sec-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/sec-rate-limits.yml
+  - type: FinOps
+    url: finops/sec-finops.yml
+
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

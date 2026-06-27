@@ -128,7 +128,7 @@ common:
     url: vocabulary/sec-vocabulary.yml
   - type: JSONLDContext
     url: json-ld/sec-context.jsonld
-  - type: Blogs
+  - type: Blog
     url: blogs/blogs.json
 
 maintainers:

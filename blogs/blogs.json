@@ -3,8 +3,15 @@
   "description": "Blog and news feed sources for SEC EDGAR developer resources and SEC newsroom",
   "url": "https://www.sec.gov/newsroom",
   "created": "2026-06-12",
-  "modified": "2026-06-12",
+  "modified": "2026-06-22",
   "feeds": [
+    {
+      "source": "https://www.sec.gov/news/pressreleases.rss",
+      "feed_url": "https://www.sec.gov/news/pressreleases.rss",
+      "title": "",
+      "saved": 2,
+      "method": "feed"
+    },
     {
       "source": "https://www.linkedin.com/company/us-securities-and-exchange-commission",
       "feed_url": "https://www.linkedin.com/company/us-securities-and-exchange-commission",
@@ -15,6 +22,6 @@
   ],
   "posts": [],
   "repo": "sec",
-  "post_count": 0,
-  "fetched": "2026-06-14T20:42:17Z"
+  "post_count": 4,
+  "fetched": "2026-06-27T12:03:07Z"
 }

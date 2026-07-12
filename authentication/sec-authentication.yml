@@ -1,0 +1,18 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/sec-edgar-filer-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: Filer API Token and User API Token
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: A Filer API Token would be required to be presented to use any of the EDGAR APIs—the
+    EDGAR Submission API, EDGAR Submission Status API, and EDGAR Operational Status API. A User
+    API Token would be required to be presented for the EDGAR Submission API only. EDGAR submissions
+    made using the EDGAR Submission API would be subject to the same authentication and validation
+    procedures that apply to submis
+  sources:
+  - openapi/sec-edgar-filer-openapi.yml

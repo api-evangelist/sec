@@ -102,6 +102,10 @@ apis:
         url: openapi/sec-edgar-filer-openapi.yml
 
 common:
+  - type: DomainSecurity
+    url: security/sec-domain-security.yml
+  - type: Authentication
+    url: authentication/sec-authentication.yml
   - type: Website
     url: https://www.sec.gov
   - type: Documentation

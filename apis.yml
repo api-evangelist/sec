@@ -102,6 +102,8 @@ apis:
         url: openapi/sec-edgar-filer-openapi.yml
 
 common:
+  - type: AgenticAccess
+    url: agentic-access/sec-agentic-access.yml
   - type: DomainSecurity
     url: security/sec-domain-security.yml
   - type: Authentication

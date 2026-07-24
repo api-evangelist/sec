@@ -1,0 +1,147 @@
+openapi: 3.0.3
+info:
+  title: SEC EDGAR Data Company Concept Frames API
+  description: 'The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
+
+    '
+  version: 1.0.0
+  contact:
+    name: SEC EDGAR Help
+    url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany
+  license:
+    name: Public Domain
+    url: https://www.sec.gov/privacy.htm
+  termsOfService: https://www.sec.gov/privacy.htm
+servers:
+- url: https://data.sec.gov
+  description: SEC EDGAR Data API
+tags:
+- name: Frames
+  description: Cross-company data for a concept in a specific period
+paths:
+  /api/xbrl/frames/{taxonomy}/{tag}/{unit}/{period}.json:
+    get:
+      operationId: getXBRLFrame
+      summary: Get cross-company data for a concept in a period
+      description: 'Returns data for a given XBRL concept across all companies that reported it for a specific period. This enables cross-company comparisons for any financial metric. Periods can be annual (CY2023), quarterly (CY2023Q1), or instantaneous (CY2023Q1I for point-in-time balance sheet concepts). The response includes each company''s CIK, entity name, accession number, location reference, and reported value.
+
+        '
+      tags:
+      - Frames
+      parameters:
+      - name: taxonomy
+        in: path
+        required: true
+        description: 'XBRL taxonomy. One of us-gaap, ifrs-full, dei, or srt.
+
+          '
+        schema:
+          type: string
+          enum:
+          - us-gaap
+          - ifrs-full
+          - dei
+          - srt
+          example: us-gaap
+      - name: tag
+        in: path
+        required: true
+        description: XBRL concept tag name.
+        schema:
+          type: string
+          example: AccountsPayableCurrent
+      - name: unit
+        in: path
+        required: true
+        description: 'Unit of measure. Common values: USD, shares, pure, USD-per-shares.
+
+          '
+        schema:
+          type: string
+          example: USD
+      - name: period
+        in: path
+        required: true
+        description: 'Reporting period. Annual: CY2023. Quarterly duration: CY2023Q1. Quarterly instantaneous: CY2023Q1I.
+
+          '
+        schema:
+          type: string
+          pattern: ^CY\d{4}(Q[1-4]I?)?$
+          example: CY2023Q1I
+      responses:
+        '200':
+          description: Cross-company XBRL frame data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/XBRLFrame'
+        '404':
+          description: Frame data not found for given parameters
+        '429':
+          description: Rate limit exceeded
+components:
+  schemas:
+    XBRLFrame:
+      type: object
+      description: Cross-company data for a concept in a specific period
+      properties:
+        taxonomy:
+          type: string
+          description: XBRL taxonomy
+          example: us-gaap
+        tag:
+          type: string
+          description: XBRL concept tag name
+          example: AccountsPayableCurrent
+        ccp:
+          type: string
+          description: Calendar period (e.g., CY2023Q1I)
+          example: CY2023Q1I
+        uom:
+          type: string
+          description: Unit of measure
+          example: USD
+        label:
+          type: string
+          description: Human-readable label
+        description:
+          type: string
+          description: Concept definition
+        pts:
+          type: integer
+          description: Number of data points in the frame
+        data:
+          type: array
+          description: Array of company data points
+          items:
+            $ref: '#/components/schemas/FrameDataPoint'
+    FrameDataPoint:
+      type: object
+      description: A single company's value for the frame concept and period
+      properties:
+        accn:
+          type: string
+          description: Accession number
+          example: 0000320193-23-000006
+        cik:
+          type: integer
+          description: Company CIK
+          example: 320193
+        entityName:
+          type: string
+          description: Company name
+          example: Apple Inc.
+        loc:
+          type: string
+          description: XBRL location reference
+          example: 10-Q
+        end:
+          type: string
+          format: date
+          description: Period end or instant date
+          example: '2023-04-01'
+        val:
+          type: number
+          description: Reported value
+          example: 62611000000

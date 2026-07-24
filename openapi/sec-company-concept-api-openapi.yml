@@ -1,0 +1,150 @@
+openapi: 3.0.3
+info:
+  title: SEC EDGAR Data Company Concept API
+  description: 'The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
+
+    '
+  version: 1.0.0
+  contact:
+    name: SEC EDGAR Help
+    url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany
+  license:
+    name: Public Domain
+    url: https://www.sec.gov/privacy.htm
+  termsOfService: https://www.sec.gov/privacy.htm
+servers:
+- url: https://data.sec.gov
+  description: SEC EDGAR Data API
+tags:
+- name: Company Concept
+  description: Historical values for a single XBRL concept
+paths:
+  /api/xbrl/companyconcept/CIK{cik}/{taxonomy}/{tag}.json:
+    get:
+      operationId: getCompanyConcept
+      summary: Get historical values for one XBRL concept
+      description: 'Returns historical values for a single XBRL concept for a given company. Results are organized by unit of measure (e.g. USD, shares) and include all reported values with start/end dates, filing accession numbers, form types, and fiscal period information.
+
+        '
+      tags:
+      - Company Concept
+      parameters:
+      - name: cik
+        in: path
+        required: true
+        description: Central Index Key (CIK) with leading zeros to reach 10 digits.
+        schema:
+          type: string
+          pattern: ^\d{10}$
+          example: 0000320193
+      - name: taxonomy
+        in: path
+        required: true
+        description: 'XBRL taxonomy. One of: us-gaap, ifrs-full, dei, srt.
+
+          '
+        schema:
+          type: string
+          enum:
+          - us-gaap
+          - ifrs-full
+          - dei
+          - srt
+          example: us-gaap
+      - name: tag
+        in: path
+        required: true
+        description: 'XBRL concept tag name. Example: AccountsPayableCurrent, Assets, Revenues, EarningsPerShareBasic.
+
+          '
+        schema:
+          type: string
+          example: AccountsPayableCurrent
+      responses:
+        '200':
+          description: Historical concept values for the company
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyConcept'
+        '404':
+          description: Company or concept not found
+        '429':
+          description: Rate limit exceeded
+components:
+  schemas:
+    FactValue:
+      type: object
+      description: A single reported XBRL fact value
+      properties:
+        start:
+          type: string
+          format: date
+          description: Period start date (for duration concepts)
+          example: '2022-09-25'
+        end:
+          type: string
+          format: date
+          description: Period end date or instant date
+          example: '2023-09-30'
+        val:
+          description: Reported value (number or string depending on concept)
+          oneOf:
+          - type: number
+          - type: string
+          example: 62611000000
+        accn:
+          type: string
+          description: Accession number of the filing reporting this value
+          example: 0000320193-23-000106
+        fy:
+          type: integer
+          description: Fiscal year
+          example: 2023
+        fp:
+          type: string
+          description: Fiscal period (FY, Q1, Q2, Q3, Q4)
+          example: FY
+        form:
+          type: string
+          description: Form type
+          example: 10-K
+        filed:
+          type: string
+          format: date
+          description: Date the filing was accepted by EDGAR
+          example: '2023-11-03'
+        frame:
+          type: string
+          description: Frame identifier for use with the frames endpoint
+          example: CY2023Q3I
+    CompanyConcept:
+      type: object
+      description: Historical values for a single XBRL concept for one company
+      properties:
+        cik:
+          type: integer
+          description: Central Index Key as integer
+        taxonomy:
+          type: string
+          description: XBRL taxonomy
+          example: us-gaap
+        tag:
+          type: string
+          description: XBRL concept tag name
+          example: AccountsPayableCurrent
+        label:
+          type: string
+          description: Human-readable label
+        description:
+          type: string
+          description: Concept definition
+        entityName:
+          type: string
+          description: Company name
+        units:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/FactValue'

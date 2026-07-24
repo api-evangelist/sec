@@ -1,0 +1,235 @@
+openapi: 3.0.3
+info:
+  title: SEC EDGAR Data Company Concept EDGAR Operational Status API API
+  description: 'The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
+
+    '
+  version: 1.0.0
+  contact:
+    name: SEC EDGAR Help
+    url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany
+  license:
+    name: Public Domain
+    url: https://www.sec.gov/privacy.htm
+  termsOfService: https://www.sec.gov/privacy.htm
+servers:
+- url: https://data.sec.gov
+  description: SEC EDGAR Data API
+tags:
+- name: EDGAR Operational Status API
+  description: This API reports the status of the EDGAR system. This resource requires presentation of a Filer API Token only.
+paths:
+  /status:
+    get:
+      summary: EDGAR System Status
+      description: Uses EDGAR operating hours logic and communicates with other EDGAR components to determine the ability of the system to receive API calls and submissions.
+      operationId: EDGAR System Status
+      tags:
+      - EDGAR Operational Status API
+      responses:
+        '200':
+          description: Ok. The EDGAR system was able to provide a status response.
+          content:
+            application/json:
+              examples:
+                Accepting submissions:
+                  description: EDGAR is available because EDGAR is reporting that it is operational and within operating hours.
+                  value:
+                    tracking: 6345f99403f9c8014e4332a8cba2c5a6
+                    locator: l33922
+                    message: EDGAR is available because EDGAR is reporting that it is operational and within operating hours.
+                    condition: ACCEPTING
+                Accepting submissions with technical difficulties:
+                  description: EDGAR is experiencing technical difficulties. Consult the EDGAR News and Announcements page on SEC.gov (https://www.sec.gov/submit-filings/edgar-news-announcements) for more information.
+                  value:
+                    tracking: 6345f99403f9c8014e4332a8cba2c5a6
+                    locator: l33922
+                    message: EDGAR is experiencing technical difficulties. Consult the EDGAR News and Announcements page on SEC.gov (https://www.sec.gov/submit-filings/edgar-news-announcements) for more information.
+                    condition: ACCEPTING_WITH_TECHNICAL_DIFFICULTIES
+                Accepting submissions after hours:
+                  description: EDGAR is operating normally. Certain submissions listed in the EDGAR Filer Manual for which transmission begins now (and is completed prior to 10 p.m.) will be treated as filed today. Other submissions will receive a filing date of the next business day.
+                  value:
+                    tracking: 6345f99403f9c8014e4332a8cba2c5a6
+                    locator: l33922
+                    message: EDGAR is operating normally. Certain submissions listed in the EDGAR Filer Manual for which transmission begins now (and is completed prior to 10 p.m.) will be treated as filed today. Other submissions will receive a filing date of the next business day.
+                    condition: ACCEPTING_AFTER_HOURS
+                Accepting submissions after hours with technical difficulties:
+                  description: '"EDGAR is experiencing technical difficulties. Consult the EDGAR News and Announcements page on SEC.gov (https://www.sec.gov/submit-filings/edgar-news-announcements) for more information. Certain submissions listed in the EDGAR Filer Manual for which transmission begins now (and is completed prior to 10 p.m.) will be treated as filed today. Other submissions will receive a filing date of the next business day.'
+                  value:
+                    tracking: 6345f99403f9c8014e4332a8cba2c5a6
+                    locator: l33922
+                    message: EDGAR is experiencing technical difficulties. Consult the EDGAR News and Announcements page on SEC.gov (https://www.sec.gov/submit-filings/edgar-news-announcements) for more information. Certain submissions listed in the EDGAR Filer Manual for which transmission begins now (and is completed prior to 10 p.m.) will be treated as filed today. Other submissions will receive a filing date of the next business day.
+                    condition: ACCEPTING_AFTER_HOURS_WITH_TECHNICAL_DIFFICULTIES
+                Outside hours of operation:
+                  description: EDGAR is not available because EDGAR is reporting that it is not within operating hours.
+                  value:
+                    tracking: 8bdd9ff5f82da173d41bf1ed03a80af4
+                    locator: l33922
+                    message: EDGAR is not available because EDGAR is reporting that it is not within operating hours.
+                    condition: OUTSIDE_OPERATING_HOURS
+                No communication:
+                  description: EDGAR is not available for API communication due to technical difficulties or other connection issues.
+                  value:
+                    tracking: 5e981101d4bfdee09b95c6f1d53e8551
+                    locator: l33922
+                    message: EDGAR is not available for API communication due to technical difficulties or other connection issues.
+                    condition: NO_COMMUNICATION
+              schema:
+                $ref: '#/components/schemas/Response'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden. This resource requires a valid Filer API Token. Please ensure that the token that is being used is a Filer API Token and is active in Filer Management.
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The request has included at least one valid token but that token do not give access to this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Forbidden.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Server Error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Operational Status API
+components:
+  schemas:
+    Response:
+      type: object
+      description: Provides information on the current operating state of EDGAR
+      title: Status Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        condition:
+          allOf:
+          - $ref: '#/components/schemas/Condition'
+          type: string
+          example: OUTSIDE_OPERATING_HOURS
+          description: 'Represents the current operating state of EDGAR.
+
+
+            ACCEPTING - EDGAR is available because EDGAR is reporting that it is operational and within operating hours.
+
+
+            ACCEPTING_WITH_TECHNICAL_DIFFICULTIES - EDGAR is experiencing technical difficulties. Consult the EDGAR News and Announcements page on SEC.gov (https://www.sec.gov/submit-filings/edgar-news-announcements) for more information.
+
+
+            ACCEPTING_AFTER_HOURS - EDGAR is operating normally. Certain submissions listed in the EDGAR Filer Manual for which transmission begins now (and is completed prior to 10 p.m.) will be treated as filed today. Other submissions will receive a filing date of the next business day.
+
+
+            ACCEPTING_AFTER_HOURS_WITH_TECHNICAL_DIFFICULTIES - EDGAR is experiencing technical difficulties. Consult the EDGAR News and Announcements page on SEC.gov (https://www.sec.gov/submit-filings/edgar-news-announcements) for more information. Certain submissions listed in the EDGAR Filer Manual for which transmission begins now (and is completed prior to 10 p.m.) will be treated as filed today. Other submissions will receive a filing date of the next business day.
+
+
+            OUTSIDE_OPERATING_HOURS - EDGAR is not available because EDGAR is reporting that it is not within operating hours.
+
+
+            NO_COMMUNICATION - EDGAR is not available for API communication due to technical difficulties or other connection issues.'
+          title: Condition
+        message:
+          type: string
+          example: EDGAR is not receiving submissions until MM/DD/YYYY at HH:MM AM
+          description: Optionally provides additional information if any is required
+          title: Message
+    Message:
+      type: object
+      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
+      title: Message
+      properties:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/MessageType'
+          type: string
+          example: NOTICE
+          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
+
+            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
+
+            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
+
+            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
+
+            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
+          title: Type
+        content:
+          type: string
+          example: The Filer API Key making this request will expire in less than two weeks.
+          description: The content of the message intended to be interpreted by a human consumer of the API output.
+          title: Content
+    Condition:
+      type: string
+      enum:
+      - ACCEPTING
+      - ACCEPTING_WITH_TECHNICAL_DIFFICULTIES
+      - ACCEPTING_AFTER_HOURS
+      - ACCEPTING_AFTER_HOURS_WITH_TECHNICAL_DIFFICULTIES
+      - OUTSIDE_OPERATING_HOURS
+      - NO_COMMUNICATION
+      description: The current operating state of EDGAR
+      title: Condition
+    ErrorResponse:
+      type: object
+      description: When an error occurs in the API this is the standard response.
+      title: Error Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+    MessageType:
+      type: string
+      enum:
+      - INFO
+      - NOTICE
+      - WARNING
+      - ERROR
+      description: The type of the message being returned regarding how severe it is or what type of message it contains.
+      title: Message Type

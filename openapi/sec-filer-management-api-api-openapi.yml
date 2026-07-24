@@ -1,0 +1,2008 @@
+openapi: 3.0.3
+info:
+  title: SEC EDGAR Data Company Concept Filer Management API API
+  description: 'The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
+
+    '
+  version: 1.0.0
+  contact:
+    name: SEC EDGAR Help
+    url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany
+  license:
+    name: Public Domain
+    url: https://www.sec.gov/privacy.htm
+  termsOfService: https://www.sec.gov/privacy.htm
+servers:
+- url: https://data.sec.gov
+  description: SEC EDGAR Data API
+tags:
+- name: Filer Management API
+  description: '    A set of API endpoints that allows you to verify permissions, get filer information, manage CCC, manage individuals, and manage delegations.
+
+    '
+paths:
+  /fm/{cik}:
+    get:
+      summary: View filer account information
+      description: 'The view filer account information API provides the ability to view filer information for an EDGAR account/CIK.
+
+        This API will require the following inputs:  the filer API token, the user API token, and the EDGAR account/CIK
+
+        for which information is being retrieved.
+
+        The individual associated with the user API token must be a user, account administrator, delegated user, delegated
+
+        account administrator, or technical administrator of the CIK for which account information is to be viewed.
+
+        The filer API token supplied for the request must either match that CIK or the CIK of the filer API token must have delegation from that CIK.
+
+        '
+      operationId: View Filer Account Information
+      tags:
+      - Filer Management API
+      parameters:
+      - name: cik
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: \d{10}
+      responses:
+        '200':
+          description: OK. The request was successful.
+          content:
+            application/json:
+              examples:
+                OK:
+                  description: Details about a filer/entity (e.g., name, address, dba-name, foreign-name, etc.)
+                  value:
+                    tracking: f0bd5ef3aaf666475b7b466d46120973
+                    locator: nfkkg
+                    messages:
+                    - type: INFO
+                      content: OK
+                    filerInfo:
+                    - cik: '0000000000'
+                      stateCode: TX
+                      irsNumber: '000000000'
+                      entityType: A
+                      dateIncorporated: '1970-01-01 00:00:00'
+                      sicCode: '6189'
+                      fyEnd: '0630'
+                      individualOrCompany: C
+                      specialFilerType: string
+                      legalEntityIdentifier: ABCD123456789012
+                      repFileNum: 123-123456-12
+                      dateModified: '2024-01-01T12:00:00Z'
+                      entityName: Filers Inc
+                      entityDbaName: string
+                      entityForeignName: string
+                      mailIsForeignAddress: 'false'
+                      mailStreet1: 123 Broadway
+                      mailStreet2: Suite 200
+                      mailCity: Dallas
+                      mailStateCode: K3
+                      mailForeignState: Maharashtra
+                      mailZip: '75240'
+                      businessIsForeignAddress: false
+                      businessStreet1: 123 Broadway
+                      businessStreet2: Suite 200
+                      businessCity: Dallas
+                      businessStateCode: TX
+                      businessForeignState: null
+                      businessZip: '75240'
+                      peoStreet1: string
+                      peoStreet2: string
+                      peoCity: string
+                      peoStateCode: string
+                      peoZip: string
+                      acctName: Chris
+                      acctPhone: 555-555-5555
+                      acctStreet1: 123 MAIN ST. - BILLING
+                      acctStreet2: null
+                      acctCity: ANYTOWN
+                      acctStateCode: TX
+                      acctZip: '12345'
+                      acctEmail: chris@somecompany.com
+                      contName: James Smith
+                      contPhone: 555-555-5555
+                      contEmail: james@somecopany.com
+                      mailingPhone: 555-555-5555
+                      businessPhone: 555-555-5555
+                      ccc: '@1B2C3d4'
+                      confirmationDueDate: Date
+                      singleEntityCompany: 'false'
+                      website: www.somecompany.com
+                      series: []
+              schema:
+                $ref: '#/components/schemas/FilerInfoResponse'
+        '400':
+          description: Bad request. The request was not successful, possibly due to invalid data
+          content:
+            application/json:
+              examples:
+                Bad request:
+                  description: Input error (invalid data)
+                  value:
+                    tracking: c209d91efee936e1d315d868f06f763d
+                    locator: 47a94d
+                    messages:
+                    - type: ERROR
+                      message: Invalid data
+              schema:
+                $ref: '#/components/schemas/IndividualInfoResponse'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The request had included valid tokens but that does not give access to this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Forbidden.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Internal server error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token and User API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Filer Management API
+  /fm/{cik}/ccc:
+    post:
+      summary: Generate CCC
+      description: 'The generate CCC API allows a filer to have EDGAR randomly generate a new CCC for the filer. This API will require the filer API token, the user API token,
+
+        and the CIK of the EDGAR account for which the CCC will be generated. The individual associated with the user API token must be
+
+        an account administrator of the EDGAR account/CIK for which the CCC is to be generated. The filer API token supplied for the request
+
+        must either match the CIK of the EDGAR account for which the CCC is to be generated or the CIK of the filer API token must have
+
+        delegation from that CIK.
+
+        '
+      operationId: Generate CCC
+      tags:
+      - Filer Management API
+      parameters:
+      - name: cik
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: \d{10}
+      responses:
+        '200':
+          description: OK. The request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilerCCCResponse'
+        '400':
+          description: Bad request. The request was not successful, possibly due to invalid data
+          content:
+            application/json:
+              examples:
+                Bad request:
+                  description: Input error (invalid data)
+                  value:
+                    tracking: c209d91efee936e1d315d868f06f763d
+                    locator: 47a94d
+                    messages:
+                    - type: ERROR
+                      message: Invalid data
+              schema:
+                $ref: '#/components/schemas/IndividualInfoResponse'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The request had included valid tokens but that does not give access to this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Forbidden.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Internal server error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token and User API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Filer Management API
+    put:
+      summary: Create custom CCC
+      description: 'The create custom CCC API allows a filer to specify a new CCC. The API will require the following inputs: the filer API token, the user API token,
+
+        the CIK of the EDGAR account for which the custom CCC will be created, the current CCC, and the new CCC. The individual associated with
+
+        the user API token must be an account administrator of the EDGAR account/CIK for which the CCC is to be changed. The filer API token supplied for
+
+        the request must either match the CIK for which the CCC is to be changed or the CIK of the filer API token must have delegation from that CIK.
+
+        '
+      operationId: Create Custom CCC
+      tags:
+      - Filer Management API
+      parameters:
+      - name: cik
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: \d{10}
+      requestBody:
+        description: Update CCC object (Current CCC, Replacement CCC)
+        content:
+          application/json:
+            examples:
+              Update CCC:
+                summary: Update CCC
+                description: Update CCC
+                value:
+                  currentCCC: xxxxxxxx
+                  replacementCCC: yyyyyyyy
+            schema:
+              $ref: '#/components/schemas/UpdateCCC'
+        required: true
+      responses:
+        '200':
+          description: OK. The request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilerCCCResponse'
+        '400':
+          description: Bad request. The request was not successful, possibly due to invalid data
+          content:
+            application/json:
+              examples:
+                Bad request:
+                  description: Input error (invalid data)
+                  value:
+                    tracking: c209d91efee936e1d315d868f06f763d
+                    locator: 47a94d
+                    messages:
+                    - type: ERROR
+                      message: Invalid data
+              schema:
+                $ref: '#/components/schemas/IndividualInfoResponse'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The request had included valid tokens but that does not give access to this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Forbidden.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Internal server error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token and User API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Filer Management API
+  /fm/{cik}/delegationRequests:
+    post:
+      summary: Request delegation invitations
+      description: 'The request delegation invitations API provides the ability for an EDGAR account (for example, a filing agent) to request delegation from one
+
+        or more filers. If a filer accepts the delegation request, a delegation invitation will be sent from the filer to the EDGAR account requesting
+
+        delegation. If the delegation invitation is accepted by the EDGAR account requesting delegation, that EDGAR account will become a delegated
+
+        entity that can submit filings on behalf of the filer. This API will require the following inputs: the filer API token, the user API token,
+
+        the CIK belonging to the requesting EDGAR account that would like to become a delegated entity, and CIK(s) that will receive the delegation
+
+        request. The individual associated with the user API token must be an account administrator of the CIK requesting a delegation invitation.
+
+        The filer API token supplied for the request must match the CIK requesting a delegation invitation.
+
+        '
+      operationId: Request Delegation Invitations
+      tags:
+      - Filer Management API
+      parameters:
+      - name: cik
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: \d{10}
+      requestBody:
+        description: List of delegation request filer/entity CIKs
+        content:
+          application/json:
+            examples:
+              Delegation request to single CIK:
+                summary: Delegation request single CIK
+                description: Delegation request to single CIK
+                value:
+                - '0000000001'
+              Delegation request to multiple CIKs:
+                summary: Delegation request to multiple CIKs
+                description: Delegation request to multiple CIKs
+                value:
+                - '0000000001'
+                - '0000000002'
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        '200':
+          description: OK. The request was successful.
+          content:
+            application/json:
+              examples:
+                OK:
+                  description: ADD DELEGATION REQUESTS OK description
+                  value:
+                    tracking: c209d91efee936e1d315d868f06f763d
+                    locator: 47a94d
+                    messages:
+                    - type: INFO
+                      message: <<message>>
+              schema:
+                $ref: '#/components/schemas/FilerInfoResponse'
+        '400':
+          description: Bad request. The request was not successful, possibly due to invalid data
+          content:
+            application/json:
+              examples:
+                Bad request:
+                  description: Input error (invalid data)
+                  value:
+                    tracking: c209d91efee936e1d315d868f06f763d
+                    locator: 47a94d
+                    messages:
+                    - type: ERROR
+                      message: Invalid data
+              schema:
+                $ref: '#/components/schemas/IndividualInfoResponse'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The request had included valid tokens but that does not give access to this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Forbidden.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Internal server error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token and User API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Filer Management API
+  /fm/{cik}/delegations:
+    post:
+      summary: Send delegation invitations
+      description: 'The send delegation invitations API provides the ability for a filer to delegate to one or more EDGAR accounts. If those EDGAR accounts accept
+
+        the delegation invitation, those EDGAR accounts will become delegated entities who can submit filings on behalf of the delegating filer.
+
+        This API will require the following inputs: the filer API token, the user API token, the delegating filer’s CIK, and a list of one or more
+
+        delegated entity CIKs that will receive the delegation invitation. The individual associated with the user API token must be an account
+
+        administrator of the CIK from which delegation invitations are to be sent. The filer API token supplied for the request must match that CIK.
+
+        '
+      operationId: Send Delegation Invitations
+      tags:
+      - Filer Management API
+      parameters:
+      - name: cik
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: \d{10}
+      requestBody:
+        description: List of delegation filer/entity CIKs
+        content:
+          application/json:
+            examples:
+              Delegate to single CIK:
+                summary: Delegate to single CIK
+                description: Delegate to single CIK
+                value:
+                - '0000000001'
+              Delegate to multiple CIKs:
+                summary: Delegate to multiple CIKs
+                description: Delegate to multiple CIKs
+                value:
+                - '0000000001'
+                - '0000000002'
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        '200':
+          description: OK. The request was successful.
+          content:
+            application/json:
+              examples:
+                OK:
+                  description: ADD DELEGATIONS OK description
+                  value:
+                    tracking: c209d91efee936e1d315d868f06f763d
+                    locator: 47a94d
+                    responses: []
+                    messages:
+                    - type: INFO
+                      message: <<message>>
+              schema:
+                $ref: '#/components/schemas/FilerInfoResponse'
+        '400':
+          description: Bad request. The request was not successful, possibly due to invalid data
+          content:
+            application/json:
+              examples:
+                Bad request:
+                  description: Input error (invalid data)
+                  value:
+                    tracking: c209d91efee936e1d315d868f06f763d
+                    locator: 47a94d
+                    messages:
+                    - type: ERROR
+                      message: Invalid data
+              schema:
+                $ref: '#/components/schemas/IndividualInfoResponse'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The request had included valid tokens but that does not give access to this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Forbidden.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Internal server error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token and User API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Filer Management API
+    get:
+      summary: View delegations
+      description: 'The view delegations API provides the ability for a filer/EDGAR account to retrieve a list of all its delegations to and from other
+
+        EDGAR accounts/CIKs. This API will require the following inputs:  the filer API token, the user API token, and the EDGAR account/CIK
+
+        for which delegation information is to be retrieved. The individual associated with the user API token must be a user or an account
+
+        administrator of the CIK for which delegation information is to be retrieved. The filer API token supplied for the request must match that CIK.
+
+        '
+      operationId: View Delegations
+      tags:
+      - Filer Management API
+      parameters:
+      - name: cik
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: \d{10}
+      responses:
+        '200':
+          description: OK. The request was successful.
+          content:
+            application/json:
+              examples:
+                OK:
+                  description: GET DELEGATIONS OK description
+                  value:
+                    tracking: c209d91efee936e1d315d868f06f763d
+                    locator: 47a94d
+                    delegationsTo: []
+                    delegationsFrom: []
+                    messages:
+                    - type: INFO
+                      message: OK
+              schema:
+                $ref: '#/components/schemas/DelegationInfoResponse'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The request had included valid tokens but that does not give access to this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Forbidden.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Internal server error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token and User API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Filer Management API
+  /fm/{cik}/individuals:
+    post:
+      summary: Add individuals
+      description: 'The add individuals API allows for one or more individuals to be added in specific role(s) for a filer. This API will require the following
+
+        inputs: the filer API token, the user API token, the EDGAR account CIK for which individuals are to be added, a list of individuals
+
+        (identified by their names and Login.gov email addresses), and their new roles. The individual associated with the user API token must be
+
+        an account administrator of the CIK for which individuals are to be added. The filer API token supplied for the request must either match
+
+        the CIK for which individuals are to be added or the CIK of the filer API token must have delegation from that CIK.
+
+        '
+      operationId: Add Individuals
+      tags:
+      - Filer Management API
+      parameters:
+      - name: cik
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: \d{10}
+      requestBody:
+        description: List of individuals and associated roles
+        content:
+          application/json:
+            examples:
+              Add Single Individual:
+                summary: Single individual (with email, first name, middle name, last name) and related roles
+                description: Single individual (with email, first name, middle name, last name) and related roles
+                value:
+                - email: barry.allen@flash.com
+                  firstName: Bartholomew
+                  middleName: Henry
+                  lastName: Allen
+                  inAdminRole: false
+                  inTechAdminRole: true
+                  inUserRole: true
+              Add Multiple Individuals:
+                summary: Multiple individuals (with email, first name, middle name, last name) and related roles
+                description: Multiple individuals (with email, first name, middle name, last name) and related roles
+                value:
+                - email: money.penny@007.com
+                  firstName: Money
+                  lastName: Penny
+                  inAdminRole: true
+                  inTechAdminRole: true
+                  inUserRole: false
+                - email: barry.allen@flash.com
+                  firstName: Bartholomew
+                  middleName: Henry
+                  lastName: Allen
+                  inAdminRole: false
+                  inTechAdminRole: true
+                  inUserRole: true
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/IndividualRole'
+        required: true
+      responses:
+        '200':
+          description: OK. The request was successful.
+          content:
+            application/json:
+              examples:
+                OK:
+                  description: ADD INDIVIDUALS OK DESCRIPTION
+                  value:
+                    tracking: c209d91efee936e1d315d868f06f763d
+                    locator: 47a94d
+                    responses: []
+                    messages:
+                    - type: INFO
+                      message: Invite(s) created.
+              schema:
+                $ref: '#/components/schemas/FilerInfoResponse'
+        '400':
+          description: Bad request. The request was not successful, possibly due to invalid data
+          content:
+            application/json:
+              examples:
+                Bad request:
+                  description: Input error (invalid data)
+                  value:
+                    tracking: c209d91efee936e1d315d868f06f763d
+                    locator: 47a94d
+                    messages:
+                    - type: ERROR
+                      message: Invalid data
+              schema:
+                $ref: '#/components/schemas/IndividualInfoResponse'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The request had included valid tokens but that does not give access to this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Forbidden.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Internal server error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token and User API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Filer Management API
+    get:
+      summary: View individuals
+      description: 'The view individuals API provides the ability to view all individuals with a role for an EDGAR account/CIK. This API will require the following
+
+        inputs: the filer API token, the user API token, and the CIK for which individuals are to be viewed. The individual associated with the user
+
+        API token must be an account administrator of the CIK for which individuals are to be viewed. The filer API token supplied for the request must
+
+        either match the CIK for which individuals are to be viewed or the CIK of the filer API token must have delegation from that CIK.
+
+        '
+      operationId: View Individuals
+      tags:
+      - Filer Management API
+      parameters:
+      - name: cik
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: \d{10}
+      responses:
+        '200':
+          description: OK. The request was successful.
+          content:
+            application/json:
+              examples:
+                OK:
+                  description: GET INDIVIDUALS OK description
+                  value:
+                    tracking: c209d91efee936e1d315d868f06f763d
+                    locator: 47a94d
+                    individuals: []
+                    messages:
+                    - type: INFO
+                      message: OK
+              schema:
+                $ref: '#/components/schemas/IndividualInfoResponse'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The request had included valid tokens but that does not give access to this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Forbidden.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Internal server error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token and User API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Filer Management API
+    put:
+      summary: Change roles
+      description: 'The change roles API provides the ability to update roles for individuals for a CIK. This API will require the following inputs: the filer API
+
+        token, the user API token, the EDGAR account CIK for which roles are to be changed, a list of the individuals (identified by their Login.gov
+
+        email addresses), and their new roles (updated roles). The individual associated with the user API token must be an account administrator of
+
+        the CIK for which roles are to be changed. The filer API token supplied for the request must either match the CIK for which roles are to be
+
+        changed or the CIK of the filer API token must have delegation from that CIK.
+
+        '
+      operationId: Change Roles
+      tags:
+      - Filer Management API
+      parameters:
+      - name: cik
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: \d{10}
+      requestBody:
+        description: List of emails and related roles for updating individual roles
+        content:
+          application/json:
+            examples:
+              Update role for single individual:
+                summary: Update role for single individual (email and related roles)
+                description: Update role for single individual (email and related roles)
+                value:
+                - email: money.penny@007.com
+                  inAdminRole: false
+                  inTechAdminRole: false
+                  inUserRole: true
+              Update role for multiple individuals:
+                summary: Update role for multiple individuals (email and related roles)
+                description: Update role for multiple individuals (email and related roles)
+                value:
+                - email: money.penny@007.com
+                  inAdminRole: false
+                  inTechAdminRole: false
+                  inUserRole: true
+                - email: barry.allen@flash.com
+                  inAdminRole: true
+                  inTechAdminRole: false
+                  inUserRole: false
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/EmailRole'
+        required: true
+      responses:
+        '200':
+          description: OK. The request was successful.
+          content:
+            application/json:
+              examples:
+                OK:
+                  description: UPDATE INDIVIDUAL ROLES OK DESCRIPTION
+                  value:
+                    tracking: c209d91efee936e1d315d868f06f763d
+                    locator: 47a94d
+                    messages:
+                    - type: INFO
+                      message: <<message>>
+              schema:
+                $ref: '#/components/schemas/FilerInfoResponse'
+        '400':
+          description: Bad request. The request was not successful, possibly due to invalid data
+          content:
+            application/json:
+              examples:
+                Bad request:
+                  description: Input error (invalid data)
+                  value:
+                    tracking: c209d91efee936e1d315d868f06f763d
+                    locator: 47a94d
+                    messages:
+                    - type: ERROR
+                      message: Invalid data
+              schema:
+                $ref: '#/components/schemas/IndividualInfoResponse'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The request had included valid tokens but that does not give access to this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Forbidden.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Internal server error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token and User API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Filer Management API
+    delete:
+      summary: Remove individuals
+      description: 'The remove individuals API provides the ability to remove one or more individuals. This API will require the following inputs: the filer API
+
+        token, the user API token, the EDGAR account CIK for which individuals are to be removed, a list of individuals (identified by their
+
+        Login.gov email addresses), and their roles to be removed. The individual associated with the user API token must be an account administrator
+
+        of the CIK for which individuals are to be removed. The filer API token supplied for the request must either match the CIK for which individuals
+
+        are to be removed or the CIK of the filer API token must have delegation from that CIK.
+
+        '
+      operationId: Remove Individuals
+      tags:
+      - Filer Management API
+      parameters:
+      - name: cik
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: \d{10}
+      requestBody:
+        description: List of emails of individuals for removal
+        content:
+          application/json:
+            examples:
+              Remove single individual:
+                summary: Remove single individual (email)
+                description: Remove single individual (email)
+                value:
+                - money.penny@007.com
+              Remove multiple individuals:
+                summary: Remove multiple individuals (email)
+                description: Remove multiple individuals (email)
+                value:
+                - money.penny@007.com
+                - barry.allen@flash.com
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        '200':
+          description: OK. The request was successful.
+          content:
+            application/json:
+              examples:
+                OK:
+                  description: REMOVE INDIVIDUALS OK DESCRIPTION
+                  value:
+                    tracking: c209d91efee936e1d315d868f06f763d
+                    locator: 47a94d
+                    messages:
+                    - type: INFO
+                      message: <<message>>
+              schema:
+                $ref: '#/components/schemas/FilerInfoResponse'
+        '400':
+          description: Bad request. The request was not successful, possibly due to invalid data
+          content:
+            application/json:
+              examples:
+                Bad request:
+                  description: Input error (invalid data)
+                  value:
+                    tracking: c209d91efee936e1d315d868f06f763d
+                    locator: 47a94d
+                    messages:
+                    - type: ERROR
+                      message: Invalid data
+              schema:
+                $ref: '#/components/schemas/IndividualInfoResponse'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The request had included valid tokens but that does not give access to this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Forbidden.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Internal server error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token and User API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Filer Management API
+  /fm/{cik}/verify:
+    get:
+      summary: Filing credentials verification
+      description: 'The filing credentials verification API provides the ability to view filing credentials for an EDGAR account/CIK. The API GET method requires
+
+        the filer API token and the user API token in the header along with the relevant CIK in the path of the URL. The individual associated with
+
+        the user API token must be a user, account administrator, delegated user, or delegated account administrator of the CIK for which the filing
+
+        credentials are to be verified. The filer API token supplied for the request must either match the CIK for which filing
+
+        credentials are to be verified or the CIK of the filer API token must have delegation from that CIK.
+
+        '
+      operationId: Filing Credentials Verification
+      tags:
+      - Filer Management API
+      parameters:
+      - name: cik
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: \d{10}
+      responses:
+        '200':
+          description: OK. The request was successful.
+          content:
+            application/json:
+              examples:
+                OK - Can file:
+                  summary: OK - Can file
+                  description: Individual can file.
+                  value:
+                    tracking: 8bdd9ff5f82da173d41bf1ed03a80af4
+                    locator: 47a94d
+                    messages:
+                    - type: INFO
+                      content: OK
+                    canFile: false
+                OK - Cannot file:
+                  summary: 'OK - Cannot file '
+                  description: Individual cannot file
+                  value:
+                    tracking: 8bdd9ff5f82da173d41bf1ed03a80af4
+                    locator: 47a94d
+                    messages:
+                    - type: INFO
+                      content: OK
+                    canFile: false
+              schema:
+                $ref: '#/components/schemas/FilerCheckResponse'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Internal server error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token and User API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Filer Management API
+components:
+  schemas:
+    ZonedDateTime:
+      type: string
+      format: date-time
+      example: '2022-03-10T12:15:50-04:00'
+    DelegationInfo:
+      type: object
+      description: A collection of fields pertaining to delegation
+      title: Delegation Information
+      properties:
+        entityCik:
+          type: string
+          example: '0000350001'
+          description: The Central Index Key is a 10 digit unique identifier of a filer
+          title: Entity CIK
+        entityName:
+          type: string
+          example: XYZ CORPORATION
+          description: Name of a filer
+          title: Entity Name
+        status:
+          type: string
+          example: ACTIVE
+          description: Delegation status
+          title: Status
+        isRequest:
+          type: boolean
+          example: true
+          description: Is delegation a request?
+          title: Is Request
+        autoAddUsers:
+          type: boolean
+          example: true
+          description: Is auto add users flag selected for active delegations
+          title: Auto Add Users
+        lastUpdated:
+          type: string
+          example: '2025-12-31T11:59:59-05:00'
+          description: Timestamp when last delegation record was updated (RFC3339 formatted date-time).
+          title: Last Updated
+    Message:
+      type: object
+      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
+      title: Message
+      properties:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/MessageType'
+          type: string
+          example: NOTICE
+          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
+
+            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
+
+            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
+
+            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
+
+            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
+          title: Type
+        content:
+          type: string
+          example: The Filer API Key making this request will expire in less than two weeks.
+          description: The content of the message intended to be interpreted by a human consumer of the API output.
+          title: Content
+    FilerCheckResponse:
+      type: object
+      description: This response returns information about the status of a Filer API Token and User API Token.
+      title: Filer Check Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages providing details associated with the filer management response.
+          title: Messages
+        canFile:
+          type: boolean
+          description: boolean value describing if a filing can be made or not with the provided user api token, filer api token and cik
+          title: Can File
+        confirmationDueDate:
+          allOf:
+          - $ref: '#/components/schemas/ZonedDateTime'
+          type: string
+          example: '2025-12-31T11:59:59-05:00'
+          description: Date that confirmation is due (RFC3339 formatted date-time)
+          title: Confirmation Due Date
+        filerApiTokenExpirationDate:
+          allOf:
+          - $ref: '#/components/schemas/ZonedDateTime'
+          type: string
+          example: '2025-12-31T11:59:59-05:00'
+          description: Date that the Filer API Token expires (RFC3339 formatted date-time)
+          title: Filer API Token Expiration Date
+        userApiTokenExpirationDate:
+          allOf:
+          - $ref: '#/components/schemas/ZonedDateTime'
+          type: string
+          example: '2025-12-31T11:59:59-05:00'
+          description: Date that the User API Token expires (RFC3339 formatted date-time)
+          title: User API Token Expiration Date
+    FilerCCCResponse:
+      type: object
+      description: 'This response will be used to return the response when a Filer''s CCC has been updated. '
+      title: Filer CCC Update Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages providing details associated with the filer management response.
+          title: Messages
+        filerCCC:
+          type: string
+          example: '@1B2C3d4'
+          description: Returns a Filer's ccc
+          title: Filer's CCC'
+    ErrorResponse:
+      type: object
+      description: When an error occurs in the API this is the standard response.
+      title: Error Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+    FilerInfoResponse:
+      type: object
+      description: A filer info response is a response that encapsulates information regarding a filer
+      title: Filer Info Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages providing details associated with the filer management response.
+          title: Messages
+        filerInfo:
+          type: array
+          oneOf:
+          - $ref: '#/components/schemas/FilerInfo'
+          items:
+            $ref: '#/components/schemas/FilerInfo'
+          description: An list containing object that contains a list of fields pertaining to a filer's information
+          title: Filer Information
+    FilerInfo:
+      type: object
+      description: A collection of fields pertaining to the overall information on a filer
+      title: Filer Information
+      properties:
+        cik:
+          type: string
+          example: 0000000000s.
+          description: The Central Index Key is a 10 digit unique identifier of a filer
+          title: CIK
+        stateCode:
+          type: string
+          example: TX
+          description: The state code of the filer
+          title: State Code
+        irsNumber:
+          type: string
+          example: '000000000'
+          description: Number used by IRS to track filer
+          title: IRS Number
+        entityStatus:
+          type: string
+          example: A
+          description: 'The status of the filer
+
+
+            A - Active
+
+
+            ...'
+          title: Entity Status
+        entityType:
+          type: string
+          example: A
+          description: 'The type of entity
+
+
+            A - Agent
+
+
+            F - Filer'
+          title: Entity Type
+        dateIncorporated:
+          type: string
+          format: date
+          example: '2025-08-06'
+          description: The date that the filer incorporated (YYYY-MM-DD)
+          title: Date Incorporated
+        deleteFlag:
+          type: integer
+          format: int32
+          example: 0
+          description: A flag to determine if the filer has been deleted
+          title: Delete Flag
+        sicCode:
+          type: string
+          example: '4512'
+          description: '...'
+          title: SIC Code
+        fyEnd:
+          type: string
+          example: '1231'
+          description: The data that marks the end of the filer's fiscal year
+          title: Fiscal Year End
+        individualOrCompany:
+          type: string
+          example: '...'
+          description: 'Denotes if the filer is a company or an individual
+
+
+            C - Company
+
+
+            I - Individual'
+          title: Individual of Company
+        specialFilerType:
+          type: string
+          example: '...'
+          description: '...'
+          title: Special Filer Type
+        legalEntityIdentifier:
+          type: string
+          example: 54930084UKLVMY22DS16
+          description: Legal entity identifier
+          title: Legal Entity Identifier
+        repFileNum:
+          type: string
+          example: 111-123456-00
+          description: Reporting Filer Number
+          title: Reporting File Number
+        dateModified:
+          type: string
+          example: '2024-01-02T12:00:00.000000Z'
+          description: Date modified
+          title: Date Modified
+        entityName:
+          type: string
+          example: Disney Enterprises Inc
+          description: The name of the filer
+          title: Entity Name
+        entityDbaName:
+          type: string
+          example: '...'
+          description: '...'
+          title: Entity DBA Name
+        entityForeignName:
+          type: string
+          example: '...'
+          description: '...'
+          title: Entity Foreign Name
+        mailIsForeignAddress:
+          type: string
+          example: 'true'
+          description: Is mailing address of a filer a foreign address
+          title: Is Foreign Address (mailing)
+        mailStreet1:
+          type: string
+          example: 123 Broadway
+          description: Mailing address of a filer
+          title: Mail Street 1
+        mailStreet2:
+          type: string
+          example: Suite 200
+          description: Supplemental information on the mailing address
+          title: Mail Street 2
+        mailCity:
+          type: string
+          example: Dallas
+          description: The city of the mailing address
+          title: Mail City
+        mailStateCode:
+          type: string
+          example: TX
+          description: The state/country code of the mailing address
+          title: Mail State/Country Code
+        mailForeignState:
+          type: string
+          example: Maharashtra
+          description: Foreign state name of the mailing address
+          title: Mail Foreign State
+        mailZip:
+          type: string
+          example: '75240'
+          description: Zip code of the mailing address
+          title: Mail Zip
+        businessIsForeignAddress:
+          type: string
+          example: 'true'
+          description: Is business address of a filer a foreign address
+          title: Is Foreign Address (business)
+        businessStreet1:
+          type: string
+          example: 123 Broadway
+          description: The business street address of the filer
+          title: Business Street 1
+        businessStreet2:
+          type: string
+          example: Suite 200
+          description: Supplemental information on the business address
+          title: Business Street 2
+        businessCity:
+          type: string
+          example: Dallas
+          description: City of the business address
+          title: Business City
+        businessStateCode:
+          type: string
+          example: TX
+          description: State code/country of the business address
+          title: Business State/Country Code
+        businessForeignState:
+          type: string
+          example: Maharashtra
+          description: Foreign state name of the business address
+          title: Business Foreign State
+        businessZip:
+          type: string
+          example: '75240'
+          description: Zip code of the business address
+          title: Business Zip
+        peoStreet1:
+          type: string
+          example: '...'
+          description: '...'
+          title: '...'
+        peoStreet2:
+          type: string
+          example: '...'
+          description: '...'
+          title: '...'
+        peoCity:
+          type: string
+          example: '...'
+          description: '...'
+          title: '...'
+        peoStateCode:
+          type: string
+          example: '...'
+          description: '...'
+          title: '...'
+        peoZip:
+          type: string
+          example: '...'
+          description: '...'
+          title: '...'
+        acctName:
+          type: string
+          example: James Smith
+          description: Name of the accounting at the filer
+          title: Accounting Name
+        acctPhone:
+          type: string
+          example: 555-555-5555
+          description: Phone number of the accounting at the filer
+          title: Accounting Phone Number
+        acctStreet1:
+          type: string
+          example: 123 Broadway
+          description: The accounting street address of the filer
+          title: Accounting Street 1
+        acctStreet2:
+          type: string
+          example: 123 Broadway
+          description: Supplemental information on the accounting address
+          title: Accounting Street 2
+        acctCity:
+          type: string
+          example: Dallas
+          description: City of the accounting address
+          title: Accounting City
+        acctStateCode:
+          type: string
+          example: TX
+          description: State code/country of the accounting address
+          title: Accounting State/Country Code
+        acctZip:
+          type: string
+          example: '75240'
+          description: Zip code of the accounting address
+          title: Accounting Zip
+        acctEmail:
+          type: string
+          example: james.smith@somecompany.com
+          description: Email address of the accounting at the filer
+          title: Accounting Email
+        contName:
+          type: string
+          example: James Smith
+          description: Name of the contact at the filer
+          title: Contact Name
+        contPhone:
+          type: string
+          example: 555-555-5555
+          description: Phone number of the contact at the filer
+          title: Contact Phone Number
+        contEmail:
+          type: string
+          example: james.smith@somecompany.com
+          description: Email address of the contact at the filer
+          title: Contact Email
+        mailingPhone:
+          type: string
+          example: 555-555-5555
+          description: Mailing Phone number of the filer
+          title: Mailing Phone Number
+        businessPhone:
+          type: string
+          example: 555-555-5555
+          description: Business Phone number of the filer
+          title: Business Phone Number
+        ccc:
+          type: string
+          example: '@1B2C3d4'
+          description: The CCC is the CIK Confirmation Code
+          title: CCC
+        confirmationDueDate:
+          type: string
+          format: date
+          example: '2025-08-06'
+          description: Date in which a filer must confirm the filing information and users are up to date and correct (YYYY-MM-DD)
+          title: Confirmation Due Date
+        singleEntityCompany:
+          type: boolean
+          example: 0
+          description: 'Boolean field to denote if filer is a single entity company or not
+
+
+            0 - False
+
+
+            1 - True'
+          title: Single Entity Company
+        website:
+          type: string
+          example: www.somecompany.com
+          description: Company website
+          title: Website
+        series:
+          type: array
+          example: '...'
+          items: {}
+          description: Series Class information
+          title: Series
+    IndividualInfo:
+      type: object
+      description: A collection of fields pertaining to an individual
+      title: Individual Information
+      properties:
+        email:
+          type: string
+          example: john@doe.com
+          description: Email of the individual
+          title: Email
+        firstName:
+          type: string
+          example: John
+          description: 'First name of the individual '
+          title: First Name
+        middleName:
+          type: string
+          example: X
+          description: Middle name of the individual
+          title: Middle Name
+        lastName:
+          type: string
+          example: Doe
+          description: Last name of the individual
+          title: Last Name
+        businessPhoneNumber:
+          type: string
+          example: 202-555-1212
+          description: Business phone number of the individual
+          title: Business Phone Number
+        delegatedCik:
+          type: string
+          example: '0000000000'
+          description: Individual's primary CIK (if any)
+          title: Delegated CIK
+        delegatedEntityName:
+          type: string
+          example: DOE Corporation
+          description: Individual's primary CIK entity name (if any)
+          title: Delegated Entity Name
+        inAdminRole:
+          type: boolean
+          example: true
+          description: Is Individual in Account Administration role
+          title: In Account Administrator Role
+        inTechAdminRole:
+          type: boolean
+          example: true
+          description: Is Individual in Technical Administration role
+          title: In Technical Administrator Role
+        inUserRole:
+          type: boolean
+          example: true
+          description: Is Individual in User role
+          title: In User Role
+        inDelegatedAdminRole:
+          type: boolean
+          example: true
+          description: Is Individual in Delegated Administration role
+          title: In Delegated Administrator Role
+        status:
+          type: string
+          example: ACTIVE
+          description: The status of the individual for the CIK
+          title: Individual Status
+        minInviteDate:
+          type: string
+          format: date
+          example: '2025-08-06'
+          description: Earliest invite date user was invited to a role (YYYY-MM-DD)
+          title: Earliest Invite Date
+        maxAcceptDate:
+          type: string
+          format: date
+          example: '2025-08-06'
+          description: Latest date a user can accept the invitation to a role (YYYY-MM-DD)
+          title: Latest Accept Date
+    UpdateCCC:
+      type: object
+      description: Used to update the CCC of a filer
+      title: Update CCC
+      properties:
+        ccc:
+          type: string
+          example: Abcd123@
+          description: The current CCC of the filer
+          title: CCC
+        newCCC:
+          type: string
+          example: '@1B2C3d4'
+          description: The new value of the CCC for the filer
+          title: New CCC
+    IndividualRole:
+      type: object
+      description: Represents a request to create invites for users for a cik
+      title: Individual Role
+      properties:
+        firstName:
+          type: string
+          description: String value of the individual's first name that is being invited
+          title: First Name
+        middleName:
+          type: string
+          description: String value of the individual's middle name that is being invited
+          title: Middle Name
+        lastName:
+          type: string
+          description: String value of the individual's last name that is being invited
+          title: Last Name
+        email:
+          type: string
+          description: String value of the individual's email that is being invited
+          title: Email
+        inAdminRole:
+          type: boolean
+          description: Boolean value describing if the user is going to be added to the filer administrator role'
+          title: In Admin Role
+        inTechAdminRole:
+          type: boolean
+          description: Boolean value describing if the user is going to be added to the technical administrator role'
+          title: In Technical Admin Role
+        inUserRole:
+          type: boolean
+          description: Boolean value describing if the user is going to be added to the user role'
+          title: In User Role
+    DelegationInfoResponse:
+      type: object
+      description: A filer info response is a response that encapsulates information regarding a filer
+      title: Delegation Info Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages providing details associated with the filer management response.
+          title: Messages
+        delegationsTo:
+          type: array
+          oneOf:
+          - $ref: '#/components/schemas/DelegationInfo'
+          items:
+            $ref: '#/components/schemas/DelegationInfo'
+          description: An list containing objects made up of properties related to delegation
+          title: Delegation To Information
+        delegationsFrom:
+          type: array
+          oneOf:
+          - $ref: '#/components/schemas/DelegationInfo'
+          items:
+            $ref: '#/components/schemas/DelegationInfo'
+          description: An list containing objects made up of properties related to delegation
+          title: Delegation From Information
+    EmailRole:
+      type: object
+      description: Represents a request for updating the roles of a user in Filer Management
+      title: Email Role
+      properties:
+        email:
+          type: string
+          description: String value belonging to the user whose roles are getting updated
+          title: Email
+        inAdminRole:
+          type: boolean
+          description: Boolean value describing if the user is going to be added to the filer administrator role'
+          title: In Admin Role
+        inTechAdminRole:
+          type: boolean
+          description: Boolean value describing if the user is going to be added to the technical administrator role'
+          title: In Technical Admin Role
+        inUserRole:
+          type: boolean
+          description: Boolean value describing if the user is going to be added to the user role'
+          title: In User Role
+    IndividualInfoResponse:
+      type: object
+      description: A filer info response is a response that encapsulates information regarding a filer
+      title: Delegation Info Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages providing details associated with the filer management response.
+          title: Messages
+        individuals:
+          type: array
+          oneOf:
+          - $ref: '#/components/schemas/IndividualInfo'
+          items:
+            $ref: '#/components/schemas/IndividualInfo'
+          description: An list containing objects made up of properties related individual
+          title: Individuals
+    MessageType:
+      type: string
+      enum:
+      - INFO
+      - NOTICE
+      - WARNING
+      - ERROR
+      description: The type of the message being returned regarding how severe it is or what type of message it contains.
+      title: Message Type

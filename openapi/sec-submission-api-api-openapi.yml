@@ -1,0 +1,895 @@
+openapi: 3.0.3
+info:
+  title: SEC EDGAR Data Company Concept Submission API API
+  description: 'The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
+
+    '
+  version: 1.0.0
+  contact:
+    name: SEC EDGAR Help
+    url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany
+  license:
+    name: Public Domain
+    url: https://www.sec.gov/privacy.htm
+  termsOfService: https://www.sec.gov/privacy.htm
+servers:
+- url: https://data.sec.gov
+  description: SEC EDGAR Data API
+tags:
+- name: Submission API
+  description: "    Submission of filings to EDGAR by API can be made through the Submission API. The Submission API requires the presentation of a Filer API Token in combination with a User API Token. Optionally,\n    filers could also specify a login CIK if there is a delegation from the EDGAR account corresponding to the login CIK to the filer API token EDGAR account/CIK. Delegations can be established on\n    the Filer Management dashboard under “Manage Delegations and User Groups.” For more information on establishing delegations,\n    see [How Do I “Understand and Manage Delegation.](https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-manage-delegation)”\n\n    Filings transmitted through the Submission API are expected to conform to the filing standard(s) [provided by the SEC](https://www.sec.gov/submit-filings).\n    Information is provided on the required format and contents of filings by the [Technical Specifications](https://www.sec.gov/submit-filings/technical-specifications).\n    Information and guidance on filing can be found in the [EDGAR Filing Manual](https://www.sec.gov/submit-filings/edgar-filer-manual).\n    Information on specific forms can be found in the [SEC Forms Index](https://www.sec.gov/submit-filings/forms-index).\n\n    The Submission API will return accession numbers for the submitted filings. A 202 HTTP status code indicates only that processing will begin in EDGAR and an\n    accession number or accession numbers have been generated. Filings with errors will be processed and suspended by EDGAR. The results of processing (status and errors)\n    are not provided by this endpoint and are instead available to clients using the API through the Submission Status API.\n\n    When using Submission API endpoints, the client can optionally specify the \"Expect: 100-continue\" HTTP request header to allow a response from these API resources\n    to be returned before uploading the entire filing in the event that the EDGAR API determines that the request will not be allowed.\n    This header should only be used for requests that have a body more than 1MiB in size.\n\n    Filings may be transmitted via either SINGLE or BULK transmission. A SINGLE transmission provides a single filling and will result in a response containing an accession number if the filing is transmitted successfully or an error if there is an issue while transmitting the filing. Even if a filing is successfully transmitted through the submission API, the filing may still be suspended by EDGAR if the contents of the filing do not satisfy EDGAR filing requirements. The accession number may be provided to the Submission Status API in order to check whether the filing was accepted by EDGAR.\n\n    A BULK filing, in contrast, is a single document that contains multiple filings to be submitted. If one or more filings are successfully transmitted then one or more accession numbers will be created and returned in the same order filings are included in the BULK filing document. However, if a filing is not successfully transmitted then an accession number may not be created, which means that the filer may have difficulty determining which accession number corresponds to which filing in the BULK filing document. Even if a filing is successfully transmitted through the Submission API, the filing may still be suspended by EDGAR if the contents of the filing do not satisfy EDGAR filing requirements. The relevant accession number may be provided to the Submission Status API in order to check whether the filing was accepted by EDGAR.\n"
+paths:
+  /submission/bulk/live:
+    post:
+      summary: Bulk Live Submission
+      description: Allows an authorized filer to transmit a BULK LIVE submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return a list of accession numbers. EDGAR will then begin processing the submissions.
+      operationId: Bulk Live Submission
+      tags:
+      - Submission API
+      parameters:
+      - deprecated: true
+        description: DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.
+        examples:
+          None: {}
+          Example CIK:
+            value: '0000350001'
+        in: header
+        name: X-EDGAR-CIK
+        schema:
+          type: string
+      - description: An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.
+        examples:
+          None: {}
+          Example CIK:
+            value: '0000350001'
+        in: header
+        name: X-EDGAR-LOGIN-CIK
+        schema:
+          type: string
+      requestBody:
+        description: A bulk live submission, in XML format, that will be transmitted to EDGAR and processed.
+        content:
+          application/octet-stream:
+            examples:
+              Bulk Live Submission:
+                description: A valid bulk live submission
+                value: "<?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>LIVE</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission>"
+            schema:
+              type: string
+              format: xml
+          application/xml:
+            examples:
+              Bulk Live Submission:
+                description: A valid bulk live submission
+                value: "<?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>LIVE</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission>"
+            schema:
+              type: string
+              format: xml
+        required: true
+      responses:
+        '202':
+          description: Accepted. The filing has been transmitted to the BULK TEST resource and the EDGAR system has generated accession number(s) for each contained filing. The submission(s) have begun processing.
+          content:
+            application/json:
+              examples:
+                Accepted:
+                  summary: Accepted. The BULK TEST filing has been transmitted to EDGAR and accession number(s) generated
+                  description: Accepted. The filing has been transmitted to the BULK TEST resource and the EDGAR system has generated accession number(s) for each contained filing. The submission(s) have begun processing.
+                  value:
+                    tracking: 8bdd9ff5f82da173d41bf1ed03a80af4
+                    locator: 47a94d
+                    status: RECEIVED
+                    responses:
+                    - accessionNumber: 0000000000-22-000001
+                      type: LIVE
+                      messages: []
+                    - accessionNumber: 0000000000-22-000006
+                      type: LIVE
+                      messages: []
+              schema:
+                $ref: '#/components/schemas/ListSubmissionResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              examples:
+                Blank/Empty CIK for X-EDGAR-LOGIN-CIK:
+                  description: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must not be blank or empty.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must not be blank or empty.
+                Invalid CIK for X-EDGAR-LOGIN-CIK:
+                  description: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must be a valid CIK.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must be a valid CIK.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to file (1) for the CIK associated with the Filer API Token and (2) for any CIKs for which filings are being submitted.
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The Filer API Token and User API Token are present and valid but do not provide required permissions to use this resource. Check delegation and permissions in Filer Management.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Forbidden.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Server Error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: A request was made to this resource outside of operational hours.
+          content:
+            application/json:
+              examples:
+                Out of Operational Hours:
+                  description: A request was made to this resource outside of the windows of operation for the EDGAR system and this request could not be completed. This status is also returned when the operational status of EDGAR cannot be determined.
+                  value:
+                    tracking: 44230c24bc6ce1b884cc5b739819d29942
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: EDGAR is not available because EDGAR is reporting that it is not within operating hours.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token and User API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Submission API
+  /submission/bulk/test:
+    post:
+      summary: Bulk Test Submission
+      description: Allows an authorized filer to transmit a BULK TEST submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return a list of accession numbers. EDGAR will then begin processing the submissions.
+      operationId: Bulk Test Submission
+      tags:
+      - Submission API
+      parameters:
+      - deprecated: true
+        description: DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.
+        examples:
+          None: {}
+          Example CIK:
+            value: '0000350001'
+        in: header
+        name: X-EDGAR-CIK
+        schema:
+          type: string
+      - description: An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.
+        examples:
+          None: {}
+          Example CIK:
+            value: '0000350001'
+        in: header
+        name: X-EDGAR-LOGIN-CIK
+        schema:
+          type: string
+      requestBody:
+        description: A bulk test filing, in XML format, that will be transmitted to EDGAR and processed.
+        content:
+          application/octet-stream:
+            examples:
+              Bulk Test Submission:
+                description: A valid bulk test filing
+                value: "<?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>TEST</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission>"
+            schema:
+              type: string
+              format: xml
+          application/xml:
+            examples:
+              Bulk Live Submission:
+                description: A valid bulk live submission
+                value: "<?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>TEST</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission>"
+            schema:
+              type: string
+              format: xml
+        required: true
+      responses:
+        '202':
+          description: Accepted. The filing has been transmitted to the BULK TEST resource and the EDGAR system has generated accession number(s) for each contained filing. The submission(s) have begun processing.
+          content:
+            application/json:
+              examples:
+                Accepted:
+                  summary: Accepted. The BULK TEST filing has been transmitted to EDGAR and accession number(s) generated
+                  description: Accepted. The filing has been transmitted to the BULK TEST resource and the EDGAR system has generated accession number(s) for each contained filing. The submission(s) have begun processing.
+                  value:
+                    tracking: 8bdd9ff5f82da173d41bf1ed03a80af4
+                    locator: 47a94d
+                    responses:
+                    - accessionNumber: 0000000000-22-000001
+                      type: TEST
+                      messages: []
+                    - accessionNumber: 0000000000-22-000009
+                      type: TEST
+                      messages: []
+              schema:
+                $ref: '#/components/schemas/ListSubmissionResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              examples:
+                Blank/Empty CIK for X-EDGAR-LOGIN-CIK:
+                  description: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must not be blank or empty.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must not be blank or empty.
+                Invalid CIK for X-EDGAR-LOGIN-CIK:
+                  description: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must be a valid CIK.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must be a valid CIK.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to file (1) for the CIK associated with the Filer API Token and (2) for any CIKs for which filings are being submitted.
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: Forbidden
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Forbidden.
+                Forbidden with Reason:
+                  description: The Filer API Token and User API Token are present and valid but do not provide required permissions to use this resource. Check delegation and permissions in Filer Management.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: The user 'john.doe@filer.biz' cannot file for the login CIK 0000350001, check permissions in Filer Management.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Server Error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: A request was made to this resource outside of operational hours.
+          content:
+            application/json:
+              examples:
+                Out of Operational Hours:
+                  description: A request was made to this resource outside of the windows of operation for the EDGAR system and this request could not be completed. This status is also returned when the operational status of EDGAR cannot be determined.
+                  value:
+                    tracking: 44230c24bc6ce1b884cc5b739819d29942
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: EDGAR is not available because EDGAR is reporting that it is not within operating hours.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token and User API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Submission API
+  /submission/single/live:
+    post:
+      summary: Single Live Submission
+      description: Allows an authorized filer to transmit a SINGLE LIVE submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return an accession number. EDGAR will then begin processing the submission.
+      operationId: Single Live Submission
+      tags:
+      - Submission API
+      parameters:
+      - deprecated: true
+        description: DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.
+        examples:
+          None: {}
+          Example CIK:
+            value: '0000350001'
+        in: header
+        name: X-EDGAR-CIK
+        schema:
+          type: string
+      - description: An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.
+        examples:
+          None: {}
+          Example CIK:
+            value: '0000350001'
+        in: header
+        name: X-EDGAR-LOGIN-CIK
+        schema:
+          type: string
+      requestBody:
+        description: A single live submission, in XML format, that will be transmitted to EDGAR and processed.
+        content:
+          application/octet-stream:
+            examples:
+              Single Live Submission (8-K):
+                description: A valid single live 8-K submission
+                value: "<?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>LIVE</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission>"
+              Single Live Submission (S-1):
+                description: A valid single live S-1 submission
+                value: "<?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coregfee\" xmlns:com=\"http://www.sec.gov/edgar/common\" xmlns:feec=\"http://www.sec.gov/edgar/feecommon\">\n  <cor:liveTestFlag>LIVE</cor:liveTestFlag>\n  <cor:flags>\n    <cor:confirmingCopyFlag>false</cor:confirmingCopyFlag>\n    <cor:delayingAmendmentFlag>false</cor:delayingAmendmentFlag>\n    <cor:overrideInternetFlag>false</cor:overrideInternetFlag>\n    <cor:returnCopyFlag>false</cor:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>S-1</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n    <cor:filerFormType>S-1</cor:filerFormType>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:smallBusinessFlag>false</cor:smallBusinessFlag>\n  <cor:emergingGrowthCompanyFlag>false</cor:emergingGrowthCompanyFlag>\n  <cor:notifications>\n    <com:internetNotificationAddress>tonotify@company.com</com:internetNotificationAddress>\n  </cor:notifications>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>doc1.txt</com:conformedName>\n      <com:conformedDocumentType>S-1</com:conformedDocumentType>\n      <com:contents>KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqDQpGaXJzdCBkb2N1bWVu\ndA0KDQogICAgICAgIFNQRUNJTUVOIC0gTk9UIEFOIE9GRklDSUFMIEZJTElORw0KDQoqKioq\nKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCg0K\n</com:contents>\n    </com:document>\n    <com:document>\n      <com:conformedName>doc2.txt</com:conformedName>\n      <com:conformedDocumentType>COVER</com:conformedDocumentType>\n      <com:contents>KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqDQpBZHZhbmNlZCBTb2Z0\nd2FyZSBTeXN0ZW1zDQogICAgICAgIFNQRUNJTUVOIC0gTk9UIEFOIE9GRklDSUFMIEZJTElO\nRw0KDQoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCg0K\n</com:contents>\n    </com:document>\n  </cor:documents>\n  <cor:edgarFee>\n    <cor:submissionFee>\n      <feec:feePayorInformation>\n        <feec:filerId>1821451322</feec:filerId>\n        <feec:filerCcc>#g9abz11</feec:filerCcc>\n      </feec:feePayorInformation>\n      <feec:feePaymentMethod>FEDWIRE</feec:feePaymentMethod>\n      <feec:feeAmount>14.40</feec:feeAmount>\n    </cor:submissionFee>\n    <cor:submissionOffering>\n      <feec:feeOfferingSecurityName>Debt</feec:feeOfferingSecurityName>\n      <feec:feeOfferingShares>1101</feec:feeOfferingShares>\n      <feec:feeOfferingAmountPerShare>1000.0000</feec:feeOfferingAmountPerShare>\n      <feec:feeOfferingAggregatePrice>110102.36</feec:feeOfferingAggregatePrice>\n    </cor:submissionOffering>\n  </cor:edgarFee>\n</cor:edgarSubmission>"
+            schema:
+              type: string
+              format: xml
+          application/xml:
+            examples:
+              Single Live Submission (8-K):
+                description: A valid single live 8-K submission
+                value: "<?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>LIVE</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission>"
+              Single Live Submission (S-1):
+                description: A valid single live S-1 submission
+                value: "<?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coregfee\" xmlns:com=\"http://www.sec.gov/edgar/common\" xmlns:feec=\"http://www.sec.gov/edgar/feecommon\">\n  <cor:liveTestFlag>LIVE</cor:liveTestFlag>\n  <cor:flags>\n    <cor:confirmingCopyFlag>false</cor:confirmingCopyFlag>\n    <cor:delayingAmendmentFlag>false</cor:delayingAmendmentFlag>\n    <cor:overrideInternetFlag>false</cor:overrideInternetFlag>\n    <cor:returnCopyFlag>false</cor:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>S-1</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n    <cor:filerFormType>S-1</cor:filerFormType>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:smallBusinessFlag>false</cor:smallBusinessFlag>\n  <cor:emergingGrowthCompanyFlag>false</cor:emergingGrowthCompanyFlag>\n  <cor:notifications>\n    <com:internetNotificationAddress>tonotify@company.com</com:internetNotificationAddress>\n  </cor:notifications>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>doc1.txt</com:conformedName>\n      <com:conformedDocumentType>S-1</com:conformedDocumentType>\n      <com:contents>KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqDQpGaXJzdCBkb2N1bWVu\ndA0KDQogICAgICAgIFNQRUNJTUVOIC0gTk9UIEFOIE9GRklDSUFMIEZJTElORw0KDQoqKioq\nKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCg0K\n</com:contents>\n    </com:document>\n    <com:document>\n      <com:conformedName>doc2.txt</com:conformedName>\n      <com:conformedDocumentType>COVER</com:conformedDocumentType>\n      <com:contents>KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqDQpBZHZhbmNlZCBTb2Z0\nd2FyZSBTeXN0ZW1zDQogICAgICAgIFNQRUNJTUVOIC0gTk9UIEFOIE9GRklDSUFMIEZJTElO\nRw0KDQoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCg0K\n</com:contents>\n    </com:document>\n  </cor:documents>\n  <cor:edgarFee>\n    <cor:submissionFee>\n      <feec:feePayorInformation>\n        <feec:filerId>1821451322</feec:filerId>\n        <feec:filerCcc>#g9abz11</feec:filerCcc>\n      </feec:feePayorInformation>\n      <feec:feePaymentMethod>FEDWIRE</feec:feePaymentMethod>\n      <feec:feeAmount>14.40</feec:feeAmount>\n    </cor:submissionFee>\n    <cor:submissionOffering>\n      <feec:feeOfferingSecurityName>Debt</feec:feeOfferingSecurityName>\n      <feec:feeOfferingShares>1101</feec:feeOfferingShares>\n      <feec:feeOfferingAmountPerShare>1000.0000</feec:feeOfferingAmountPerShare>\n      <feec:feeOfferingAggregatePrice>110102.36</feec:feeOfferingAggregatePrice>\n    </cor:submissionOffering>\n  </cor:edgarFee>\n</cor:edgarSubmission>"
+            schema:
+              type: string
+              format: xml
+        required: true
+      responses:
+        '202':
+          description: Accepted. The filing has been transmitted to the SINGLE LIVE resource and the EDGAR system has generated an accession number. The submission has begun processing.
+          content:
+            application/json:
+              examples:
+                Accepted:
+                  summary: Accepted. The SINGLE LIVE filing has been transmitted to EDGAR and accession number(s) generated
+                  description: Accepted. The filing has been transmitted to the SINGLE LIVE resource and the EDGAR system has generated an accession number. The submission has begun processing.
+                  value:
+                    tracking: 820c24bc6ce9ce84cc5b739819d27742
+                    locator: 47a94d
+                    accessionNumber: 0000000000-22-000001
+                    type: LIVE
+                    messages: []
+              schema:
+                $ref: '#/components/schemas/SingleSubmissionResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              examples:
+                Blank/Empty CIK for X-EDGAR-LOGIN-CIK:
+                  description: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must not be blank or empty.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must not be blank or empty.
+                Invalid CIK for X-EDGAR-LOGIN-CIK:
+                  description: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must be a valid CIK.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must be a valid CIK.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to file (1) for the CIK associated with the Filer API Token and (2) for any CIKs for which filings are being submitted.
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The Filer API Token and User API Token are present and valid but do not provide required permissions to use this resource. Check delegation and permissions in Filer Management.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Forbidden.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Server Error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: A request was made to this resource outside of operational hours.
+          content:
+            application/json:
+              examples:
+                Out of Operational Hours:
+                  description: A request was made to this resource outside of the windows of operation for the EDGAR system and this request could not be completed. This status is also returned when the operational status of EDGAR cannot be determined.
+                  value:
+                    tracking: 44230c24bc6ce1b884cc5b739819d29942
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: EDGAR is not available because EDGAR is reporting that it is not within operating hours.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token and User API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Submission API
+  /submission/single/test:
+    post:
+      summary: Single Test Submission
+      description: Allows an authorized filer to transmit a SINGLE TEST submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return an accession number. EDGAR will then begin processing the submission.
+      operationId: Single Test Submission
+      tags:
+      - Submission API
+      parameters:
+      - deprecated: true
+        description: DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.
+        examples:
+          None: {}
+          Example CIK:
+            value: '0000350001'
+        in: header
+        name: X-EDGAR-CIK
+        schema:
+          type: string
+      - description: An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.
+        examples:
+          None: {}
+          Example CIK:
+            value: '0000350001'
+        in: header
+        name: X-EDGAR-LOGIN-CIK
+        schema:
+          type: string
+      requestBody:
+        description: A single test submission, in XML format, that will be transmitted to EDGAR and processed.
+        content:
+          application/octet-stream:
+            examples:
+              Single Test Submission (8-K):
+                description: A valid single test 8-K submission
+                value: "<?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>TEST</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission>"
+              Single Test Submission (S-1):
+                description: A valid single test S-1 submission
+                value: "<?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coregfee\" xmlns:com=\"http://www.sec.gov/edgar/common\" xmlns:feec=\"http://www.sec.gov/edgar/feecommon\">\n  <cor:liveTestFlag>TEST</cor:liveTestFlag>\n  <cor:flags>\n    <cor:confirmingCopyFlag>false</cor:confirmingCopyFlag>\n    <cor:delayingAmendmentFlag>false</cor:delayingAmendmentFlag>\n    <cor:overrideInternetFlag>false</cor:overrideInternetFlag>\n    <cor:returnCopyFlag>false</cor:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>S-1</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451322</cor:filerId>\n    <cor:filerCcc>#g9abz11</cor:filerCcc>\n    <cor:filerFormType>S-1</cor:filerFormType>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:smallBusinessFlag>false</cor:smallBusinessFlag>\n  <cor:emergingGrowthCompanyFlag>false</cor:emergingGrowthCompanyFlag>\n  <cor:notifications>\n    <com:internetNotificationAddress>tonotify@company.com</com:internetNotificationAddress>\n  </cor:notifications>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>doc1.txt</com:conformedName>\n      <com:conformedDocumentType>S-1</com:conformedDocumentType>\n      <com:contents>KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqDQpGaXJzdCBkb2N1bWVu\ndA0KDQogICAgICAgIFNQRUNJTUVOIC0gTk9UIEFOIE9GRklDSUFMIEZJTElORw0KDQoqKioq\nKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCg0K\n</com:contents>\n    </com:document>\n    <com:document>\n      <com:conformedName>doc2.txt</com:conformedName>\n      <com:conformedDocumentType>COVER</com:conformedDocumentType>\n      <com:contents>KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqDQpBZHZhbmNlZCBTb2Z0\nd2FyZSBTeXN0ZW1zDQogICAgICAgIFNQRUNJTUVOIC0gTk9UIEFOIE9GRklDSUFMIEZJTElO\nRw0KDQoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCg0K\n</com:contents>\n    </com:document>\n  </cor:documents>\n  <cor:edgarFee>\n    <cor:submissionFee>\n      <feec:feePayorInformation>\n        <feec:filerId>0001125851</feec:filerId>\n        <feec:filerCcc>#tech123</feec:filerCcc>\n      </feec:feePayorInformation>\n      <feec:feePaymentMethod>FEDWIRE</feec:feePaymentMethod>\n      <feec:feeAmount>14.40</feec:feeAmount>\n    </cor:submissionFee>\n    <cor:submissionOffering>\n      <feec:feeOfferingSecurityName>Debt</feec:feeOfferingSecurityName>\n      <feec:feeOfferingShares>1101</feec:feeOfferingShares>\n      <feec:feeOfferingAmountPerShare>1000.0000</feec:feeOfferingAmountPerShare>\n      <feec:feeOfferingAggregatePrice>110102.36</feec:feeOfferingAggregatePrice>\n    </cor:submissionOffering>\n  </cor:edgarFee>\n</cor:edgarSubmission>"
+            schema:
+              type: string
+              format: xml
+          application/xml:
+            examples:
+              Single Live Submission (8-K):
+                description: A valid single live 8-K submission
+                value: "<?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>TEST</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission>"
+              Single Live Submission (S-1):
+                description: A valid single live S-1 submission
+                value: "<?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coregfee\" xmlns:com=\"http://www.sec.gov/edgar/common\" xmlns:feec=\"http://www.sec.gov/edgar/feecommon\">\n  <cor:liveTestFlag>TEST</cor:liveTestFlag>\n  <cor:flags>\n    <cor:confirmingCopyFlag>false</cor:confirmingCopyFlag>\n    <cor:delayingAmendmentFlag>false</cor:delayingAmendmentFlag>\n    <cor:overrideInternetFlag>false</cor:overrideInternetFlag>\n    <cor:returnCopyFlag>false</cor:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>S-1</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451322</cor:filerId>\n    <cor:filerCcc>#g9abz11</cor:filerCcc>\n    <cor:filerFormType>S-1</cor:filerFormType>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:smallBusinessFlag>false</cor:smallBusinessFlag>\n  <cor:emergingGrowthCompanyFlag>false</cor:emergingGrowthCompanyFlag>\n  <cor:notifications>\n    <com:internetNotificationAddress>tonotify@company.com</com:internetNotificationAddress>\n  </cor:notifications>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>doc1.txt</com:conformedName>\n      <com:conformedDocumentType>S-1</com:conformedDocumentType>\n      <com:contents>KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqDQpGaXJzdCBkb2N1bWVu\ndA0KDQogICAgICAgIFNQRUNJTUVOIC0gTk9UIEFOIE9GRklDSUFMIEZJTElORw0KDQoqKioq\nKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCg0K\n</com:contents>\n    </com:document>\n    <com:document>\n      <com:conformedName>doc2.txt</com:conformedName>\n      <com:conformedDocumentType>COVER</com:conformedDocumentType>\n      <com:contents>KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqDQpBZHZhbmNlZCBTb2Z0\nd2FyZSBTeXN0ZW1zDQogICAgICAgIFNQRUNJTUVOIC0gTk9UIEFOIE9GRklDSUFMIEZJTElO\nRw0KDQoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCg0K\n</com:contents>\n    </com:document>\n  </cor:documents>\n  <cor:edgarFee>\n    <cor:submissionFee>\n      <feec:feePayorInformation>\n        <feec:filerId>0001125851</feec:filerId>\n        <feec:filerCcc>#tech123</feec:filerCcc>\n      </feec:feePayorInformation>\n      <feec:feePaymentMethod>FEDWIRE</feec:feePaymentMethod>\n      <feec:feeAmount>14.40</feec:feeAmount>\n    </cor:submissionFee>\n    <cor:submissionOffering>\n      <feec:feeOfferingSecurityName>Debt</feec:feeOfferingSecurityName>\n      <feec:feeOfferingShares>1101</feec:feeOfferingShares>\n      <feec:feeOfferingAmountPerShare>1000.0000</feec:feeOfferingAmountPerShare>\n      <feec:feeOfferingAggregatePrice>110102.36</feec:feeOfferingAggregatePrice>\n    </cor:submissionOffering>\n  </cor:edgarFee>\n</cor:edgarSubmission>"
+            schema:
+              type: string
+              format: xml
+        required: true
+      responses:
+        '202':
+          description: Accepted. The filing has been transmitted to the SINGLE TEST resource and the EDGAR system has generated an accession number. The submission has begun processing.
+          content:
+            application/json:
+              examples:
+                Accepted:
+                  summary: Accepted. The SINGLE TEST filing has been transmitted to EDGAR and accession number(s) generated
+                  description: Accepted. The filing has been transmitted to the SINGLE TEST resource and the EDGAR system has generated an accession number. The submission has begun processing.
+                  value:
+                    tracking: 66ff8850f952de766df03a21da71fe69
+                    locator: 47a94d
+                    accessionNumber: 0000000000-25-000001
+                    mode: TEST
+                    status: RECEIVED
+                    transmissionStatus: RECEIVED
+              schema:
+                $ref: '#/components/schemas/SingleSubmissionResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              examples:
+                Blank/Empty CIK for X-EDGAR-LOGIN-CIK:
+                  description: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must not be blank or empty.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must not be blank or empty.
+                Invalid CIK for X-EDGAR-LOGIN-CIK:
+                  description: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must be a valid CIK.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must be a valid CIK.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  description: The request does not include any valid tokens for accessing this resource.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Unauthorized
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to file (1) for the CIK associated with the Filer API Token and (2) for any CIKs for which filings are being submitted.
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  description: The Filer API Token and User API Token are present and valid but do not provide required permissions to use this resource. Check delegation and permissions in Filer Management.
+                  value:
+                    tracking: 68e8ce7c1552544bccbdccd2663dced4
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: Forbidden.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error. An unexpected server-side error has occurred.
+          content:
+            application/json:
+              examples:
+                Server Error:
+                  description: An unexpected internal error has occurred processing this request. Contact EDGAR Help Desk with your tracking number to troubleshoot.
+                  value:
+                    tracking: 937de162bf9f1b6e7fc2bfb1165c1998
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: An unexpected error has occurred.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: A request was made to this resource outside of operational hours.
+          content:
+            application/json:
+              examples:
+                Out of Operational Hours:
+                  description: A request was made to this resource outside of the windows of operation for the EDGAR system and this request could not be completed. This status is also returned when the operational status of EDGAR cannot be determined.
+                  value:
+                    tracking: 44230c24bc6ce1b884cc5b739819d29942
+                    locator: 19ab67
+                    messages:
+                    - type: ERROR
+                      content: EDGAR is not available because EDGAR is reporting that it is not within operating hours.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - Filer API Token and User API Token: []
+      servers:
+      - url: https://api.edgarfiling.sec.gov
+        description: EDGAR Submission API
+components:
+  schemas:
+    Message:
+      type: object
+      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
+      title: Message
+      properties:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/MessageType'
+          type: string
+          example: NOTICE
+          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
+
+            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
+
+            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
+
+            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
+
+            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
+          title: Type
+        content:
+          type: string
+          example: The Filer API Key making this request will expire in less than two weeks.
+          description: The content of the message intended to be interpreted by a human consumer of the API output.
+          title: Content
+    ListSubmissionResponse:
+      type: object
+      description: Provides a response that contains a list of responses as well as a top-level list of messages.
+      title: Submission Response List
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        status:
+          type: string
+          enum:
+          - RECEIVED
+          - REJECTED
+          - FAILED
+          example: RECEIVED
+          description: 'A short string that indicates the status of filing that was transmitted to EDGAR.
+
+            * `RECEIVED` - The transmission has been received by EDGAR and an accession number has been generated
+
+            * `REJECTED` - The transmission was rejected by EDGAR and will not be processed
+
+            * `FAILED` - The transmission failed to be transmitted to EDGAR and will not be processed`
+
+            '
+          title: Transmission Status
+        responses:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmissionResponseItem'
+          description: A list of submission responses.
+          title: Responses
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages associated with the submission response. This should include more process/submission level errors like why a submission might be rejected from the API level.
+          title: Messages
+        transmissionStatus:
+          type: string
+          deprecated: true
+          enum:
+          - RECEIVED
+          - REJECTED
+          - FAILED
+          example: RECEIVED
+          description: 'A short string that indicates the status of filing that was transmitted to EDGAR.
+
+            * `RECEIVED` - The transmission has been received by EDGAR and an accession number has been generated
+
+            * `REJECTED` - The transmission was rejected by EDGAR and will not be processed
+
+            * `FAILED` - The transmission failed to be transmitted to EDGAR and will not be processed`
+
+            '
+          title: Transmission Status
+    SubmissionResponseItem:
+      type: object
+      description: A submission response item is a one element in a submission response list.
+      title: Submission Response Item
+      properties:
+        accessionNumber:
+          type:
+          - string
+          - 'null'
+          example: 0000000001-22-000001
+          description: The unique number associated with an transmitted submission.
+          title: Accession Number
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages providing details associated with the submission response. This could range from a notification about the filing to errors related to the state of the filing. This should include things like submission error codes as well as other EDGAR output.
+          title: Messages
+        mode:
+          allOf:
+          - $ref: '#/components/schemas/SubmissionMode'
+          type: object
+        final:
+          type: boolean
+        transmissionStatus:
+          type: string
+          deprecated: true
+          enum:
+          - RECEIVED
+          - REJECTED
+          - FAILED
+          example: RECEIVED
+          description: 'A short string that indicates the status of filing that was transmitted to EDGAR.
+
+            * `RECEIVED` - The transmission has been received by EDGAR and an accession number has been generated
+
+            * `REJECTED` - The transmission was rejected by EDGAR and will not be processed
+
+            * `FAILED` - The transmission failed to be transmitted to EDGAR and will not be processed`
+
+            '
+          title: Transmission Status
+    ErrorResponse:
+      type: object
+      description: When an error occurs in the API this is the standard response.
+      title: Error Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+    SubmissionMode:
+      type: string
+      enum:
+      - LIVE
+      - TEST
+      example: LIVE
+      description: 'The submission mode of a filing:
+
+        * `TEST` - A submission mode that allows a filing to be tested for correctness
+
+        * `LIVE` - A submission mode that allows a filing to be evaluated as an official filing
+
+        For more information see the EDGAR Filing Manual
+
+        '
+      title: Submission Mode
+    SingleSubmissionResponse:
+      type: object
+      description: A submission response is a response to transmitting a submission.
+      title: Submission Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        accessionNumber:
+          type:
+          - string
+          - 'null'
+          example: 0000000001-22-000001
+          description: The unique number associated with an transmitted submission.
+          title: Accession Number
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages providing details associated with the submission response. This could range from a notification about the filing to errors related to the state of the filing. This should include things like submission error codes as well as other EDGAR output.
+          title: Messages
+        mode:
+          allOf:
+          - $ref: '#/components/schemas/SubmissionMode'
+          type: object
+        status:
+          type: string
+          enum:
+          - RECEIVED
+          - REJECTED
+          - FAILED
+          example: RECEIVED
+          description: 'A short string that indicates the status of filing that was transmitted to EDGAR.
+
+            * `RECEIVED` - The transmission has been received by EDGAR and an accession number has been generated
+
+            * `REJECTED` - The transmission was rejected by EDGAR and will not be processed
+
+            * `FAILED` - The transmission failed to be transmitted to EDGAR and will not be processed`
+
+            '
+          title: Transmission Status
+        transmissionStatus:
+          type: string
+          deprecated: true
+          enum:
+          - RECEIVED
+          - REJECTED
+          - FAILED
+          example: RECEIVED
+          description: 'A short string that indicates the status of filing that was transmitted to EDGAR.
+
+            * `RECEIVED` - The transmission has been received by EDGAR and an accession number has been generated
+
+            * `REJECTED` - The transmission was rejected by EDGAR and will not be processed
+
+            * `FAILED` - The transmission failed to be transmitted to EDGAR and will not be processed`
+
+            '
+          title: Transmission Status
+    MessageType:
+      type: string
+      enum:
+      - INFO
+      - NOTICE
+      - WARNING
+      - ERROR
+      description: The type of the message being returned regarding how severe it is or what type of message it contains.
+      title: Message Type

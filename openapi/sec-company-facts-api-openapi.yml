@@ -1,0 +1,140 @@
+openapi: 3.0.3
+info:
+  title: SEC EDGAR Data Company Concept Company Facts API
+  description: 'The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
+
+    '
+  version: 1.0.0
+  contact:
+    name: SEC EDGAR Help
+    url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany
+  license:
+    name: Public Domain
+    url: https://www.sec.gov/privacy.htm
+  termsOfService: https://www.sec.gov/privacy.htm
+servers:
+- url: https://data.sec.gov
+  description: SEC EDGAR Data API
+tags:
+- name: Company Facts
+  description: XBRL financial disclosures for a company
+paths:
+  /api/xbrl/companyfacts/CIK{cik}.json:
+    get:
+      operationId: getCompanyFacts
+      summary: Get all XBRL facts for a company
+      description: 'Returns all XBRL disclosures for a company across all reporting periods, organized by taxonomy (us-gaap, ifrs-full, dei, srt) and concept name. Each concept contains an array of facts with values, units, filing accession numbers, and period dates. This is the primary endpoint for retrieving historical financial statement data for a given company.
+
+        '
+      tags:
+      - Company Facts
+      parameters:
+      - name: cik
+        in: path
+        required: true
+        description: 'Central Index Key (CIK) with leading zeros to reach 10 digits.
+
+          '
+        schema:
+          type: string
+          pattern: ^\d{10}$
+          example: 0000320193
+      responses:
+        '200':
+          description: All XBRL facts for the company
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyFacts'
+        '404':
+          description: Company not found
+        '429':
+          description: Rate limit exceeded
+components:
+  schemas:
+    FactValue:
+      type: object
+      description: A single reported XBRL fact value
+      properties:
+        start:
+          type: string
+          format: date
+          description: Period start date (for duration concepts)
+          example: '2022-09-25'
+        end:
+          type: string
+          format: date
+          description: Period end date or instant date
+          example: '2023-09-30'
+        val:
+          description: Reported value (number or string depending on concept)
+          oneOf:
+          - type: number
+          - type: string
+          example: 62611000000
+        accn:
+          type: string
+          description: Accession number of the filing reporting this value
+          example: 0000320193-23-000106
+        fy:
+          type: integer
+          description: Fiscal year
+          example: 2023
+        fp:
+          type: string
+          description: Fiscal period (FY, Q1, Q2, Q3, Q4)
+          example: FY
+        form:
+          type: string
+          description: Form type
+          example: 10-K
+        filed:
+          type: string
+          format: date
+          description: Date the filing was accepted by EDGAR
+          example: '2023-11-03'
+        frame:
+          type: string
+          description: Frame identifier for use with the frames endpoint
+          example: CY2023Q3I
+    CompanyFacts:
+      type: object
+      description: All XBRL disclosures for a company across all reporting periods
+      properties:
+        cik:
+          type: integer
+          description: Central Index Key as integer
+          example: 320193
+        entityName:
+          type: string
+          description: Company name
+          example: Apple Inc.
+        facts:
+          type: object
+          description: Facts organized by taxonomy then concept name
+          additionalProperties:
+            type: object
+            description: Taxonomy namespace (e.g., us-gaap, dei, ifrs-full)
+            additionalProperties:
+              $ref: '#/components/schemas/ConceptFacts'
+    ConceptFacts:
+      type: object
+      description: Facts for a single XBRL concept
+      properties:
+        label:
+          type: string
+          description: Human-readable concept label
+          example: Accounts Payable, Current
+        description:
+          type: string
+          description: Concept definition from the taxonomy
+        entityName:
+          type: string
+          description: Entity name
+        units:
+          type: object
+          description: Units of measure with arrays of reported values
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/FactValue'

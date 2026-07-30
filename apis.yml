@@ -10,7 +10,20 @@ description: >
   structured XBRL financial disclosures across reporting periods, and
   cross-company comparative frames for US-GAAP and IFRS taxonomies.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: free
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Free · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/sec.png
 url: https://raw.githubusercontent.com/api-evangelist/sec/refs/heads/main/apis.yml
 created: '2026-06-12'
 modified: '2026-06-12'
@@ -28,79 +41,232 @@ tags:
   - Securities
 
 apis:
-  - aid: https://raw.githubusercontent.com/api-evangelist/sec/refs/heads/main/apis.yml:sec-edgar-data-api
-    name: SEC EDGAR Data API
-    description: >
-      The EDGAR Data API at data.sec.gov provides RESTful access to public
-      company financial filings, XBRL structured financial data, and company
-      metadata. The submissions endpoint returns a company's complete filing
-      history and metadata identified by Central Index Key (CIK). The company
-      facts endpoint returns all XBRL disclosures for a company across all
-      reporting periods. The company concept endpoint returns historical values
-      for a single XBRL concept, and the frames endpoint returns data for a
-      given concept across all companies for a specific period.
-    humanURL: https://www.sec.gov/edgar/sec-api-documentation
-    baseURL: https://data.sec.gov
-    tags:
-      - Company Submissions
-      - XBRL Financial Data
-      - Company Facts
-      - CIK Lookup
-      - Financial Filings
-    properties:
-      - type: Documentation
-        url: https://www.sec.gov/edgar/sec-api-documentation
-      - type: OpenAPI
-        url: openapi/sec-edgar-data-openapi.yml
-      - type: JSONSchema
-        url: json-schema/sec-company-submissions.json
-      - type: JSONSchema
-        url: json-schema/sec-xbrl-fact-value.json
+- aid: sec:sec-company-concept-api
+  name: SEC EDGAR Company Concept API
+  description: Historical values for a single XBRL concept
+  humanURL: https://www.sec.gov/edgar/sec-api-documentation
+  baseURL: https://data.sec.gov
+  tags:
+  - Company Concept
+  properties:
+  - type: OpenAPI
+    url: openapi/sec-company-concept-api-openapi.yml
+  - type: Documentation
+    url: https://www.sec.gov/edgar/sec-api-documentation
+  - type: JSONSchema
+    url: json-schema/sec-company-submissions.json
+  - type: JSONSchema
+    url: json-schema/sec-xbrl-fact-value.json
+  - type: Documentation
+    url: >-
+      https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
+- aid: sec:sec-company-facts-api
+  name: SEC EDGAR Company Facts API
+  description: XBRL financial disclosures for a company
+  humanURL: https://www.sec.gov/edgar/sec-api-documentation
+  baseURL: https://data.sec.gov
+  tags:
+  - Company Facts
+  properties:
+  - type: OpenAPI
+    url: openapi/sec-company-facts-api-openapi.yml
+  - type: Documentation
+    url: https://www.sec.gov/edgar/sec-api-documentation
+  - type: JSONSchema
+    url: json-schema/sec-company-submissions.json
+  - type: JSONSchema
+    url: json-schema/sec-xbrl-fact-value.json
+  - type: Documentation
+    url: >-
+      https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
+- aid: sec:sec-edgar-operational-status-api-api
+  name: SEC EDGAR EDGAR Operational Status API API
+  description: >-
+    This API reports the status of the EDGAR system. This resource requires presentation of a Filer API
+    Token only.
+  humanURL: https://www.sec.gov/edgar/sec-api-documentation
+  baseURL: https://data.sec.gov
+  tags:
+  - EDGAR Operational Status API
+  properties:
+  - type: OpenAPI
+    url: openapi/sec-edgar-operational-status-api-api-openapi.yml
+  - type: Documentation
+    url: https://www.sec.gov/edgar/sec-api-documentation
+  - type: JSONSchema
+    url: json-schema/sec-company-submissions.json
+  - type: JSONSchema
+    url: json-schema/sec-xbrl-fact-value.json
+  - type: Documentation
+    url: >-
+      https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
+- aid: sec:sec-filer-management-api-api
+  name: SEC EDGAR Filer Management API API
+  description: >-
+    A set of API endpoints that allows you to verify permissions, get filer information, manage CCC, manage
+    individuals, and manage delegations.
+  humanURL: https://www.sec.gov/edgar/sec-api-documentation
+  baseURL: https://data.sec.gov
+  tags:
+  - Filer Management API
+  properties:
+  - type: OpenAPI
+    url: openapi/sec-filer-management-api-api-openapi.yml
+  - type: Documentation
+    url: https://www.sec.gov/edgar/sec-api-documentation
+  - type: JSONSchema
+    url: json-schema/sec-company-submissions.json
+  - type: JSONSchema
+    url: json-schema/sec-xbrl-fact-value.json
+  - type: Documentation
+    url: >-
+      https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
+- aid: sec:sec-frames-api
+  name: SEC EDGAR Frames API
+  description: Cross-company data for a concept in a specific period
+  humanURL: https://www.sec.gov/edgar/sec-api-documentation
+  baseURL: https://data.sec.gov
+  tags:
+  - Frames
+  properties:
+  - type: OpenAPI
+    url: openapi/sec-frames-api-openapi.yml
+  - type: Documentation
+    url: https://www.sec.gov/edgar/sec-api-documentation
+  - type: JSONSchema
+    url: json-schema/sec-company-submissions.json
+  - type: JSONSchema
+    url: json-schema/sec-xbrl-fact-value.json
+  - type: Documentation
+    url: >-
+      https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
+- aid: sec:sec-search-api
+  name: SEC EDGAR Search API
+  description: Full-text search across EDGAR filing documents
+  humanURL: https://www.sec.gov/edgar/sec-api-documentation
+  baseURL: https://data.sec.gov
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/sec-search-api-openapi.yml
+  - type: Documentation
+    url: https://www.sec.gov/edgar/sec-api-documentation
+  - type: JSONSchema
+    url: json-schema/sec-company-submissions.json
+  - type: JSONSchema
+    url: json-schema/sec-xbrl-fact-value.json
+  - type: Documentation
+    url: >-
+      https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
+- aid: sec:sec-submission-api-api
+  name: SEC EDGAR Submission API API
+  description: >-
+    Submission of filings to EDGAR by API can be made through the Submission API. The Submission API requires
+    the presentation of a Filer API Token in combination with a User API Token. Optionally,
+        filers could also specify a login CIK if there is a delegation from the EDGAR account corresponding
+    to the login CIK to the filer API token EDGAR account/CIK. Delegations can be established on
+        the Filer Management dashboard under “Manage Delegations and User Groups.” For more information
+    on establishing delegations,
+        see [How Do I “Understand and Manage Delegation.](https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-manage-delegation)”
 
-  - aid: https://raw.githubusercontent.com/api-evangelist/sec/refs/heads/main/apis.yml:sec-edgar-full-text-search-api
-    name: SEC EDGAR Full-Text Search API
-    description: >
-      The EDGAR full-text search API allows searching across the complete
-      text of filings submitted to EDGAR. The API supports filtering by
-      filing date ranges, form types, entity names, and ticker symbols.
-      Results include document metadata and links to the actual filing
-      documents. This endpoint is hosted at efts.sec.gov and is useful
-      for research and analysis requiring discovery of filings by content.
-    humanURL: https://efts.sec.gov/LATEST/search-index/openapi.json
-    baseURL: https://efts.sec.gov
-    tags:
-      - Full-Text Search
-      - Filing Search
-      - Document Discovery
-    properties:
-      - type: Documentation
-        url: https://www.sec.gov/edgar/sec-api-documentation
-      - type: OpenAPI
-        url: openapi/sec-edgar-full-text-search-openapi.yml
+        Filings transmitted through the Submission API are expected to conform to the filing standard(s)
+    [provided by the SEC](https://www.sec.gov/submit-filings).
+        Information is provided on the required format and contents of filings by the [Technical Specifications](https://www.sec.gov/submit-filings/technical-specifications).
+        Information and guidance on filing can be found in the [EDGAR Filing Manual](https://www.sec.gov/submit-filings/edgar-filer-manual).
+        Information on specific forms can be found in the [SEC Forms Index](https://www.sec.gov/submit-filings/forms-index).
 
-  - aid: https://raw.githubusercontent.com/api-evangelist/sec/refs/heads/main/apis.yml:sec-edgar-filer-api
-    name: SEC EDGAR Filer Management API
-    description: >
-      The EDGAR Filer Management API at api.edgarfiling.sec.gov provides
-      machine-to-machine access for registered EDGAR filers to submit
-      filings, check submission status, and manage filer accounts. This API
-      requires EDGAR Next authentication via API tokens. Available operations
-      include live and test filing submissions, submission status checks,
-      operational status verification, and user management for filer
-      accounts.
-    humanURL: https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
-    baseURL: https://api.edgarfiling.sec.gov
-    tags:
-      - Filing Submission
-      - Filer Management
-      - EDGAR Next
-      - Authenticated
-    properties:
-      - type: Documentation
-        url: https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
-      - type: OpenAPI
-        url: openapi/sec-edgar-filer-openapi.yml
+        The Submission API will return accession numbers for the submitted filings. A 202 HTTP status
+    code indicates only that processing will begin in EDGAR and an
+        accession number or accession numbers have been generated. Filings with errors will be processed
+    and suspended by EDGAR. The results of processing (status and errors)
+        are not provided by this endpoint and are instead available to clients using the API through the
+    Submission Status API.
 
+        When using Submission API endpoints, the client can optionally specify the "Expect: 100-continue"
+    HTTP request header to allow a response from these API resources
+        to be returned before uploading the entire filing in the event that the EDGAR API determines that
+    the request will not be allowed.
+        This header should only be used for requests that have a body more than 1MiB in size.
+
+        Filings may be transmitted via either SINGLE or BULK transmission. A SINGLE transmission provides
+    a single filling and will result in a response containing an accession number if the filing is transmitted
+    successfully or an error if there is an issue while transmitting the filing. Even if a filing is successfully
+    transmitted through the submission API, the filing may still be suspended by EDGAR if the contents
+    of the filing do not satisfy EDGAR filing requirements. The accession number may be provided to the
+    Submission Status API in order to check whether the filing was accepted by EDGAR.
+
+        A BULK filing, in contrast, is a single document that contains multiple filings to be submitted.
+    If one or more filings are successfully transmitted then one or more accession numbers will be created
+    and returned in the same order filings are included in the BULK filing document. However, if a filing
+    is not successfully transmitted then an accession number may not be created, which means that the
+    filer may have difficulty determining which accession number corresponds to which filing in the BULK
+    filing document. Even if a filing is successfully transmitted through the Submission API, the filing
+    may still be suspended by EDGAR if the contents of the filing do not satisfy EDGAR filing requirements.
+    The relevant accession number may be provided to the Submission Status API in order to check whether
+    the filing was accepted by EDGAR.
+  humanURL: https://www.sec.gov/edgar/sec-api-documentation
+  baseURL: https://data.sec.gov
+  tags:
+  - Submission API
+  properties:
+  - type: OpenAPI
+    url: openapi/sec-submission-api-api-openapi.yml
+  - type: Documentation
+    url: https://www.sec.gov/edgar/sec-api-documentation
+  - type: JSONSchema
+    url: json-schema/sec-company-submissions.json
+  - type: JSONSchema
+    url: json-schema/sec-xbrl-fact-value.json
+  - type: Documentation
+    url: >-
+      https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
+- aid: sec:sec-submission-status-api-api
+  name: SEC EDGAR Submission Status API API
+  description: "The Submission Status API provides information from the EDGAR system. It requires a Filer\
+    \ API Token and accession number(s). To obtain information about a submission through the Submission\
+    \ Status API,\n    you must use a Filer API Token that belongs to the CIK that submitted the filing\
+    \ or the CIK that was the filer for the submission. The Submission Status API will only return the\
+    \ detailed information about\n    the filling (like error codes or the filer notification text) once\
+    \ the filing has reached the end of processing signified by the field 'final' being set to true.\n\
+    \    \n\n    The statuses of filings are retained for limited amounts of time. The statuses of Accepted\
+    \ TEST filings are retained for two (2) days,  Accepted LIVE filings are retained for sixty (60) days,\
+    \ and Suspended filings,\n    regardless of type, are retained for six (6) days."
+  humanURL: https://www.sec.gov/edgar/sec-api-documentation
+  baseURL: https://data.sec.gov
+  tags:
+  - Submission Status API
+  properties:
+  - type: OpenAPI
+    url: openapi/sec-submission-status-api-api-openapi.yml
+  - type: Documentation
+    url: https://www.sec.gov/edgar/sec-api-documentation
+  - type: JSONSchema
+    url: json-schema/sec-company-submissions.json
+  - type: JSONSchema
+    url: json-schema/sec-xbrl-fact-value.json
+  - type: Documentation
+    url: >-
+      https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
+- aid: sec:sec-submissions-api
+  name: SEC EDGAR Submissions API
+  description: Company filing history and metadata by CIK
+  humanURL: https://www.sec.gov/edgar/sec-api-documentation
+  baseURL: https://data.sec.gov
+  tags:
+  - Submissions
+  properties:
+  - type: OpenAPI
+    url: openapi/sec-submissions-api-openapi.yml
+  - type: Documentation
+    url: https://www.sec.gov/edgar/sec-api-documentation
+  - type: JSONSchema
+    url: json-schema/sec-company-submissions.json
+  - type: JSONSchema
+    url: json-schema/sec-xbrl-fact-value.json
+  - type: Documentation
+    url: >-
+      https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
 common:
   - type: AgenticAccess
     url: agentic-access/sec-agentic-access.yml

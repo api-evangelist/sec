@@ -1,0 +1,30 @@
+{
+  "provider": "sec",
+  "sources": [
+    "sec-company-concept-api-openapi.yml",
+    "sec-company-facts-api-openapi.yml",
+    "sec-edgar-operational-status-api-api-openapi.yml",
+    "sec-filer-management-api-api-openapi.yml",
+    "sec-frames-api-openapi.yml",
+    "sec-search-api-openapi.yml",
+    "sec-submission-api-api-openapi.yml",
+    "sec-submission-status-api-api-openapi.yml",
+    "sec-submissions-api-openapi.yml"
+  ],
+  "outputs": [
+    "sec-company-concept-api-openapi.yml",
+    "sec-company-facts-api-openapi.yml",
+    "sec-edgar-operational-status-api-api-openapi.yml",
+    "sec-filer-management-api-api-openapi.yml",
+    "sec-frames-api-openapi.yml",
+    "sec-search-api-openapi.yml",
+    "sec-submission-api-api-openapi.yml",
+    "sec-submission-status-api-api-openapi.yml",
+    "sec-submissions-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

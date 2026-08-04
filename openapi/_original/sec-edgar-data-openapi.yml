@@ -1,0 +1,599 @@
+openapi: 3.0.3
+info:
+  title: SEC EDGAR Data API
+  description: >
+    The EDGAR Data API at data.sec.gov provides RESTful access to public company
+    financial filings, XBRL structured financial data, and company metadata without
+    requiring authentication or API keys. The API delivers JSON-formatted responses
+    covering company submissions (filing history), XBRL financial facts across all
+    reporting periods, single XBRL concept values over time, and cross-company
+    comparative frames for US-GAAP and IFRS taxonomies.
+  version: 1.0.0
+  contact:
+    name: SEC EDGAR Help
+    url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany
+  license:
+    name: Public Domain
+    url: https://www.sec.gov/privacy.htm
+  termsOfService: https://www.sec.gov/privacy.htm
+servers:
+  - url: https://data.sec.gov
+    description: SEC EDGAR Data API
+
+tags:
+  - name: Submissions
+    description: Company filing history and metadata by CIK
+  - name: Company Facts
+    description: XBRL financial disclosures for a company
+  - name: Company Concept
+    description: Historical values for a single XBRL concept
+  - name: Frames
+    description: Cross-company data for a concept in a specific period
+
+paths:
+  /submissions/CIK{cik}.json:
+    get:
+      operationId: getCompanySubmissions
+      summary: Get company submissions
+      description: >
+        Returns a company's complete filing history and metadata identified by
+        Central Index Key (CIK). The response includes company name, SIC code,
+        state of incorporation, addresses, phone number, and a list of recent
+        filings with accession numbers, form types, filing dates, and document
+        metadata. For companies with more than 40 filings, additional files are
+        referenced in the response.
+      tags:
+        - Submissions
+      parameters:
+        - name: cik
+          in: path
+          required: true
+          description: >
+            Central Index Key (CIK) with leading zeros to reach 10 digits.
+            Example: 0000320193 for Apple Inc.
+          schema:
+            type: string
+            pattern: '^\d{10}$'
+            example: '0000320193'
+      responses:
+        '200':
+          description: Company submission data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanySubmissions'
+        '404':
+          description: Company not found
+        '429':
+          description: Rate limit exceeded (10 requests per second per user agent)
+
+  /api/xbrl/companyfacts/CIK{cik}.json:
+    get:
+      operationId: getCompanyFacts
+      summary: Get all XBRL facts for a company
+      description: >
+        Returns all XBRL disclosures for a company across all reporting periods,
+        organized by taxonomy (us-gaap, ifrs-full, dei, srt) and concept name.
+        Each concept contains an array of facts with values, units, filing
+        accession numbers, and period dates. This is the primary endpoint for
+        retrieving historical financial statement data for a given company.
+      tags:
+        - Company Facts
+      parameters:
+        - name: cik
+          in: path
+          required: true
+          description: >
+            Central Index Key (CIK) with leading zeros to reach 10 digits.
+          schema:
+            type: string
+            pattern: '^\d{10}$'
+            example: '0000320193'
+      responses:
+        '200':
+          description: All XBRL facts for the company
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyFacts'
+        '404':
+          description: Company not found
+        '429':
+          description: Rate limit exceeded
+
+  /api/xbrl/companyconcept/CIK{cik}/{taxonomy}/{tag}.json:
+    get:
+      operationId: getCompanyConcept
+      summary: Get historical values for one XBRL concept
+      description: >
+        Returns historical values for a single XBRL concept for a given company.
+        Results are organized by unit of measure (e.g. USD, shares) and include
+        all reported values with start/end dates, filing accession numbers, form
+        types, and fiscal period information.
+      tags:
+        - Company Concept
+      parameters:
+        - name: cik
+          in: path
+          required: true
+          description: Central Index Key (CIK) with leading zeros to reach 10 digits.
+          schema:
+            type: string
+            pattern: '^\d{10}$'
+            example: '0000320193'
+        - name: taxonomy
+          in: path
+          required: true
+          description: >
+            XBRL taxonomy. One of: us-gaap, ifrs-full, dei, srt.
+          schema:
+            type: string
+            enum:
+              - us-gaap
+              - ifrs-full
+              - dei
+              - srt
+            example: us-gaap
+        - name: tag
+          in: path
+          required: true
+          description: >
+            XBRL concept tag name. Example: AccountsPayableCurrent, Assets,
+            Revenues, EarningsPerShareBasic.
+          schema:
+            type: string
+            example: AccountsPayableCurrent
+      responses:
+        '200':
+          description: Historical concept values for the company
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyConcept'
+        '404':
+          description: Company or concept not found
+        '429':
+          description: Rate limit exceeded
+
+  /api/xbrl/frames/{taxonomy}/{tag}/{unit}/{period}.json:
+    get:
+      operationId: getXBRLFrame
+      summary: Get cross-company data for a concept in a period
+      description: >
+        Returns data for a given XBRL concept across all companies that reported
+        it for a specific period. This enables cross-company comparisons for any
+        financial metric. Periods can be annual (CY2023), quarterly (CY2023Q1),
+        or instantaneous (CY2023Q1I for point-in-time balance sheet concepts).
+        The response includes each company's CIK, entity name, accession number,
+        location reference, and reported value.
+      tags:
+        - Frames
+      parameters:
+        - name: taxonomy
+          in: path
+          required: true
+          description: >
+            XBRL taxonomy. One of us-gaap, ifrs-full, dei, or srt.
+          schema:
+            type: string
+            enum:
+              - us-gaap
+              - ifrs-full
+              - dei
+              - srt
+            example: us-gaap
+        - name: tag
+          in: path
+          required: true
+          description: XBRL concept tag name.
+          schema:
+            type: string
+            example: AccountsPayableCurrent
+        - name: unit
+          in: path
+          required: true
+          description: >
+            Unit of measure. Common values: USD, shares, pure, USD-per-shares.
+          schema:
+            type: string
+            example: USD
+        - name: period
+          in: path
+          required: true
+          description: >
+            Reporting period. Annual: CY2023. Quarterly duration: CY2023Q1.
+            Quarterly instantaneous: CY2023Q1I.
+          schema:
+            type: string
+            pattern: '^CY\d{4}(Q[1-4]I?)?$'
+            example: CY2023Q1I
+      responses:
+        '200':
+          description: Cross-company XBRL frame data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/XBRLFrame'
+        '404':
+          description: Frame data not found for given parameters
+        '429':
+          description: Rate limit exceeded
+
+components:
+  schemas:
+    CompanySubmissions:
+      type: object
+      description: Company filing history and metadata
+      properties:
+        cik:
+          type: string
+          description: Central Index Key
+          example: '0000320193'
+        entityType:
+          type: string
+          description: Type of entity (e.g., operating, investment company)
+          example: operating
+        sic:
+          type: string
+          description: Standard Industrial Classification code
+          example: '3571'
+        sicDescription:
+          type: string
+          description: SIC code description
+          example: Electronic Computers
+        name:
+          type: string
+          description: Company name
+          example: Apple Inc.
+        tickers:
+          type: array
+          items:
+            type: string
+          description: Stock ticker symbols
+          example: ['AAPL']
+        exchanges:
+          type: array
+          items:
+            type: string
+          description: Stock exchanges where the company is listed
+          example: ['Nasdaq']
+        ein:
+          type: string
+          description: Employer Identification Number
+        lei:
+          type: string
+          nullable: true
+          description: Legal Entity Identifier
+        fiscalYearEnd:
+          type: string
+          description: Fiscal year end date in MMDD format
+          example: '0926'
+        stateOfIncorporation:
+          type: string
+          description: State of incorporation code
+          example: CA
+        addresses:
+          type: object
+          description: Mailing and business addresses
+          properties:
+            mailing:
+              $ref: '#/components/schemas/Address'
+            business:
+              $ref: '#/components/schemas/Address'
+        phone:
+          type: string
+          description: Company phone number
+        formerNames:
+          type: array
+          description: Previous company names
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              from:
+                type: string
+                format: date-time
+              to:
+                type: string
+                format: date-time
+        filings:
+          type: object
+          description: Filing history container
+          properties:
+            recent:
+              $ref: '#/components/schemas/FilingList'
+            files:
+              type: array
+              description: References to additional filing files for companies with extensive history
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  filingCount:
+                    type: integer
+                  filingFrom:
+                    type: string
+                  filingTo:
+                    type: string
+
+    Address:
+      type: object
+      description: Physical address
+      properties:
+        street1:
+          type: string
+        street2:
+          type: string
+          nullable: true
+        city:
+          type: string
+        stateOrCountry:
+          type: string
+        zipCode:
+          type: string
+        stateOrCountryDescription:
+          type: string
+
+    FilingList:
+      type: object
+      description: Arrays of filing metadata (parallel arrays by index)
+      properties:
+        accessionNumber:
+          type: array
+          items:
+            type: string
+          description: SEC accession numbers in format XXXXXXXXXX-YY-ZZZZZZ
+        filingDate:
+          type: array
+          items:
+            type: string
+            format: date
+          description: Filing submission dates
+        reportDate:
+          type: array
+          items:
+            type: string
+            format: date
+          description: Period of report dates
+        acceptanceDateTime:
+          type: array
+          items:
+            type: string
+          description: EDGAR acceptance timestamps
+        act:
+          type: array
+          items:
+            type: string
+          description: Securities act under which filing was made
+        form:
+          type: array
+          items:
+            type: string
+          description: Form types (e.g., 10-K, 10-Q, 8-K)
+        fileNumber:
+          type: array
+          items:
+            type: string
+          description: SEC file numbers
+        filmNumber:
+          type: array
+          items:
+            type: string
+          description: Film numbers
+        items:
+          type: array
+          items:
+            type: string
+          description: Item numbers disclosed in the filing
+        size:
+          type: array
+          items:
+            type: integer
+          description: Filing sizes in bytes
+        isXBRL:
+          type: array
+          items:
+            type: integer
+          description: Whether filing contains XBRL data (0 or 1)
+        isInlineXBRL:
+          type: array
+          items:
+            type: integer
+          description: Whether filing uses inline XBRL (0 or 1)
+        primaryDocument:
+          type: array
+          items:
+            type: string
+          description: Primary document filenames
+        primaryDocDescription:
+          type: array
+          items:
+            type: string
+          description: Descriptions of primary documents
+
+    CompanyFacts:
+      type: object
+      description: All XBRL disclosures for a company across all reporting periods
+      properties:
+        cik:
+          type: integer
+          description: Central Index Key as integer
+          example: 320193
+        entityName:
+          type: string
+          description: Company name
+          example: Apple Inc.
+        facts:
+          type: object
+          description: Facts organized by taxonomy then concept name
+          additionalProperties:
+            type: object
+            description: Taxonomy namespace (e.g., us-gaap, dei, ifrs-full)
+            additionalProperties:
+              $ref: '#/components/schemas/ConceptFacts'
+
+    ConceptFacts:
+      type: object
+      description: Facts for a single XBRL concept
+      properties:
+        label:
+          type: string
+          description: Human-readable concept label
+          example: Accounts Payable, Current
+        description:
+          type: string
+          description: Concept definition from the taxonomy
+        entityName:
+          type: string
+          description: Entity name
+        units:
+          type: object
+          description: Units of measure with arrays of reported values
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/FactValue'
+
+    FactValue:
+      type: object
+      description: A single reported XBRL fact value
+      properties:
+        start:
+          type: string
+          format: date
+          description: Period start date (for duration concepts)
+          example: '2022-09-25'
+        end:
+          type: string
+          format: date
+          description: Period end date or instant date
+          example: '2023-09-30'
+        val:
+          description: Reported value (number or string depending on concept)
+          oneOf:
+            - type: number
+            - type: string
+          example: 62611000000
+        accn:
+          type: string
+          description: Accession number of the filing reporting this value
+          example: '0000320193-23-000106'
+        fy:
+          type: integer
+          description: Fiscal year
+          example: 2023
+        fp:
+          type: string
+          description: Fiscal period (FY, Q1, Q2, Q3, Q4)
+          example: FY
+        form:
+          type: string
+          description: Form type
+          example: 10-K
+        filed:
+          type: string
+          format: date
+          description: Date the filing was accepted by EDGAR
+          example: '2023-11-03'
+        frame:
+          type: string
+          description: Frame identifier for use with the frames endpoint
+          example: CY2023Q3I
+
+    CompanyConcept:
+      type: object
+      description: Historical values for a single XBRL concept for one company
+      properties:
+        cik:
+          type: integer
+          description: Central Index Key as integer
+        taxonomy:
+          type: string
+          description: XBRL taxonomy
+          example: us-gaap
+        tag:
+          type: string
+          description: XBRL concept tag name
+          example: AccountsPayableCurrent
+        label:
+          type: string
+          description: Human-readable label
+        description:
+          type: string
+          description: Concept definition
+        entityName:
+          type: string
+          description: Company name
+        units:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/FactValue'
+
+    XBRLFrame:
+      type: object
+      description: Cross-company data for a concept in a specific period
+      properties:
+        taxonomy:
+          type: string
+          description: XBRL taxonomy
+          example: us-gaap
+        tag:
+          type: string
+          description: XBRL concept tag name
+          example: AccountsPayableCurrent
+        ccp:
+          type: string
+          description: Calendar period (e.g., CY2023Q1I)
+          example: CY2023Q1I
+        uom:
+          type: string
+          description: Unit of measure
+          example: USD
+        label:
+          type: string
+          description: Human-readable label
+        description:
+          type: string
+          description: Concept definition
+        pts:
+          type: integer
+          description: Number of data points in the frame
+        data:
+          type: array
+          description: Array of company data points
+          items:
+            $ref: '#/components/schemas/FrameDataPoint'
+
+    FrameDataPoint:
+      type: object
+      description: A single company's value for the frame concept and period
+      properties:
+        accn:
+          type: string
+          description: Accession number
+          example: '0000320193-23-000006'
+        cik:
+          type: integer
+          description: Company CIK
+          example: 320193
+        entityName:
+          type: string
+          description: Company name
+          example: Apple Inc.
+        loc:
+          type: string
+          description: XBRL location reference
+          example: '10-Q'
+        end:
+          type: string
+          format: date
+          description: Period end or instant date
+          example: '2023-04-01'
+        val:
+          type: number
+          description: Reported value
+          example: 62611000000

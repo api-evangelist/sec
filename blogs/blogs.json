@@ -9,7 +9,7 @@
       "source": "https://www.sec.gov/news/pressreleases.rss",
       "feed_url": "https://www.sec.gov/news/pressreleases.rss",
       "title": "",
-      "saved": 0,
+      "saved": 3,
       "method": "feed"
     },
     {
@@ -17,11 +17,12 @@
       "feed_url": "https://www.linkedin.com/company/us-securities-and-exchange-commission",
       "title": "",
       "saved": 0,
-      "method": "none"
+      "method": "none",
+      "error": "parse_failed"
     }
   ],
   "posts": [],
   "repo": "sec",
-  "post_count": 33,
-  "fetched": "2026-08-06T14:08:46Z"
+  "post_count": 36,
+  "fetched": "2026-08-15T12:11:08Z"
 }

@@ -1,0 +1,232 @@
+{
+  "item": [
+    {
+      "id": "bc0c997d-0b41-45e8-ac19-d431df68383a",
+      "name": "Company Concept",
+      "description": {
+        "content": "Historical values for a single XBRL concept",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4f6e1393-9fef-43a8-832f-733ad2646038",
+          "name": "Get historical values for one XBRL concept",
+          "request": {
+            "name": "Get historical values for one XBRL concept",
+            "description": {
+              "content": "Returns historical values for a single XBRL concept for a given company. Results are organized by unit of measure (e.g. USD, shares) and include all reported values with start/end dates, filing accession numbers, form types, and fiscal period information.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "xbrl",
+                "companyconcept",
+                "CIK{{cik}}",
+                ":taxonomy",
+                "{{tag}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "taxonomy",
+                  "description": "(Required) XBRL taxonomy. One of: us-gaap, ifrs-full, dei, srt.\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "650e03fa-d0b0-4876-8164-07e4435222a0",
+              "name": "Historical concept values for the company",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "xbrl",
+                    "companyconcept",
+                    "CIK{{cik}}",
+                    ":taxonomy",
+                    "{{tag}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "taxonomy",
+                      "description": "(Required) XBRL taxonomy. One of: us-gaap, ifrs-full, dei, srt.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cik\": 8051,\n  \"taxonomy\": \"us-gaap\",\n  \"tag\": \"AccountsPayableCurrent\",\n  \"label\": \"string\",\n  \"description\": \"string\",\n  \"entityName\": \"string\",\n  \"units\": {\n    \"key_0\": [\n      {\n        \"start\": \"2022-09-25\",\n        \"end\": \"2023-09-30\",\n        \"val\": 630.1481085331984,\n        \"accn\": \"0000320193-23-000106\",\n        \"fy\": 2023,\n        \"fp\": \"FY\",\n        \"form\": \"10-K\",\n        \"filed\": \"2023-11-03\",\n        \"frame\": \"CY2023Q3I\"\n      },\n      {\n        \"start\": \"2022-09-25\",\n        \"end\": \"2023-09-30\",\n        \"val\": 2054.645866172371,\n        \"accn\": \"0000320193-23-000106\",\n        \"fy\": 2023,\n        \"fp\": \"FY\",\n        \"form\": \"10-K\",\n        \"filed\": \"2023-11-03\",\n        \"frame\": \"CY2023Q3I\"\n      }\n    ],\n    \"key_1\": [\n      {\n        \"start\": \"2022-09-25\",\n        \"end\": \"2023-09-30\",\n        \"val\": 4756.478457896664,\n        \"accn\": \"0000320193-23-000106\",\n        \"fy\": 2023,\n        \"fp\": \"FY\",\n        \"form\": \"10-K\",\n        \"filed\": \"2023-11-03\",\n        \"frame\": \"CY2023Q3I\"\n      },\n      {\n        \"start\": \"2022-09-25\",\n        \"end\": \"2023-09-30\",\n        \"val\": 9168.431878210666,\n        \"accn\": \"0000320193-23-000106\",\n        \"fy\": 2023,\n        \"fp\": \"FY\",\n        \"form\": \"10-K\",\n        \"filed\": \"2023-11-03\",\n        \"frame\": \"CY2023Q3I\"\n      }\n    ],\n    \"key_2\": [\n      {\n        \"start\": \"2022-09-25\",\n        \"end\": \"2023-09-30\",\n        \"val\": 9746.689577621843,\n        \"accn\": \"0000320193-23-000106\",\n        \"fy\": 2023,\n        \"fp\": \"FY\",\n        \"form\": \"10-K\",\n        \"filed\": \"2023-11-03\",\n        \"frame\": \"CY2023Q3I\"\n      },\n      {\n        \"start\": \"2022-09-25\",\n        \"end\": \"2023-09-30\",\n        \"val\": 2074.066722350807,\n        \"accn\": \"0000320193-23-000106\",\n        \"fy\": 2023,\n        \"fp\": \"FY\",\n        \"form\": \"10-K\",\n        \"filed\": \"2023-11-03\",\n        \"frame\": \"CY2023Q3I\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ab12d6ea-1b82-4c8b-a6f1-057d6428a95a",
+              "name": "Company or concept not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "xbrl",
+                    "companyconcept",
+                    "CIK{{cik}}",
+                    ":taxonomy",
+                    "{{tag}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "taxonomy",
+                      "description": "(Required) XBRL taxonomy. One of: us-gaap, ifrs-full, dei, srt.\n"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9eff9b80-557b-4e51-9a7e-bf290f335d44",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "xbrl",
+                    "companyconcept",
+                    "CIK{{cik}}",
+                    ":taxonomy",
+                    "{{tag}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "taxonomy",
+                      "description": "(Required) XBRL taxonomy. One of: us-gaap, ifrs-full, dei, srt.\n"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://data.sec.gov",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) Central Index Key (CIK) with leading zeros to reach 10 digits.",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "cik"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) XBRL concept tag name. Example: AccountsPayableCurrent, Assets, Revenues, EarningsPerShareBasic.\n",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "tag"
+    }
+  ],
+  "info": {
+    "_postman_id": "76587784-78eb-49b8-9bdd-f10d31e23014",
+    "name": "SEC EDGAR Data Company Concept API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.\n\n\nContact Support:\n Name: SEC EDGAR Help",
+      "type": "text/plain"
+    }
+  }
+}

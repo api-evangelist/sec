@@ -1,0 +1,805 @@
+{
+  "item": [
+    {
+      "id": "e7c49fff-86d6-45c8-a995-de3ab6333e78",
+      "name": "Submission Status API",
+      "description": {
+        "content": "    The Submission Status API provides information from the EDGAR system. It requires a Filer API Token and accession number(s). To obtain information about a submission through the Submission Status API,\n    you must use a Filer API Token that belongs to the CIK that submitted the filing or the CIK that was the filer for the submission. The Submission Status API will only return the detailed information about\n    the filling (like error codes or the filer notification text) once the filing has reached the end of processing signified by the field 'final' being set to true.\n    \n\n    The statuses of filings are retained for limited amounts of time. The statuses of Accepted TEST filings are retained for two (2) days,  Accepted LIVE filings are retained for sixty (60) days, and Suspended filings,\n    regardless of type, are retained for six (6) days.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "56574ffe-8339-4228-a98b-34affd094ca4",
+          "name": "Check Multiple Submission Statuses",
+          "request": {
+            "name": "Check Multiple Submission Statuses",
+            "description": {
+              "content": "When an authorized filer requests the status of multiple submissions that the filer made, the Check Multiple Submission Statuses API will respond with the current status of each, if available.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "submission",
+                "status"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accessionNumbers\": [\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "adc87b4f-0076-4ac3-9ba7-eddbd075206d",
+              "name": "Ok. A submission filed by the authorized filer, with at least one of the given accession numbers, was found",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accessionNumbers\": [\n    \"0000000000-22-000000\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"5e981101d4bfdee09b95c6f1d53e8551\",\n  \"locator\": \"l33922\",\n  \"responses\": [\n    {\n      \"accessionNumber\": \"0000000000-22-000004\",\n      \"status\": \"DONE\",\n      \"final\": true,\n      \"mode\": \"LIVE\",\n      \"company\": \"TEST COMPANY\",\n      \"documentCount\": \"1\",\n      \"submissionType\": \"8-K\",\n      \"receivedDate\": \"2024-08-01T19:20:12.743Z\",\n      \"acceptedDate\": \"2024-10-03T13:11:35.732Z\",\n      \"filingDate\": \"2024-10-03T13:12:42.461Z\",\n      \"notification\": \"U3ViamVjdDogQUNDRVBURUQgRk9STSBUWVBFIDgtSyAoMDAwMDAwMDAwMC0yMi0wMDAwMDQpCkRhdGU6IDAzLU9jdC0yMDI0IDA5OjExCgpUSEUgRk9MTE9XSU5HIFNVQk1JU1NJT04gSEFTIEJFRU4gQUNDRVBURUQgQlkgVEhFIFUuUy4gU0VDVVJJVElFUyBBTkQgRVhDSEFOR0UgCkNPTU1JU1NJT04uCgoKRk9STSBUWVBFOiAgICAgOC1LICAgICAgICBOVU1CRVIgT0YgRE9DVU1FTlRTOiAxClJFQ0VJVkVEIERBVEU6IDAxLUF1Zy0yMDI0IDE1OjIwICAgIEFDQ0VQVEVEIERBVEU6ICAgICAgIDAzLU9jdC0yMDI0IDA5OjExClRFU1QgRklMSU5HOiAgIE5PICAgICAgICAgICAgICAgICAgIENPTkZJUk1JTkcgQ09QWTogICAgIE5PCgpBQ0NFU1NJT04gTlVNQkVSOiAwMDAwMDAwMDAwLTIyLTAwMDAwNAoKUExFQVNFIFJFRkVSIFRPIFRIRSBBQ0NFU1NJT04gTlVNQkVSIExJU1RFRCBBQk9WRSBGT1IgRlVUVVJFIElOUVVJUklFUy4KClRoZSBFREdBUiBzeXN0ZW0gaXMgYXZhaWxhYmxlIHRvIHJlY2VpdmUgYW5kIHByb2Nlc3MgZmlsaW5ncyBmcm9tIAo2OjAwIGEubS4gdG8gMTA6MDAgcC5tLiBFYXN0ZXJuIFRpbWUgb24gYnVzaW5lc3MgZGF5cy4gRmlsZXIgU3VwcG9ydApzdGFmZiBtZW1iZXJzIGFyZSBhdmFpbGFibGUgdG8gcmVzcG9uZCB0byByZXF1ZXN0cyBmb3IgYXNzaXN0YW5jZSBmcm9tCjk6MDAgYS5tLiB0byA1OjMwIHAubS4gRWFzdGVybiBUaW1lLiAKCldlIGVuY291cmFnZSB5b3UgdG8gdmlzaXQgdGhlIEVER0FSIC0gSW5mb3JtYXRpb24gZm9yIEZpbGVycyB3ZWJwYWdlIGF0IApTRUMuZ292IHwgRURHQVIgLSBJbmZvcm1hdGlvbiBmb3IgRmlsZXJzIFtodHRwczovL3d3dy5zZWMuZ292L2VkZ2FyL2ZpbGVyLWluZm9ybWF0aW9uIF0uIApPbiB0aGlzIHdlYnBhZ2UgeW91IGNhbiB2aWV3IGFuZC9vciBkb3dubG9hZCB0aGUgRURHQVIgRmlsZXIgTWFudWFsLCBhY2Nlc3MgSG93IApEbyBJJ3MsIGFuZCBhbHNvIGdldCBhY2Nlc3MgdG8gcmVzb3VyY2VzIGFuZCBhbm5vdW5jZW1lbnRzLg==\",\n      \"items\": [],\n      \"submissionMessages\": [],\n      \"fileNumbers\": [],\n      \"registrants\": [\n        {\n          \"cik\": \"0000000000\",\n          \"company\": \"TEST COMPANY\",\n          \"formType\": \"8-K\",\n          \"fileNumbers\": []\n        }\n      ],\n      \"messages\": [\n        {\n          \"type\": \"WARNING\",\n          \"message\": \"The CIK 0000000000 needs annual confirmation in 18 days.\"\n        }\n      ]\n    },\n    {\n      \"accessionNumber\": \"0000000000-22-000003\",\n      \"status\": \"SUSPENDED\",\n      \"type\": \"TEST\",\n      \"messages\": [\n        {\n          \"type\": \"ERROR\",\n          \"message\": \"The submission requires an existing file number\"\n        }\n      ]\n    },\n    {\n      \"accessionNumber\": \"0000000000-22-000001\",\n      \"status\": \"RECEIVED\",\n      \"final\": \"false\",\n      \"messages\": []\n    },\n    {\n      \"accessionNumber\": \"0000000000-22-000002\",\n      \"type\": \"LIVE\",\n      \"status\": \"BLOCKED\",\n      \"messages\": [\n        {\n          \"type\": \"INFO\",\n          \"message\": \"Fee-polling\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b09c7c63-fe32-433a-93c3-148057df3cab",
+              "name": "No Content. None of the provided accession numbers were found even though the request was authorized.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accessionNumbers\": [\n    \"0000000000-22-000000\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b5854c71-1ce9-4e3c-8454-21e061e482d0",
+              "name": "Bad Request. A correctly formed list of valid accession numbers must be provided.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accessionNumbers\": [\n    \"0000000000-22-000000\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"820c24bc6ce9ce84cc5b739819d27742\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Bad Request\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb1fe01c-385e-4c79-9007-757ca515ba57",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accessionNumbers\": [\n    \"0000000000-22-000000\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "87bf3003-2a3a-4ab9-aced-d2ea38793f6b",
+              "name": "Forbidden. This resource requires a valid Filer API Token. Please ensure that the token that is being used is a Filer API Token and is active in Filer Management.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accessionNumbers\": [\n    \"0000000000-22-000000\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1291d8da-69c7-478e-828c-f669c2d289cf",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accessionNumbers\": [\n    \"0000000000-22-000000\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc669b29-5a51-4dc3-8f9d-2ebf20c42771",
+              "name": "A request was made to this resource outside of operational hours.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accessionNumbers\": [\n    \"0000000000-22-000000\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"44230c24bc6ce1b884cc5b739819d29942\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"EDGAR is not available because EDGAR is reporting that it is not within operating hours.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e67bbd74-9def-4662-8938-f7e5043ba137",
+          "name": "Check Single Submission Status",
+          "request": {
+            "name": "Check Single Submission Status",
+            "description": {
+              "content": "When an authorized filer requests the status of a single submission that the filer made, the Check Single Submission Status API will respond with the current status of that submission.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "submission",
+                ":accessionNumber",
+                "status"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accessionNumber",
+                  "description": "(Required) The accession number returned when a submission is successfully transmitted."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "7efa7032-8868-40fe-ba73-3383c2058bb2",
+              "name": "Ok. A submission filed by the authorized filer, with the given accession number, was found",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    ":accessionNumber",
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accessionNumber",
+                      "description": "(Required) The accession number returned when a submission is successfully transmitted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"5e981101d4bfdee09b95c6f1d53e8551\",\n  \"locator\": \"l33922\",\n  \"accessionNumber\": \"0000000000-22-000001\",\n  \"status\": \"RECEIVED\",\n  \"final\": \"false\",\n  \"messages\": []\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb6952f4-2879-4822-b84e-5ca1295dac8c",
+              "name": "Bad Request. A validly formatted accession number must be provided.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    ":accessionNumber",
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accessionNumber",
+                      "description": "(Required) The accession number returned when a submission is successfully transmitted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"d1230c24bc6ce9ce84cc5b739819d27742\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Accession number '0000000000-22-0000011' is not in the correct format for an accession number, ##########-##-######\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d0bbc524-6120-4009-8e53-cbf1869c3a70",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    ":accessionNumber",
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accessionNumber",
+                      "description": "(Required) The accession number returned when a submission is successfully transmitted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "517e027a-47bf-4805-9784-9b2ec82ec80a",
+              "name": "Forbidden. This resource requires a valid Filer API Token. Please ensure that the token that is being used is a Filer API Token and is active in Filer Management.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    ":accessionNumber",
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accessionNumber",
+                      "description": "(Required) The accession number returned when a submission is successfully transmitted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb3b8f33-473d-4aa7-aba2-6442c7b96855",
+              "name": "Not Found. No matching accession number found even though the request was authorized and a validly formatted accession number was provided.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    ":accessionNumber",
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accessionNumber",
+                      "description": "(Required) The accession number returned when a submission is successfully transmitted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"ddb81101d4bfdee09b95c6f1233e8551\",\n  \"locator\": \"l33922\",\n  \"messages\": [\n    {\n      \"type\": \"INFO\",\n      \"message\": \"No submission found for '0000000000-22-000001'\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "51356a14-3577-4432-b943-ced28c9764bb",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    ":accessionNumber",
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accessionNumber",
+                      "description": "(Required) The accession number returned when a submission is successfully transmitted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bc38c763-fea6-42d1-8fcb-4cae5c8fe66a",
+              "name": "A request was made to this resource outside of operational hours.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    ":accessionNumber",
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accessionNumber",
+                      "description": "(Required) The accession number returned when a submission is successfully transmitted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"44230c24bc6ce1b884cc5b739819d29942\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"EDGAR is not available because EDGAR is reporting that it is not within operating hours.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://data.sec.gov",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "9becc383-c415-45ee-a16f-93f3aacc1d95",
+    "name": "SEC EDGAR Data Company Concept Submission Status API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.\n\n\nContact Support:\n Name: SEC EDGAR Help",
+      "type": "text/plain"
+    }
+  }
+}

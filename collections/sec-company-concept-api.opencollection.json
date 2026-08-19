@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SEC EDGAR Data Company Concept API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Company Concept",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get historical values for one XBRL concept",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.sec.gov/api/xbrl/companyconcept/CIK:cik/:taxonomy/:tag.json",
+            "params": [
+              {
+                "name": "cik",
+                "value": "",
+                "type": "path",
+                "description": "Central Index Key (CIK) with leading zeros to reach 10 digits."
+              },
+              {
+                "name": "taxonomy",
+                "value": "",
+                "type": "path",
+                "description": "XBRL taxonomy. One of: us-gaap, ifrs-full, dei, srt.\n"
+              },
+              {
+                "name": "tag",
+                "value": "",
+                "type": "path",
+                "description": "XBRL concept tag name. Example: AccountsPayableCurrent, Assets, Revenues, EarningsPerShareBasic.\n"
+              }
+            ]
+          },
+          "docs": "Returns historical values for a single XBRL concept for a given company. Results are organized by unit of measure (e.g. USD, shares) and include all reported values with start/end dates, filing accession numbers, form types, and fiscal period information.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

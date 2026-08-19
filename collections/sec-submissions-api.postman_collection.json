@@ -1,0 +1,174 @@
+{
+  "item": [
+    {
+      "id": "528c5023-b55d-4436-9ab7-01168db821f3",
+      "name": "Submissions",
+      "description": {
+        "content": "Company filing history and metadata by CIK",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a113693d-0652-4c00-85b4-8a0d1263917e",
+          "name": "Get company submissions",
+          "request": {
+            "name": "Get company submissions",
+            "description": {
+              "content": "Returns a company's complete filing history and metadata identified by Central Index Key (CIK). The response includes company name, SIC code, state of incorporation, addresses, phone number, and a list of recent filings with accession numbers, form types, filing dates, and document metadata. For companies with more than 40 filings, additional files are referenced in the response.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "submissions",
+                "CIK{{cik}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "598c465d-2508-4c64-b59e-c28ba9173adb",
+              "name": "Company submission data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "submissions",
+                    "CIK{{cik}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cik\": \"string\",\n  \"entityType\": \"operating\",\n  \"sic\": \"3571\",\n  \"sicDescription\": \"Electronic Computers\",\n  \"name\": \"Apple Inc.\",\n  \"tickers\": [\n    \"AAPL\"\n  ],\n  \"exchanges\": [\n    \"Nasdaq\"\n  ],\n  \"ein\": \"string\",\n  \"lei\": \"string\",\n  \"fiscalYearEnd\": \"string\",\n  \"stateOfIncorporation\": \"CA\",\n  \"addresses\": {\n    \"mailing\": {\n      \"street1\": \"string\",\n      \"street2\": \"string\",\n      \"city\": \"string\",\n      \"stateOrCountry\": \"string\",\n      \"zipCode\": \"string\",\n      \"stateOrCountryDescription\": \"string\"\n    },\n    \"business\": {\n      \"street1\": \"string\",\n      \"street2\": \"string\",\n      \"city\": \"string\",\n      \"stateOrCountry\": \"string\",\n      \"zipCode\": \"string\",\n      \"stateOrCountryDescription\": \"string\"\n    }\n  },\n  \"phone\": \"string\",\n  \"formerNames\": [\n    {\n      \"name\": \"string\",\n      \"from\": \"1995-02-11T23:50:42.136Z\",\n      \"to\": \"1949-02-22T23:55:27.662Z\"\n    },\n    {\n      \"name\": \"string\",\n      \"from\": \"2007-08-15T15:21:56.231Z\",\n      \"to\": \"2017-05-31T02:33:11.608Z\"\n    }\n  ],\n  \"filings\": {\n    \"recent\": {\n      \"accessionNumber\": [\n        \"string\",\n        \"string\"\n      ],\n      \"filingDate\": [\n        \"1974-02-26\",\n        \"2016-07-12\"\n      ],\n      \"reportDate\": [\n        \"1993-10-26\",\n        \"2007-09-14\"\n      ],\n      \"acceptanceDateTime\": [\n        \"string\",\n        \"string\"\n      ],\n      \"act\": [\n        \"string\",\n        \"string\"\n      ],\n      \"form\": [\n        \"string\",\n        \"string\"\n      ],\n      \"fileNumber\": [\n        \"string\",\n        \"string\"\n      ],\n      \"filmNumber\": [\n        \"string\",\n        \"string\"\n      ],\n      \"items\": [\n        \"string\",\n        \"string\"\n      ],\n      \"size\": [\n        4098,\n        2120\n      ],\n      \"isXBRL\": [\n        3506,\n        5571\n      ],\n      \"isInlineXBRL\": [\n        7412,\n        4089\n      ],\n      \"primaryDocument\": [\n        \"string\",\n        \"string\"\n      ],\n      \"primaryDocDescription\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"files\": [\n      {\n        \"name\": \"string\",\n        \"filingCount\": 1346,\n        \"filingFrom\": \"string\",\n        \"filingTo\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"filingCount\": 8009,\n        \"filingFrom\": \"string\",\n        \"filingTo\": \"string\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8def4e67-3924-4914-95cb-794900dd31f6",
+              "name": "Company not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "submissions",
+                    "CIK{{cik}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "418fb5f0-eb49-4eb2-a17a-d56e86c32586",
+              "name": "Rate limit exceeded (10 requests per second per user agent)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "submissions",
+                    "CIK{{cik}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://data.sec.gov",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) Central Index Key (CIK) with leading zeros to reach 10 digits. Example: 0000320193 for Apple Inc.\n",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "cik"
+    }
+  ],
+  "info": {
+    "_postman_id": "ce738b91-0395-4372-9116-13fa1ca2dd67",
+    "name": "SEC EDGAR Data Company Concept Submissions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.\n\n\nContact Support:\n Name: SEC EDGAR Help",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SEC EDGAR Data Company Concept Company Facts API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Company Facts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get all XBRL facts for a company",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK:cik.json",
+            "params": [
+              {
+                "name": "cik",
+                "value": "",
+                "type": "path",
+                "description": "Central Index Key (CIK) with leading zeros to reach 10 digits.\n"
+              }
+            ]
+          },
+          "docs": "Returns all XBRL disclosures for a company across all reporting periods, organized by taxonomy (us-gaap, ifrs-full, dei, srt) and concept name. Each concept contains an array of facts with values, units, filing accession numbers, and period dates. This is the primary endpoint for retrieving historical financial statement data for a given company.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

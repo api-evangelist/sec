@@ -1,0 +1,52 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SEC EDGAR Data Company Concept Submission Status API API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Submission Status API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Check Multiple Submission Statuses",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://data.sec.gov/submission/status",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "When an authorized filer requests the status of multiple submissions that the filer made, the Check Multiple Submission Statuses API will respond with the current status of each, if available."
+        },
+        {
+          "info": {
+            "name": "Check Single Submission Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.sec.gov/submission/:accessionNumber/status",
+            "params": [
+              {
+                "name": "accessionNumber",
+                "value": "0000000000-24-000001",
+                "type": "path",
+                "description": "The accession number returned when a submission is successfully transmitted."
+              }
+            ]
+          },
+          "docs": "When an authorized filer requests the status of a single submission that the filer made, the Check Single Submission Status API will respond with the current status of that submission."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

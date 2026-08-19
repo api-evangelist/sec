@@ -1,0 +1,182 @@
+{
+  "item": [
+    {
+      "id": "cffce242-3c45-4023-8b79-af338fd0e993",
+      "name": "Company Facts",
+      "description": {
+        "content": "XBRL financial disclosures for a company",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2f72f069-6de8-46cb-9bbb-88437983b00c",
+          "name": "Get all XBRL facts for a company",
+          "request": {
+            "name": "Get all XBRL facts for a company",
+            "description": {
+              "content": "Returns all XBRL disclosures for a company across all reporting periods, organized by taxonomy (us-gaap, ifrs-full, dei, srt) and concept name. Each concept contains an array of facts with values, units, filing accession numbers, and period dates. This is the primary endpoint for retrieving historical financial statement data for a given company.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "xbrl",
+                "companyfacts",
+                "CIK{{cik}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "af8172c6-9402-4ec0-b481-d85f3c17e499",
+              "name": "All XBRL facts for the company",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "xbrl",
+                    "companyfacts",
+                    "CIK{{cik}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cik\": 320193,\n  \"entityName\": \"Apple Inc.\",\n  \"facts\": {\n    \"key_0\": {\n      \"key_0\": {\n        \"label\": \"Accounts Payable, Current\",\n        \"description\": \"string\",\n        \"entityName\": \"string\",\n        \"units\": {\n          \"key_0\": [\n            {\n              \"start\": \"2022-09-25\",\n              \"end\": \"2023-09-30\",\n              \"val\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"accn\": \"0000320193-23-000106\",\n              \"fy\": 2023,\n              \"fp\": \"FY\",\n              \"form\": \"10-K\",\n              \"filed\": \"2023-11-03\",\n              \"frame\": \"CY2023Q3I\"\n            },\n            {\n              \"start\": \"2022-09-25\",\n              \"end\": \"2023-09-30\",\n              \"val\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"accn\": \"0000320193-23-000106\",\n              \"fy\": 2023,\n              \"fp\": \"FY\",\n              \"form\": \"10-K\",\n              \"filed\": \"2023-11-03\",\n              \"frame\": \"CY2023Q3I\"\n            }\n          ]\n        }\n      }\n    },\n    \"key_1\": {\n      \"key_0\": {\n        \"label\": \"Accounts Payable, Current\",\n        \"description\": \"string\",\n        \"entityName\": \"string\",\n        \"units\": {\n          \"key_0\": [\n            {\n              \"start\": \"2022-09-25\",\n              \"end\": \"2023-09-30\",\n              \"val\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"accn\": \"0000320193-23-000106\",\n              \"fy\": 2023,\n              \"fp\": \"FY\",\n              \"form\": \"10-K\",\n              \"filed\": \"2023-11-03\",\n              \"frame\": \"CY2023Q3I\"\n            },\n            {\n              \"start\": \"2022-09-25\",\n              \"end\": \"2023-09-30\",\n              \"val\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"accn\": \"0000320193-23-000106\",\n              \"fy\": 2023,\n              \"fp\": \"FY\",\n              \"form\": \"10-K\",\n              \"filed\": \"2023-11-03\",\n              \"frame\": \"CY2023Q3I\"\n            }\n          ],\n          \"key_1\": [\n            {\n              \"start\": \"2022-09-25\",\n              \"end\": \"2023-09-30\",\n              \"val\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"accn\": \"0000320193-23-000106\",\n              \"fy\": 2023,\n              \"fp\": \"FY\",\n              \"form\": \"10-K\",\n              \"filed\": \"2023-11-03\",\n              \"frame\": \"CY2023Q3I\"\n            },\n            {\n              \"start\": \"2022-09-25\",\n              \"end\": \"2023-09-30\",\n              \"val\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"accn\": \"0000320193-23-000106\",\n              \"fy\": 2023,\n              \"fp\": \"FY\",\n              \"form\": \"10-K\",\n              \"filed\": \"2023-11-03\",\n              \"frame\": \"CY2023Q3I\"\n            }\n          ],\n          \"key_2\": [\n            {\n              \"start\": \"2022-09-25\",\n              \"end\": \"2023-09-30\",\n              \"val\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"accn\": \"0000320193-23-000106\",\n              \"fy\": 2023,\n              \"fp\": \"FY\",\n              \"form\": \"10-K\",\n              \"filed\": \"2023-11-03\",\n              \"frame\": \"CY2023Q3I\"\n            },\n            {\n              \"start\": \"2022-09-25\",\n              \"end\": \"2023-09-30\",\n              \"val\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"accn\": \"0000320193-23-000106\",\n              \"fy\": 2023,\n              \"fp\": \"FY\",\n              \"form\": \"10-K\",\n              \"filed\": \"2023-11-03\",\n              \"frame\": \"CY2023Q3I\"\n            }\n          ]\n        }\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "79124c0c-35a8-4413-b1ba-b4411e1f70c3",
+              "name": "Company not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "xbrl",
+                    "companyfacts",
+                    "CIK{{cik}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "67d3eed2-43c2-411b-9cb3-e62fd3ee6306",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "xbrl",
+                    "companyfacts",
+                    "CIK{{cik}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://data.sec.gov",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) Central Index Key (CIK) with leading zeros to reach 10 digits.\n",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "cik"
+    }
+  ],
+  "info": {
+    "_postman_id": "3a8659e5-9db4-4c06-b601-6d498e744011",
+    "name": "SEC EDGAR Data Company Concept Company Facts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.\n\n\nContact Support:\n Name: SEC EDGAR Help",
+      "type": "text/plain"
+    }
+  }
+}

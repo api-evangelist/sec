@@ -1,0 +1,282 @@
+{
+  "item": [
+    {
+      "id": "c63ecc2b-5b78-4144-90b9-b0b3161c711b",
+      "name": "Frames",
+      "description": {
+        "content": "Cross-company data for a concept in a specific period",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "86bba95b-fe64-43d6-9f0d-91e49c8d9d94",
+          "name": "Get cross-company data for a concept in a period",
+          "request": {
+            "name": "Get cross-company data for a concept in a period",
+            "description": {
+              "content": "Returns data for a given XBRL concept across all companies that reported it for a specific period. This enables cross-company comparisons for any financial metric. Periods can be annual (CY2023), quarterly (CY2023Q1), or instantaneous (CY2023Q1I for point-in-time balance sheet concepts). The response includes each company's CIK, entity name, accession number, location reference, and reported value.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "xbrl",
+                "frames",
+                ":taxonomy",
+                ":tag",
+                ":unit",
+                "{{period}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "taxonomy",
+                  "description": "(Required) XBRL taxonomy. One of us-gaap, ifrs-full, dei, or srt.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tag",
+                  "description": "(Required) XBRL concept tag name."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "unit",
+                  "description": "(Required) Unit of measure. Common values: USD, shares, pure, USD-per-shares.\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e326bff2-1884-4ede-bf03-4e9e4cdef05e",
+              "name": "Cross-company XBRL frame data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "xbrl",
+                    "frames",
+                    ":taxonomy",
+                    ":tag",
+                    ":unit",
+                    "{{period}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "taxonomy",
+                      "description": "(Required) XBRL taxonomy. One of us-gaap, ifrs-full, dei, or srt.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag",
+                      "description": "(Required) XBRL concept tag name."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "unit",
+                      "description": "(Required) Unit of measure. Common values: USD, shares, pure, USD-per-shares.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"taxonomy\": \"us-gaap\",\n  \"tag\": \"AccountsPayableCurrent\",\n  \"ccp\": \"CY2023Q1I\",\n  \"uom\": \"USD\",\n  \"label\": \"string\",\n  \"description\": \"string\",\n  \"pts\": 3318,\n  \"data\": [\n    {\n      \"accn\": \"0000320193-23-000006\",\n      \"cik\": 320193,\n      \"entityName\": \"Apple Inc.\",\n      \"loc\": \"10-Q\",\n      \"end\": \"2023-04-01\",\n      \"val\": 62611000000\n    },\n    {\n      \"accn\": \"0000320193-23-000006\",\n      \"cik\": 320193,\n      \"entityName\": \"Apple Inc.\",\n      \"loc\": \"10-Q\",\n      \"end\": \"2023-04-01\",\n      \"val\": 62611000000\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "41d71a0e-f10f-445f-819f-d99b42192fee",
+              "name": "Frame data not found for given parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "xbrl",
+                    "frames",
+                    ":taxonomy",
+                    ":tag",
+                    ":unit",
+                    "{{period}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "taxonomy",
+                      "description": "(Required) XBRL taxonomy. One of us-gaap, ifrs-full, dei, or srt.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag",
+                      "description": "(Required) XBRL concept tag name."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "unit",
+                      "description": "(Required) Unit of measure. Common values: USD, shares, pure, USD-per-shares.\n"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4074a3ba-c388-4eed-a88b-c06f7794752c",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "xbrl",
+                    "frames",
+                    ":taxonomy",
+                    ":tag",
+                    ":unit",
+                    "{{period}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "taxonomy",
+                      "description": "(Required) XBRL taxonomy. One of us-gaap, ifrs-full, dei, or srt.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag",
+                      "description": "(Required) XBRL concept tag name."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "unit",
+                      "description": "(Required) Unit of measure. Common values: USD, shares, pure, USD-per-shares.\n"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://data.sec.gov",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) Reporting period. Annual: CY2023. Quarterly duration: CY2023Q1. Quarterly instantaneous: CY2023Q1I.\n",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "period"
+    }
+  ],
+  "info": {
+    "_postman_id": "dab854d0-4174-473a-a555-6af054b3fe98",
+    "name": "SEC EDGAR Data Company Concept Frames API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.\n\n\nContact Support:\n Name: SEC EDGAR Help",
+      "type": "text/plain"
+    }
+  }
+}

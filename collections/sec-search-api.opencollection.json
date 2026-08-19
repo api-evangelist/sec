@@ -1,0 +1,91 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SEC EDGAR Data Company Concept Search API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search EDGAR filings by full text",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.sec.gov/LATEST/search-index/efts",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Full-text search query. Supports phrase matching (\"exact phrase\"), boolean operators (AND, OR, NOT), and field-specific searches (e.g., entity_name:\"Apple Inc\"). Leave empty to browse all filings.\n"
+              },
+              {
+                "name": "dateRange",
+                "value": "",
+                "type": "query",
+                "description": "Date range filter. Use \"custom\" to specify startdt and enddt, or \"30d\", \"1y\", \"5y\" for relative ranges.\n"
+              },
+              {
+                "name": "startdt",
+                "value": "",
+                "type": "query",
+                "description": "Start date for custom date range filter (YYYY-MM-DD format). Only used when dateRange is \"custom\".\n"
+              },
+              {
+                "name": "enddt",
+                "value": "",
+                "type": "query",
+                "description": "End date for custom date range filter (YYYY-MM-DD format). Only used when dateRange is \"custom\".\n"
+              },
+              {
+                "name": "forms",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of form types to filter results. Example: 10-K,10-Q,8-K\n"
+              },
+              {
+                "name": "entity",
+                "value": "",
+                "type": "query",
+                "description": "Filter by entity name. Partial matches supported.\n"
+              },
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by stock ticker symbol.\n"
+              },
+              {
+                "name": "_source",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to return in the response. Default returns all fields.\n"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Starting offset for pagination (zero-based).\n"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page. Maximum is 10 per request for full-text results.\n"
+              }
+            ]
+          },
+          "docs": "Searches the full text of EDGAR filings using Elasticsearch-backed indexing. Supports keyword queries, boolean operators, phrase matching, and field-specific filters. Results include filing metadata and direct links to matching documents. Rate limited to 10 requests per second.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

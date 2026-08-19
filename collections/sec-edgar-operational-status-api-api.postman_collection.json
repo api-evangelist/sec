@@ -1,0 +1,226 @@
+{
+  "item": [
+    {
+      "id": "e55d30b9-8005-48a1-a848-96398a7b610b",
+      "name": "EDGAR Operational Status API",
+      "description": {
+        "content": "This API reports the status of the EDGAR system. This resource requires presentation of a Filer API Token only.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a0f8f798-2137-4bda-812e-fe9353dd3217",
+          "name": "EDGAR System Status",
+          "request": {
+            "name": "EDGAR System Status",
+            "description": {
+              "content": "Uses EDGAR operating hours logic and communicates with other EDGAR components to determine the ability of the system to receive API calls and submissions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "status"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "314f1b10-729f-46b9-8ec6-ce99b09e77a0",
+              "name": "Ok. The EDGAR system was able to provide a status response.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"6345f99403f9c8014e4332a8cba2c5a6\",\n  \"locator\": \"l33922\",\n  \"message\": \"EDGAR is available because EDGAR is reporting that it is operational and within operating hours.\",\n  \"condition\": \"ACCEPTING\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c8dadca5-2cb8-439a-9321-dd64fbc3b2d5",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "78281bcb-1eb5-47a3-abdd-ee4e5bb25148",
+              "name": "Forbidden. This resource requires a valid Filer API Token. Please ensure that the token that is being used is a Filer API Token and is active in Filer Management.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c5deec48-4c55-456c-96a6-558e1b638d40",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "status"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://data.sec.gov",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6b27b03f-2c84-4b56-b834-c107132401e9",
+    "name": "SEC EDGAR Data Company Concept EDGAR Operational Status API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.\n\n\nContact Support:\n Name: SEC EDGAR Help",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,3371 @@
+{
+  "item": [
+    {
+      "id": "25fbc3e8-ec8e-46e3-bd33-6b74a51700bf",
+      "name": "Filer Management API",
+      "description": {
+        "content": "    A set of API endpoints that allows you to verify permissions, get filer information, manage CCC, manage individuals, and manage delegations.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "cce907aa-99fc-4eae-8542-288f02ef5a21",
+          "name": "View filer account information",
+          "request": {
+            "name": "View filer account information",
+            "description": {
+              "content": "The view filer account information API provides the ability to view filer information for an EDGAR account/CIK.\nThis API will require the following inputs:  the filer API token, the user API token, and the EDGAR account/CIK\nfor which information is being retrieved.\nThe individual associated with the user API token must be a user, account administrator, delegated user, delegated\naccount administrator, or technical administrator of the CIK for which account information is to be viewed.\nThe filer API token supplied for the request must either match that CIK or the CIK of the filer API token must have delegation from that CIK.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "fm",
+                ":cik"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "cik",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "a35231d3-482d-4b8e-84e5-161a124d07bd",
+              "name": "OK. The request was successful.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"f0bd5ef3aaf666475b7b466d46120973\",\n  \"locator\": \"nfkkg\",\n  \"messages\": [\n    {\n      \"type\": \"INFO\",\n      \"content\": \"OK\"\n    }\n  ],\n  \"filerInfo\": [\n    {\n      \"cik\": \"0000000000\",\n      \"stateCode\": \"TX\",\n      \"irsNumber\": \"000000000\",\n      \"entityType\": \"A\",\n      \"dateIncorporated\": \"1970-01-01 00:00:00\",\n      \"sicCode\": \"6189\",\n      \"fyEnd\": \"0630\",\n      \"individualOrCompany\": \"C\",\n      \"specialFilerType\": \"string\",\n      \"legalEntityIdentifier\": \"ABCD123456789012\",\n      \"repFileNum\": \"123-123456-12\",\n      \"dateModified\": \"2024-01-01T12:00:00Z\",\n      \"entityName\": \"Filers Inc\",\n      \"entityDbaName\": \"string\",\n      \"entityForeignName\": \"string\",\n      \"mailIsForeignAddress\": \"false\",\n      \"mailStreet1\": \"123 Broadway\",\n      \"mailStreet2\": \"Suite 200\",\n      \"mailCity\": \"Dallas\",\n      \"mailStateCode\": \"K3\",\n      \"mailForeignState\": \"Maharashtra\",\n      \"mailZip\": \"75240\",\n      \"businessIsForeignAddress\": false,\n      \"businessStreet1\": \"123 Broadway\",\n      \"businessStreet2\": \"Suite 200\",\n      \"businessCity\": \"Dallas\",\n      \"businessStateCode\": \"TX\",\n      \"businessForeignState\": null,\n      \"businessZip\": \"75240\",\n      \"peoStreet1\": \"string\",\n      \"peoStreet2\": \"string\",\n      \"peoCity\": \"string\",\n      \"peoStateCode\": \"string\",\n      \"peoZip\": \"string\",\n      \"acctName\": \"Chris\",\n      \"acctPhone\": \"555-555-5555\",\n      \"acctStreet1\": \"123 MAIN ST. - BILLING\",\n      \"acctStreet2\": null,\n      \"acctCity\": \"ANYTOWN\",\n      \"acctStateCode\": \"TX\",\n      \"acctZip\": \"12345\",\n      \"acctEmail\": \"chris@somecompany.com\",\n      \"contName\": \"James Smith\",\n      \"contPhone\": \"555-555-5555\",\n      \"contEmail\": \"james@somecopany.com\",\n      \"mailingPhone\": \"555-555-5555\",\n      \"businessPhone\": \"555-555-5555\",\n      \"ccc\": \"@1B2C3d4\",\n      \"confirmationDueDate\": \"Date\",\n      \"singleEntityCompany\": \"false\",\n      \"website\": \"www.somecompany.com\",\n      \"series\": []\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8ecc68df-5612-46b1-9270-f7fa41fa0771",
+              "name": "Bad request. The request was not successful, possibly due to invalid data",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"c209d91efee936e1d315d868f06f763d\",\n  \"locator\": \"47a94d\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"message\": \"Invalid data\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3f78bcdb-122e-42cb-ba2b-9da29e211772",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "456e3e84-658b-4c19-b4f6-922f5d81a9a0",
+              "name": "Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d7a1df3-0dff-4221-bf28-870635a9558d",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ad53c7d6-f294-48fd-a68b-eeeedf9e4267",
+          "name": "Generate CCC",
+          "request": {
+            "name": "Generate CCC",
+            "description": {
+              "content": "The generate CCC API allows a filer to have EDGAR randomly generate a new CCC for the filer. This API will require the filer API token, the user API token,\nand the CIK of the EDGAR account for which the CCC will be generated. The individual associated with the user API token must be\nan account administrator of the EDGAR account/CIK for which the CCC is to be generated. The filer API token supplied for the request\nmust either match the CIK of the EDGAR account for which the CCC is to be generated or the CIK of the filer API token must have\ndelegation from that CIK.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "fm",
+                ":cik",
+                "ccc"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "cik",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": [
+            {
+              "id": "8bcb896f-8ee0-404d-b917-f9f5cc941f71",
+              "name": "OK. The request was successful.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "ccc"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"string\",\n  \"locator\": \"string\",\n  \"messages\": [\n    {\n      \"type\": \"NOTICE\",\n      \"content\": \"The Filer API Key making this request will expire in less than two weeks.\"\n    },\n    {\n      \"type\": \"NOTICE\",\n      \"content\": \"The Filer API Key making this request will expire in less than two weeks.\"\n    }\n  ],\n  \"filerCCC\": \"@1B2C3d4\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "465c6c65-7551-4d19-9f67-942f663c8c63",
+              "name": "Bad request. The request was not successful, possibly due to invalid data",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "ccc"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"c209d91efee936e1d315d868f06f763d\",\n  \"locator\": \"47a94d\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"message\": \"Invalid data\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8a005711-4931-480e-910b-3079d30482d1",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "ccc"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "47447187-7e3f-4cf5-8d9c-579faeabec9e",
+              "name": "Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "ccc"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d03f6738-6e7b-44aa-ba9d-28dea0c1d7c3",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "ccc"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e72131cf-1eea-4c9a-b2de-be2f1ba90a1f",
+          "name": "Create custom CCC",
+          "request": {
+            "name": "Create custom CCC",
+            "description": {
+              "content": "The create custom CCC API allows a filer to specify a new CCC. The API will require the following inputs: the filer API token, the user API token,\nthe CIK of the EDGAR account for which the custom CCC will be created, the current CCC, and the new CCC. The individual associated with\nthe user API token must be an account administrator of the EDGAR account/CIK for which the CCC is to be changed. The filer API token supplied for\nthe request must either match the CIK for which the CCC is to be changed or the CIK of the filer API token must have delegation from that CIK.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "fm",
+                ":cik",
+                "ccc"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "cik",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ccc\": \"<string>\",\n  \"newCCC\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "06e80f77-c6c3-46c4-b9ef-79497dbe649f",
+              "name": "OK. The request was successful.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "ccc"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currentCCC\": \"xxxxxxxx\",\n  \"replacementCCC\": \"yyyyyyyy\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"string\",\n  \"locator\": \"string\",\n  \"messages\": [\n    {\n      \"type\": \"NOTICE\",\n      \"content\": \"The Filer API Key making this request will expire in less than two weeks.\"\n    },\n    {\n      \"type\": \"NOTICE\",\n      \"content\": \"The Filer API Key making this request will expire in less than two weeks.\"\n    }\n  ],\n  \"filerCCC\": \"@1B2C3d4\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06d1f58f-3357-45b9-bbc3-d12ab07561c8",
+              "name": "Bad request. The request was not successful, possibly due to invalid data",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "ccc"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currentCCC\": \"xxxxxxxx\",\n  \"replacementCCC\": \"yyyyyyyy\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"c209d91efee936e1d315d868f06f763d\",\n  \"locator\": \"47a94d\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"message\": \"Invalid data\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93c0b5f7-28b6-484c-958e-adb5bedcd086",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "ccc"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currentCCC\": \"xxxxxxxx\",\n  \"replacementCCC\": \"yyyyyyyy\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c71c7e6d-3efb-47f3-bf7a-4cecf8e57cc1",
+              "name": "Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "ccc"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currentCCC\": \"xxxxxxxx\",\n  \"replacementCCC\": \"yyyyyyyy\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "46db81ce-354a-4f89-b440-5445856429ba",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "ccc"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currentCCC\": \"xxxxxxxx\",\n  \"replacementCCC\": \"yyyyyyyy\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2a6e1656-2cc6-4739-abdc-8861ccf46d11",
+          "name": "Request delegation invitations",
+          "request": {
+            "name": "Request delegation invitations",
+            "description": {
+              "content": "The request delegation invitations API provides the ability for an EDGAR account (for example, a filing agent) to request delegation from one\nor more filers. If a filer accepts the delegation request, a delegation invitation will be sent from the filer to the EDGAR account requesting\ndelegation. If the delegation invitation is accepted by the EDGAR account requesting delegation, that EDGAR account will become a delegated\nentity that can submit filings on behalf of the filer. This API will require the following inputs: the filer API token, the user API token,\nthe CIK belonging to the requesting EDGAR account that would like to become a delegated entity, and CIK(s) that will receive the delegation\nrequest. The individual associated with the user API token must be an account administrator of the CIK requesting a delegation invitation.\nThe filer API token supplied for the request must match the CIK requesting a delegation invitation.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "fm",
+                ":cik",
+                "delegationRequests"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "cik",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  \"<string>\",\n  \"<string>\"\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6c9ec9f8-0315-458e-b81b-dbdb75459495",
+              "name": "OK. The request was successful.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "delegationRequests"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"0000000001\"\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"c209d91efee936e1d315d868f06f763d\",\n  \"locator\": \"47a94d\",\n  \"messages\": [\n    {\n      \"type\": \"INFO\",\n      \"message\": \"<<message>>\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f51221bf-a58b-4840-912c-2a204ec91e82",
+              "name": "Bad request. The request was not successful, possibly due to invalid data",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "delegationRequests"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"0000000001\"\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"c209d91efee936e1d315d868f06f763d\",\n  \"locator\": \"47a94d\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"message\": \"Invalid data\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06360b7b-4d27-4abd-83dc-aabce7304179",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "delegationRequests"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"0000000001\"\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6514b667-dc7b-4b64-9b5a-c0abd434d406",
+              "name": "Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "delegationRequests"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"0000000001\"\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "996d3058-88cb-411e-a110-cf8a57843f5b",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "delegationRequests"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"0000000001\"\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4ecfb7d7-831e-426c-afbd-c55f22958cc4",
+          "name": "Send delegation invitations",
+          "request": {
+            "name": "Send delegation invitations",
+            "description": {
+              "content": "The send delegation invitations API provides the ability for a filer to delegate to one or more EDGAR accounts. If those EDGAR accounts accept\nthe delegation invitation, those EDGAR accounts will become delegated entities who can submit filings on behalf of the delegating filer.\nThis API will require the following inputs: the filer API token, the user API token, the delegating filer’s CIK, and a list of one or more\ndelegated entity CIKs that will receive the delegation invitation. The individual associated with the user API token must be an account\nadministrator of the CIK from which delegation invitations are to be sent. The filer API token supplied for the request must match that CIK.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "fm",
+                ":cik",
+                "delegations"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "cik",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  \"<string>\",\n  \"<string>\"\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9ec05de9-5d54-441f-93a9-417fce73362a",
+              "name": "OK. The request was successful.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "delegations"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"0000000001\"\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"c209d91efee936e1d315d868f06f763d\",\n  \"locator\": \"47a94d\",\n  \"responses\": [],\n  \"messages\": [\n    {\n      \"type\": \"INFO\",\n      \"message\": \"<<message>>\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "573c3764-b69a-4ace-b083-94901b6468e6",
+              "name": "Bad request. The request was not successful, possibly due to invalid data",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "delegations"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"0000000001\"\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"c209d91efee936e1d315d868f06f763d\",\n  \"locator\": \"47a94d\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"message\": \"Invalid data\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b720fb5a-b560-4b2a-b863-c1e60a592e20",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "delegations"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"0000000001\"\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2d628682-2a85-4b4a-b9e6-81fb478702e1",
+              "name": "Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "delegations"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"0000000001\"\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5268f0d6-c8d6-4262-a70f-6cf94c35b7ec",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "delegations"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"0000000001\"\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f044bfc6-99cf-45e1-bfb2-5d1818a12638",
+          "name": "View delegations",
+          "request": {
+            "name": "View delegations",
+            "description": {
+              "content": "The view delegations API provides the ability for a filer/EDGAR account to retrieve a list of all its delegations to and from other\nEDGAR accounts/CIKs. This API will require the following inputs:  the filer API token, the user API token, and the EDGAR account/CIK\nfor which delegation information is to be retrieved. The individual associated with the user API token must be a user or an account\nadministrator of the CIK for which delegation information is to be retrieved. The filer API token supplied for the request must match that CIK.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "fm",
+                ":cik",
+                "delegations"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "cik",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "6d27a323-d6eb-45b7-8cef-953fbb6a6245",
+              "name": "OK. The request was successful.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "delegations"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"c209d91efee936e1d315d868f06f763d\",\n  \"locator\": \"47a94d\",\n  \"delegationsTo\": [],\n  \"delegationsFrom\": [],\n  \"messages\": [\n    {\n      \"type\": \"INFO\",\n      \"message\": \"OK\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9320af80-6ef9-4e84-bc4f-27bfb4242c9b",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "delegations"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ed9a2bfe-c7a4-427b-815c-1b7a9b8387a6",
+              "name": "Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "delegations"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "07923445-aaad-4269-83ce-0118d372c253",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "delegations"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7ed2440e-6ff1-48cf-98ed-a60c2fcd4a18",
+          "name": "Add individuals",
+          "request": {
+            "name": "Add individuals",
+            "description": {
+              "content": "The add individuals API allows for one or more individuals to be added in specific role(s) for a filer. This API will require the following\ninputs: the filer API token, the user API token, the EDGAR account CIK for which individuals are to be added, a list of individuals\n(identified by their names and Login.gov email addresses), and their new roles. The individual associated with the user API token must be\nan account administrator of the CIK for which individuals are to be added. The filer API token supplied for the request must either match\nthe CIK for which individuals are to be added or the CIK of the filer API token must have delegation from that CIK.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "fm",
+                ":cik",
+                "individuals"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "cik",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"firstName\": \"<string>\",\n    \"middleName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"email\": \"<string>\",\n    \"inAdminRole\": \"<boolean>\",\n    \"inTechAdminRole\": \"<boolean>\",\n    \"inUserRole\": \"<boolean>\"\n  },\n  {\n    \"firstName\": \"<string>\",\n    \"middleName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"email\": \"<string>\",\n    \"inAdminRole\": \"<boolean>\",\n    \"inTechAdminRole\": \"<boolean>\",\n    \"inUserRole\": \"<boolean>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "89fca1a7-8928-4826-996d-17d191896243",
+              "name": "OK. The request was successful.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"barry.allen@flash.com\",\n    \"firstName\": \"Bartholomew\",\n    \"middleName\": \"Henry\",\n    \"lastName\": \"Allen\",\n    \"inAdminRole\": false,\n    \"inTechAdminRole\": true,\n    \"inUserRole\": true\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"c209d91efee936e1d315d868f06f763d\",\n  \"locator\": \"47a94d\",\n  \"responses\": [],\n  \"messages\": [\n    {\n      \"type\": \"INFO\",\n      \"message\": \"Invite(s) created.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9abb99f0-d69f-489a-a61d-39f7aff33402",
+              "name": "Bad request. The request was not successful, possibly due to invalid data",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"barry.allen@flash.com\",\n    \"firstName\": \"Bartholomew\",\n    \"middleName\": \"Henry\",\n    \"lastName\": \"Allen\",\n    \"inAdminRole\": false,\n    \"inTechAdminRole\": true,\n    \"inUserRole\": true\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"c209d91efee936e1d315d868f06f763d\",\n  \"locator\": \"47a94d\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"message\": \"Invalid data\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c4fa5bd2-f421-4395-ac6e-49893efc742e",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"barry.allen@flash.com\",\n    \"firstName\": \"Bartholomew\",\n    \"middleName\": \"Henry\",\n    \"lastName\": \"Allen\",\n    \"inAdminRole\": false,\n    \"inTechAdminRole\": true,\n    \"inUserRole\": true\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "52f52d92-47be-4aea-a2b2-41cb0a7984bf",
+              "name": "Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"barry.allen@flash.com\",\n    \"firstName\": \"Bartholomew\",\n    \"middleName\": \"Henry\",\n    \"lastName\": \"Allen\",\n    \"inAdminRole\": false,\n    \"inTechAdminRole\": true,\n    \"inUserRole\": true\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "831c5d74-158b-41b8-a391-4147456d948f",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"barry.allen@flash.com\",\n    \"firstName\": \"Bartholomew\",\n    \"middleName\": \"Henry\",\n    \"lastName\": \"Allen\",\n    \"inAdminRole\": false,\n    \"inTechAdminRole\": true,\n    \"inUserRole\": true\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "20a46987-f1fc-4315-a4a5-7992875cb2d0",
+          "name": "View individuals",
+          "request": {
+            "name": "View individuals",
+            "description": {
+              "content": "The view individuals API provides the ability to view all individuals with a role for an EDGAR account/CIK. This API will require the following\ninputs: the filer API token, the user API token, and the CIK for which individuals are to be viewed. The individual associated with the user\nAPI token must be an account administrator of the CIK for which individuals are to be viewed. The filer API token supplied for the request must\neither match the CIK for which individuals are to be viewed or the CIK of the filer API token must have delegation from that CIK.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "fm",
+                ":cik",
+                "individuals"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "cik",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "b13fc9a4-454f-4bd6-bae0-c9b99be8b9b4",
+              "name": "OK. The request was successful.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"c209d91efee936e1d315d868f06f763d\",\n  \"locator\": \"47a94d\",\n  \"individuals\": [],\n  \"messages\": [\n    {\n      \"type\": \"INFO\",\n      \"message\": \"OK\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1bc94bcf-ee17-40f7-849f-15b3303e0ed2",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f73e5cbd-7a62-4dc3-b3c5-e9921292a262",
+              "name": "Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8db074f4-db8e-411d-818a-ae5488e8db74",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bac83356-e169-4da1-8579-7027daa1923d",
+          "name": "Change roles",
+          "request": {
+            "name": "Change roles",
+            "description": {
+              "content": "The change roles API provides the ability to update roles for individuals for a CIK. This API will require the following inputs: the filer API\ntoken, the user API token, the EDGAR account CIK for which roles are to be changed, a list of the individuals (identified by their Login.gov\nemail addresses), and their new roles (updated roles). The individual associated with the user API token must be an account administrator of\nthe CIK for which roles are to be changed. The filer API token supplied for the request must either match the CIK for which roles are to be\nchanged or the CIK of the filer API token must have delegation from that CIK.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "fm",
+                ":cik",
+                "individuals"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "cik",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"email\": \"<string>\",\n    \"inAdminRole\": \"<boolean>\",\n    \"inTechAdminRole\": \"<boolean>\",\n    \"inUserRole\": \"<boolean>\"\n  },\n  {\n    \"email\": \"<string>\",\n    \"inAdminRole\": \"<boolean>\",\n    \"inTechAdminRole\": \"<boolean>\",\n    \"inUserRole\": \"<boolean>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5452230e-eee3-4eef-90f2-3ed6a648db3d",
+              "name": "OK. The request was successful.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"money.penny@007.com\",\n    \"inAdminRole\": false,\n    \"inTechAdminRole\": false,\n    \"inUserRole\": true\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"c209d91efee936e1d315d868f06f763d\",\n  \"locator\": \"47a94d\",\n  \"messages\": [\n    {\n      \"type\": \"INFO\",\n      \"message\": \"<<message>>\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "336a0523-4bf0-4407-b027-b3dd1a369891",
+              "name": "Bad request. The request was not successful, possibly due to invalid data",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"money.penny@007.com\",\n    \"inAdminRole\": false,\n    \"inTechAdminRole\": false,\n    \"inUserRole\": true\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"c209d91efee936e1d315d868f06f763d\",\n  \"locator\": \"47a94d\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"message\": \"Invalid data\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0fd4e3aa-ad20-437f-bd80-e5eb54d3493e",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"money.penny@007.com\",\n    \"inAdminRole\": false,\n    \"inTechAdminRole\": false,\n    \"inUserRole\": true\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "967b1b34-3d57-437e-a8b7-24c9c5b7fcc2",
+              "name": "Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"money.penny@007.com\",\n    \"inAdminRole\": false,\n    \"inTechAdminRole\": false,\n    \"inUserRole\": true\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1164ba4c-21ed-4b9a-9958-abdf285065b9",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"money.penny@007.com\",\n    \"inAdminRole\": false,\n    \"inTechAdminRole\": false,\n    \"inUserRole\": true\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0c6fb92d-d831-4a85-932c-05009eab63e5",
+          "name": "Remove individuals",
+          "request": {
+            "name": "Remove individuals",
+            "description": {
+              "content": "The remove individuals API provides the ability to remove one or more individuals. This API will require the following inputs: the filer API\ntoken, the user API token, the EDGAR account CIK for which individuals are to be removed, a list of individuals (identified by their\nLogin.gov email addresses), and their roles to be removed. The individual associated with the user API token must be an account administrator\nof the CIK for which individuals are to be removed. The filer API token supplied for the request must either match the CIK for which individuals\nare to be removed or the CIK of the filer API token must have delegation from that CIK.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "fm",
+                ":cik",
+                "individuals"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "cik",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  \"<string>\",\n  \"<string>\"\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4d059e65-b775-4192-bda5-e5f1a2436a1c",
+              "name": "OK. The request was successful.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"money.penny@007.com\"\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"c209d91efee936e1d315d868f06f763d\",\n  \"locator\": \"47a94d\",\n  \"messages\": [\n    {\n      \"type\": \"INFO\",\n      \"message\": \"<<message>>\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0d504273-84db-423b-8d63-4dd8ceddf0b3",
+              "name": "Bad request. The request was not successful, possibly due to invalid data",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"money.penny@007.com\"\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"c209d91efee936e1d315d868f06f763d\",\n  \"locator\": \"47a94d\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"message\": \"Invalid data\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aaf51ab4-a4d5-4c36-ad59-f8490fc298de",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"money.penny@007.com\"\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "26b7849c-4b24-4407-b0bb-d8cc9a53637d",
+              "name": "Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to perform the action.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"money.penny@007.com\"\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "01afc7bd-5af1-404c-aeb7-4b44d9cef69d",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "individuals"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"money.penny@007.com\"\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "289abf87-4ce8-409e-9e4f-b899f3f7fa37",
+          "name": "Filing credentials verification",
+          "request": {
+            "name": "Filing credentials verification",
+            "description": {
+              "content": "The filing credentials verification API provides the ability to view filing credentials for an EDGAR account/CIK. The API GET method requires\nthe filer API token and the user API token in the header along with the relevant CIK in the path of the URL. The individual associated with\nthe user API token must be a user, account administrator, delegated user, or delegated account administrator of the CIK for which the filing\ncredentials are to be verified. The filer API token supplied for the request must either match the CIK for which filing\ncredentials are to be verified or the CIK of the filer API token must have delegation from that CIK.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "fm",
+                ":cik",
+                "verify"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "cik",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "7075e638-c1c9-4a8f-b642-840997f26873",
+              "name": "OK. The request was successful.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "verify"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"8bdd9ff5f82da173d41bf1ed03a80af4\",\n  \"locator\": \"47a94d\",\n  \"messages\": [\n    {\n      \"type\": \"INFO\",\n      \"content\": \"OK\"\n    }\n  ],\n  \"canFile\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "82a4e018-6e2e-4048-a27d-73c6c115846a",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "verify"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "83005390-758e-4b9b-8072-5c7d8a9f7a47",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "fm",
+                    ":cik",
+                    "verify"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "cik",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://data.sec.gov",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "77bb2b1e-544a-42c4-86f7-ade1cd9e7344",
+    "name": "SEC EDGAR Data Company Concept Filer Management API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.\n\n\nContact Support:\n Name: SEC EDGAR Help",
+      "type": "text/plain"
+    }
+  }
+}

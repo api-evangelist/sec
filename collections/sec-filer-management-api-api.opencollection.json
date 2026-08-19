@@ -1,0 +1,240 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SEC EDGAR Data Company Concept Filer Management API API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Filer Management API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "View filer account information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.sec.gov/fm/:cik",
+            "params": [
+              {
+                "name": "cik",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The view filer account information API provides the ability to view filer information for an EDGAR account/CIK.\nThis API will require the following inputs:  the filer API token, the user API token, and the EDGAR account/CIK\nfor which information is being retrieved.\nThe individual associated with the user API token must be a user, account administrator, delegated user, delegated\naccount administrator, or technical administrator of the CIK for which account information is to be viewed.\nThe filer A"
+        },
+        {
+          "info": {
+            "name": "Generate CCC",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://data.sec.gov/fm/:cik/ccc",
+            "params": [
+              {
+                "name": "cik",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The generate CCC API allows a filer to have EDGAR randomly generate a new CCC for the filer. This API will require the filer API token, the user API token,\nand the CIK of the EDGAR account for which the CCC will be generated. The individual associated with the user API token must be\nan account administrator of the EDGAR account/CIK for which the CCC is to be generated. The filer API token supplied for the request\nmust either match the CIK of the EDGAR account for which the CCC is to be generated"
+        },
+        {
+          "info": {
+            "name": "Create custom CCC",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://data.sec.gov/fm/:cik/ccc",
+            "params": [
+              {
+                "name": "cik",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The create custom CCC API allows a filer to specify a new CCC. The API will require the following inputs: the filer API token, the user API token,\nthe CIK of the EDGAR account for which the custom CCC will be created, the current CCC, and the new CCC. The individual associated with\nthe user API token must be an account administrator of the EDGAR account/CIK for which the CCC is to be changed. The filer API token supplied for\nthe request must either match the CIK for which the CCC is to be change"
+        },
+        {
+          "info": {
+            "name": "Request delegation invitations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://data.sec.gov/fm/:cik/delegationRequests",
+            "params": [
+              {
+                "name": "cik",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The request delegation invitations API provides the ability for an EDGAR account (for example, a filing agent) to request delegation from one\nor more filers. If a filer accepts the delegation request, a delegation invitation will be sent from the filer to the EDGAR account requesting\ndelegation. If the delegation invitation is accepted by the EDGAR account requesting delegation, that EDGAR account will become a delegated\nentity that can submit filings on behalf of the filer. This API will requir"
+        },
+        {
+          "info": {
+            "name": "View delegations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.sec.gov/fm/:cik/delegations",
+            "params": [
+              {
+                "name": "cik",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The view delegations API provides the ability for a filer/EDGAR account to retrieve a list of all its delegations to and from other\nEDGAR accounts/CIKs. This API will require the following inputs:  the filer API token, the user API token, and the EDGAR account/CIK\nfor which delegation information is to be retrieved. The individual associated with the user API token must be a user or an account\nadministrator of the CIK for which delegation information is to be retrieved. The filer API token suppl"
+        },
+        {
+          "info": {
+            "name": "Send delegation invitations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://data.sec.gov/fm/:cik/delegations",
+            "params": [
+              {
+                "name": "cik",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The send delegation invitations API provides the ability for a filer to delegate to one or more EDGAR accounts. If those EDGAR accounts accept\nthe delegation invitation, those EDGAR accounts will become delegated entities who can submit filings on behalf of the delegating filer.\nThis API will require the following inputs: the filer API token, the user API token, the delegating filer’s CIK, and a list of one or more\ndelegated entity CIKs that will receive the delegation invitation. The individual"
+        },
+        {
+          "info": {
+            "name": "View individuals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.sec.gov/fm/:cik/individuals",
+            "params": [
+              {
+                "name": "cik",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The view individuals API provides the ability to view all individuals with a role for an EDGAR account/CIK. This API will require the following\ninputs: the filer API token, the user API token, and the CIK for which individuals are to be viewed. The individual associated with the user\nAPI token must be an account administrator of the CIK for which individuals are to be viewed. The filer API token supplied for the request must\neither match the CIK for which individuals are to be viewed or the CIK "
+        },
+        {
+          "info": {
+            "name": "Add individuals",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://data.sec.gov/fm/:cik/individuals",
+            "params": [
+              {
+                "name": "cik",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The add individuals API allows for one or more individuals to be added in specific role(s) for a filer. This API will require the following\ninputs: the filer API token, the user API token, the EDGAR account CIK for which individuals are to be added, a list of individuals\n(identified by their names and Login.gov email addresses), and their new roles. The individual associated with the user API token must be\nan account administrator of the CIK for which individuals are to be added. The filer API t"
+        },
+        {
+          "info": {
+            "name": "Change roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://data.sec.gov/fm/:cik/individuals",
+            "params": [
+              {
+                "name": "cik",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The change roles API provides the ability to update roles for individuals for a CIK. This API will require the following inputs: the filer API\ntoken, the user API token, the EDGAR account CIK for which roles are to be changed, a list of the individuals (identified by their Login.gov\nemail addresses), and their new roles (updated roles). The individual associated with the user API token must be an account administrator of\nthe CIK for which roles are to be changed. The filer API token supplied for"
+        },
+        {
+          "info": {
+            "name": "Remove individuals",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://data.sec.gov/fm/:cik/individuals",
+            "params": [
+              {
+                "name": "cik",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The remove individuals API provides the ability to remove one or more individuals. This API will require the following inputs: the filer API\ntoken, the user API token, the EDGAR account CIK for which individuals are to be removed, a list of individuals (identified by their\nLogin.gov email addresses), and their roles to be removed. The individual associated with the user API token must be an account administrator\nof the CIK for which individuals are to be removed. The filer API token supplied for"
+        },
+        {
+          "info": {
+            "name": "Filing credentials verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.sec.gov/fm/:cik/verify",
+            "params": [
+              {
+                "name": "cik",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The filing credentials verification API provides the ability to view filing credentials for an EDGAR account/CIK. The API GET method requires\nthe filer API token and the user API token in the header along with the relevant CIK in the path of the URL. The individual associated with\nthe user API token must be a user, account administrator, delegated user, or delegated account administrator of the CIK for which the filing\ncredentials are to be verified. The filer API token supplied for the request "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

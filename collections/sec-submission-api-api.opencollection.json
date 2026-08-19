@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SEC EDGAR Data Company Concept Submission API API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Submission API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Bulk Live Submission",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://data.sec.gov/submission/bulk/live",
+            "headers": [
+              {
+                "name": "X-EDGAR-CIK",
+                "value": ""
+              },
+              {
+                "name": "X-EDGAR-LOGIN-CIK",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Allows an authorized filer to transmit a BULK LIVE submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return a list of accession numbers. EDGAR will then begin processing the submissions."
+        },
+        {
+          "info": {
+            "name": "Bulk Test Submission",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://data.sec.gov/submission/bulk/test",
+            "headers": [
+              {
+                "name": "X-EDGAR-CIK",
+                "value": ""
+              },
+              {
+                "name": "X-EDGAR-LOGIN-CIK",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Allows an authorized filer to transmit a BULK TEST submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return a list of accession numbers. EDGAR will then begin processing the submissions."
+        },
+        {
+          "info": {
+            "name": "Single Live Submission",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://data.sec.gov/submission/single/live",
+            "headers": [
+              {
+                "name": "X-EDGAR-CIK",
+                "value": ""
+              },
+              {
+                "name": "X-EDGAR-LOGIN-CIK",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Allows an authorized filer to transmit a SINGLE LIVE submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return an accession number. EDGAR will then begin processing the submission."
+        },
+        {
+          "info": {
+            "name": "Single Test Submission",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://data.sec.gov/submission/single/test",
+            "headers": [
+              {
+                "name": "X-EDGAR-CIK",
+                "value": ""
+              },
+              {
+                "name": "X-EDGAR-LOGIN-CIK",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Allows an authorized filer to transmit a SINGLE TEST submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return an accession number. EDGAR will then begin processing the submission."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

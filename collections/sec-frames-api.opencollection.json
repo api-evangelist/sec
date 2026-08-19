@@ -1,0 +1,55 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SEC EDGAR Data Company Concept Frames API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Frames",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get cross-company data for a concept in a period",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.sec.gov/api/xbrl/frames/:taxonomy/:tag/:unit/:period.json",
+            "params": [
+              {
+                "name": "taxonomy",
+                "value": "",
+                "type": "path",
+                "description": "XBRL taxonomy. One of us-gaap, ifrs-full, dei, or srt.\n"
+              },
+              {
+                "name": "tag",
+                "value": "",
+                "type": "path",
+                "description": "XBRL concept tag name."
+              },
+              {
+                "name": "unit",
+                "value": "",
+                "type": "path",
+                "description": "Unit of measure. Common values: USD, shares, pure, USD-per-shares.\n"
+              },
+              {
+                "name": "period",
+                "value": "",
+                "type": "path",
+                "description": "Reporting period. Annual: CY2023. Quarterly duration: CY2023Q1. Quarterly instantaneous: CY2023Q1I.\n"
+              }
+            ]
+          },
+          "docs": "Returns data for a given XBRL concept across all companies that reported it for a specific period. This enables cross-company comparisons for any financial metric. Periods can be annual (CY2023), quarterly (CY2023Q1), or instantaneous (CY2023Q1I for point-in-time balance sheet concepts). The response includes each company's CIK, entity name, accession number, location reference, and reported value.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,37 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SEC EDGAR Data Company Concept Submissions API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Submissions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get company submissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.sec.gov/submissions/CIK:cik.json",
+            "params": [
+              {
+                "name": "cik",
+                "value": "",
+                "type": "path",
+                "description": "Central Index Key (CIK) with leading zeros to reach 10 digits. Example: 0000320193 for Apple Inc.\n"
+              }
+            ]
+          },
+          "docs": "Returns a company's complete filing history and metadata identified by Central Index Key (CIK). The response includes company name, SIC code, state of incorporation, addresses, phone number, and a list of recent filings with accession numbers, form types, filing dates, and document metadata. For companies with more than 40 filings, additional files are referenced in the response.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

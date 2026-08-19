@@ -1,0 +1,352 @@
+{
+  "item": [
+    {
+      "id": "c6f2bff9-aab8-4bb8-87f8-f93ed44315dd",
+      "name": "Search",
+      "description": {
+        "content": "Full-text search across EDGAR filing documents",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "30c3921d-e770-46d8-bafa-7eb79b693db2",
+          "name": "Search EDGAR filings by full text",
+          "request": {
+            "name": "Search EDGAR filings by full text",
+            "description": {
+              "content": "Searches the full text of EDGAR filings using Elasticsearch-backed indexing. Supports keyword queries, boolean operators, phrase matching, and field-specific filters. Results include filing metadata and direct links to matching documents. Rate limited to 10 requests per second.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "LATEST",
+                "search-index",
+                "efts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "Full-text search query. Supports phrase matching (\"exact phrase\"), boolean operators (AND, OR, NOT), and field-specific searches (e.g., entity_name:\"Apple Inc\"). Leave empty to browse all filings.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "dateRange",
+                  "value": "<string>",
+                  "description": "Date range filter. Use \"custom\" to specify startdt and enddt, or \"30d\", \"1y\", \"5y\" for relative ranges.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "startdt",
+                  "value": "<date>",
+                  "description": "Start date for custom date range filter (YYYY-MM-DD format). Only used when dateRange is \"custom\".\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "enddt",
+                  "value": "<date>",
+                  "description": "End date for custom date range filter (YYYY-MM-DD format). Only used when dateRange is \"custom\".\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "forms",
+                  "value": "<string>",
+                  "description": "Comma-separated list of form types to filter results. Example: 10-K,10-Q,8-K\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "entity",
+                  "value": "<string>",
+                  "description": "Filter by entity name. Partial matches supported.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "ticker",
+                  "value": "<string>",
+                  "description": "Filter by stock ticker symbol.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "_source",
+                  "value": "<string>",
+                  "description": "Comma-separated list of fields to return in the response. Default returns all fields.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "0",
+                  "description": "Starting offset for pagination (zero-based).\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "10",
+                  "description": "Number of results to return per page. Maximum is 10 per request for full-text results.\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ae8d1dd9-7473-470b-b0b4-e57377f648a5",
+              "name": "Search results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "LATEST",
+                    "search-index",
+                    "efts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "revenue recognition"
+                    },
+                    {
+                      "key": "dateRange",
+                      "value": "custom"
+                    },
+                    {
+                      "key": "startdt",
+                      "value": "2023-01-01"
+                    },
+                    {
+                      "key": "enddt",
+                      "value": "2023-12-31"
+                    },
+                    {
+                      "key": "forms",
+                      "value": "10-K,10-Q"
+                    },
+                    {
+                      "key": "entity",
+                      "value": "Apple Inc"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "AAPL"
+                    },
+                    {
+                      "key": "_source",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"hits\": {\n    \"total\": {\n      \"value\": 1234,\n      \"relation\": \"eq\"\n    },\n    \"hits\": [\n      {\n        \"_id\": \"string\",\n        \"_score\": 6576.871778202195,\n        \"_source\": {\n          \"period_of_report\": \"2023-09-30\",\n          \"entity_name\": \"Apple Inc.\",\n          \"file_num\": \"001-36743\",\n          \"film_num\": \"string\",\n          \"form_type\": \"10-K\",\n          \"biz_location\": \"CA\",\n          \"inc_states\": \"CA\",\n          \"file_date\": \"2023-11-03\",\n          \"accession_no\": \"0000320193-23-000106\",\n          \"category\": \"form-type\",\n          \"display_date_filed\": \"2023-11-03\",\n          \"ticker\": [\n            \"AAPL\"\n          ],\n          \"xsl\": \"string\",\n          \"id\": \"string\",\n          \"inline_xbrl\": true,\n          \"file_id\": \"string\"\n        }\n      },\n      {\n        \"_id\": \"string\",\n        \"_score\": 1309.5062891158104,\n        \"_source\": {\n          \"period_of_report\": \"2023-09-30\",\n          \"entity_name\": \"Apple Inc.\",\n          \"file_num\": \"001-36743\",\n          \"film_num\": \"string\",\n          \"form_type\": \"10-K\",\n          \"biz_location\": \"CA\",\n          \"inc_states\": \"CA\",\n          \"file_date\": \"2023-11-03\",\n          \"accession_no\": \"0000320193-23-000106\",\n          \"category\": \"form-type\",\n          \"display_date_filed\": \"2023-11-03\",\n          \"ticker\": [\n            \"AAPL\"\n          ],\n          \"xsl\": \"string\",\n          \"id\": \"string\",\n          \"inline_xbrl\": true,\n          \"file_id\": \"string\"\n        }\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f32f0c66-d3d1-4412-8cf8-95e610cf5e99",
+              "name": "Invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "LATEST",
+                    "search-index",
+                    "efts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "revenue recognition"
+                    },
+                    {
+                      "key": "dateRange",
+                      "value": "custom"
+                    },
+                    {
+                      "key": "startdt",
+                      "value": "2023-01-01"
+                    },
+                    {
+                      "key": "enddt",
+                      "value": "2023-12-31"
+                    },
+                    {
+                      "key": "forms",
+                      "value": "10-K,10-Q"
+                    },
+                    {
+                      "key": "entity",
+                      "value": "Apple Inc"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "AAPL"
+                    },
+                    {
+                      "key": "_source",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b9228973-10a9-42c8-a8f0-176c6ecf6caf",
+              "name": "Rate limit exceeded (10 requests per second)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "LATEST",
+                    "search-index",
+                    "efts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "revenue recognition"
+                    },
+                    {
+                      "key": "dateRange",
+                      "value": "custom"
+                    },
+                    {
+                      "key": "startdt",
+                      "value": "2023-01-01"
+                    },
+                    {
+                      "key": "enddt",
+                      "value": "2023-12-31"
+                    },
+                    {
+                      "key": "forms",
+                      "value": "10-K,10-Q"
+                    },
+                    {
+                      "key": "entity",
+                      "value": "Apple Inc"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "AAPL"
+                    },
+                    {
+                      "key": "_source",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://data.sec.gov",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f2249717-9055-45cc-a434-70e60e74fb03",
+    "name": "SEC EDGAR Data Company Concept Search API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.\n\n\nContact Support:\n Name: SEC EDGAR Help",
+      "type": "text/plain"
+    }
+  }
+}

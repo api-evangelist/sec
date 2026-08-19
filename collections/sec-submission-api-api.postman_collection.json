@@ -1,0 +1,1756 @@
+{
+  "item": [
+    {
+      "id": "5b4e4b40-9b5a-438d-ae99-c5c4e5903819",
+      "name": "Submission API",
+      "description": {
+        "content": "    Submission of filings to EDGAR by API can be made through the Submission API. The Submission API requires the presentation of a Filer API Token in combination with a User API Token. Optionally,\n    filers could also specify a login CIK if there is a delegation from the EDGAR account corresponding to the login CIK to the filer API token EDGAR account/CIK. Delegations can be established on\n    the Filer Management dashboard under “Manage Delegations and User Groups.” For more information on establishing delegations,\n    see [How Do I “Understand and Manage Delegation.](https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-manage-delegation)”\n\n    Filings transmitted through the Submission API are expected to conform to the filing standard(s) [provided by the SEC](https://www.sec.gov/submit-filings).\n    Information is provided on the required format and contents of filings by the [Technical Specifications](https://www.sec.gov/submit-filings/technical-specifications).\n    Information and guidance on filing can be found in the [EDGAR Filing Manual](https://www.sec.gov/submit-filings/edgar-filer-manual).\n    Information on specific forms can be found in the [SEC Forms Index](https://www.sec.gov/submit-filings/forms-index).\n\n    The Submission API will return accession numbers for the submitted filings. A 202 HTTP status code indicates only that processing will begin in EDGAR and an\n    accession number or accession numbers have been generated. Filings with errors will be processed and suspended by EDGAR. The results of processing (status and errors)\n    are not provided by this endpoint and are instead available to clients using the API through the Submission Status API.\n\n    When using Submission API endpoints, the client can optionally specify the \"Expect: 100-continue\" HTTP request header to allow a response from these API resources\n    to be returned before uploading the entire filing in the event that the EDGAR API determines that the request will not be allowed.\n    This header should only be used for requests that have a body more than 1MiB in size.\n\n    Filings may be transmitted via either SINGLE or BULK transmission. A SINGLE transmission provides a single filling and will result in a response containing an accession number if the filing is transmitted successfully or an error if there is an issue while transmitting the filing. Even if a filing is successfully transmitted through the submission API, the filing may still be suspended by EDGAR if the contents of the filing do not satisfy EDGAR filing requirements. The accession number may be provided to the Submission Status API in order to check whether the filing was accepted by EDGAR.\n\n    A BULK filing, in contrast, is a single document that contains multiple filings to be submitted. If one or more filings are successfully transmitted then one or more accession numbers will be created and returned in the same order filings are included in the BULK filing document. However, if a filing is not successfully transmitted then an accession number may not be created, which means that the filer may have difficulty determining which accession number corresponds to which filing in the BULK filing document. Even if a filing is successfully transmitted through the Submission API, the filing may still be suspended by EDGAR if the contents of the filing do not satisfy EDGAR filing requirements. The relevant accession number may be provided to the Submission Status API in order to check whether the filing was accepted by EDGAR.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b49e8fa0-0bd4-48df-ad3b-39e05c7b44ee",
+          "name": "Bulk Live Submission",
+          "request": {
+            "name": "Bulk Live Submission",
+            "description": {
+              "content": "Allows an authorized filer to transmit a BULK LIVE submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return a list of accession numbers. EDGAR will then begin processing the submissions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "submission",
+                "bulk",
+                "live"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                "key": "X-EDGAR-CIK",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                "key": "X-EDGAR-LOGIN-CIK",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/xml"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element>(string)</element>",
+              "options": {
+                "raw": {
+                  "language": "xml"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "41abe8a1-83f1-4543-8680-b6765b316907",
+              "name": "Accepted. The filing has been transmitted to the BULK TEST resource and the EDGAR system has generated accession number(s) for each contained filing. The submission(s) have begun processing.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "bulk",
+                    "live"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>LIVE</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"8bdd9ff5f82da173d41bf1ed03a80af4\",\n  \"locator\": \"47a94d\",\n  \"status\": \"RECEIVED\",\n  \"responses\": [\n    {\n      \"accessionNumber\": \"0000000000-22-000001\",\n      \"type\": \"LIVE\",\n      \"messages\": []\n    },\n    {\n      \"accessionNumber\": \"0000000000-22-000006\",\n      \"type\": \"LIVE\",\n      \"messages\": []\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0b91df9e-36d3-4c41-9e06-aa27c0b469f8",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "bulk",
+                    "live"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>LIVE</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must not be blank or empty.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bdb54c5a-4c05-479a-b2d4-e3e75847b7ea",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "bulk",
+                    "live"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>LIVE</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d04802a-7a10-4114-95a2-7c42728504eb",
+              "name": "Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to file (1) for the CIK associated with the Filer API Token and (2) for any CIKs for which filings are being submitted.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "bulk",
+                    "live"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>LIVE</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc7b8709-0f4c-4610-ba6c-6d54e5abb7cf",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "bulk",
+                    "live"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>LIVE</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f45deafe-3513-43dd-b864-9c1751bddb35",
+              "name": "A request was made to this resource outside of operational hours.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "bulk",
+                    "live"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>LIVE</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPkxJVkU8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"44230c24bc6ce1b884cc5b739819d29942\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"EDGAR is not available because EDGAR is reporting that it is not within operating hours.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0a265a1d-dc20-4aec-851b-f869c443e50a",
+          "name": "Bulk Test Submission",
+          "request": {
+            "name": "Bulk Test Submission",
+            "description": {
+              "content": "Allows an authorized filer to transmit a BULK TEST submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return a list of accession numbers. EDGAR will then begin processing the submissions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "submission",
+                "bulk",
+                "test"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                "key": "X-EDGAR-CIK",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                "key": "X-EDGAR-LOGIN-CIK",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/xml"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element>(string)</element>",
+              "options": {
+                "raw": {
+                  "language": "xml"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "21eb8527-b603-46b8-b45b-47cec4d180fd",
+              "name": "Accepted. The filing has been transmitted to the BULK TEST resource and the EDGAR system has generated accession number(s) for each contained filing. The submission(s) have begun processing.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "bulk",
+                    "test"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>TEST</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"8bdd9ff5f82da173d41bf1ed03a80af4\",\n  \"locator\": \"47a94d\",\n  \"responses\": [\n    {\n      \"accessionNumber\": \"0000000000-22-000001\",\n      \"type\": \"TEST\",\n      \"messages\": []\n    },\n    {\n      \"accessionNumber\": \"0000000000-22-000009\",\n      \"type\": \"TEST\",\n      \"messages\": []\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8bb685b0-f2f9-413d-84e5-aeb095b83db9",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "bulk",
+                    "test"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>TEST</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must not be blank or empty.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "442776e2-0899-462d-97ef-6bbe55e306f4",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "bulk",
+                    "test"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>TEST</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0ff789d8-ea2f-4f34-a7b7-7fe0af35e95f",
+              "name": "Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to file (1) for the CIK associated with the Filer API Token and (2) for any CIKs for which filings are being submitted.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "bulk",
+                    "test"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>TEST</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f9e3e185-749a-4c7e-b91b-c0dd8e93ff7c",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "bulk",
+                    "test"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>TEST</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "01009d47-2694-46c9-8fd6-36315c3f5384",
+              "name": "A request was made to this resource outside of operational hours.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "bulk",
+                    "test"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<bul:edgarBulkSubmission xmlns:bul=\"http://www.sec.gov/edgar/bulkfiling\">\n  <bul:liveTestFlag>TEST</bul:liveTestFlag>\n  <bul:attachments>\n    <bul:attachment>\n      <bul:submissionName>S-1.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnZmVlIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2Vj\nLmdvdi9lZGdhci9jb21tb24iIHhtbG5zOmZlZWM9Imh0dHA6Ly93d3cuc2VjLmdvdi9lZGdhci9m\nZWVjb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZsYWc+CiAg\nPGNvcjpmbGFncz4KICAgIDxjb3I6Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb3I6Y29uZmly\nbWluZ0NvcHlGbGFnPgogICAgPGNvcjpkZWxheWluZ0FtZW5kbWVudEZsYWc+ZmFsc2U8L2Nvcjpk\nZWxheWluZ0FtZW5kbWVudEZsYWc+CiAgICA8Y29yOm92ZXJyaWRlSW50ZXJuZXRGbGFnPmZhbHNl\nPC9jb3I6b3ZlcnJpZGVJbnRlcm5ldEZsYWc+CiAgICA8Y29yOnJldHVybkNvcHlGbGFnPmZhbHNl\nPC9jb3I6cmV0dXJuQ29weUZsYWc+CiAgPC9jb3I6ZmxhZ3M+CiAgPGNvcjpzdWJtaXNzaW9uVHlw\nZT5TLTE8L2NvcjpzdWJtaXNzaW9uVHlwZT4KICA8Y29yOmZpbGVyPgogICAgPGNvcjpmaWxlcklk\nPjAzMDE0NTEzMjE8L2NvcjpmaWxlcklkPgogICAgPGNvcjpmaWxlckNjYz4jZWVjYjk4YTwvY29y\nOmZpbGVyQ2NjPgogICAgPGNvcjpmaWxlckZvcm1UeXBlPlMtMTwvY29yOmZpbGVyRm9ybVR5cGU+\nCiAgPC9jb3I6ZmlsZXI+CiAgPGNvcjpzcm9zPgogICAgPGNvbTpzcm9JZD5OT05FPC9jb206c3Jv\nSWQ+CiAgPC9jb3I6c3Jvcz4KICA8Y29yOnNtYWxsQnVzaW5lc3NGbGFnPmZhbHNlPC9jb3I6c21h\nbGxCdXNpbmVzc0ZsYWc+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPmZhbHNlPC9j\nb3I6ZW1lcmdpbmdHcm93dGhDb21wYW55RmxhZz4KICA8Y29yOm5vdGlmaWNhdGlvbnM+CiAgICA8\nY29tOmludGVybmV0Tm90aWZpY2F0aW9uQWRkcmVzcz5vaGhAc2VjLmdvdjwvY29tOmludGVybmV0\nTm90aWZpY2F0aW9uQWRkcmVzcz4KICA8L2Nvcjpub3RpZmljYXRpb25zPgogIDxjb3I6ZG9jdW1l\nbnRzPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzEudHh0\nPC9jb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Uy0x\nPC9jb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPktpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FEUXBHYVhKemRDQmti\nMk4xYldWdQpkQTBLRFFvZ0lDQWdJQ0FnSUZOUVJVTkpUVVZPSUMwZ1RrOVVJRUZPSUU5R1JrbERT\nVUZNSUVaSlRFbE9SdzBLRFFvcUtpb3EKS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9OQ2cwSwo8L2NvbTpjb250ZW50cz4KICAgIDwvY29tOmRvY3VtZW50Pgog\nICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmRvYzIudHh0PC9jb206\nY29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+Q09WRVI8L2Nv\nbTpjb25mb3JtZWREb2N1bWVudFR5cGU+CiAgICAgIDxjb206Y29udGVudHM+S2lvcUtpb3FLaW9x\nS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcURRcEJaSFpoYm1ObFpDQlRi\nMlowCmQyRnlaU0JUZVhOMFpXMXpEUW9nSUNBZ0lDQWdJRk5RUlVOSlRVVk9JQzBnVGs5VUlFRk9J\nRTlHUmtsRFNVRk1JRVpKVEVsTwpSdzBLRFFvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FL\naW9xS2lvcUtpb3FLaW9xS2lvcUtpb05DZzBLCjwvY29tOmNvbnRlbnRzPgogICAgPC9jb206ZG9j\ndW1lbnQ+CiAgPC9jb3I6ZG9jdW1lbnRzPgogIDxjb3I6ZWRnYXJGZWU+CiAgICA8Y29yOnN1Ym1p\nc3Npb25GZWU+CiAgICAgIDxmZWVjOmZlZVBheW9ySW5mb3JtYXRpb24+CiAgICAgICAgPGZlZWM6\nZmlsZXJJZD4wMDAxMTI1ODUxPC9mZWVjOmZpbGVySWQ+CiAgICAgICAgPGZlZWM6ZmlsZXJDY2M+\nI3RlY2gxMjM8L2ZlZWM6ZmlsZXJDY2M+CiAgICAgIDwvZmVlYzpmZWVQYXlvckluZm9ybWF0aW9u\nPgogICAgICA8ZmVlYzpmZWVQYXltZW50TWV0aG9kPkZFRFdJUkU8L2ZlZWM6ZmVlUGF5bWVudE1l\ndGhvZD4KICAgICAgPGZlZWM6ZmVlQW1vdW50PjE0LjQwPC9mZWVjOmZlZUFtb3VudD4KICAgIDwv\nY29yOnN1Ym1pc3Npb25GZWU+CiAgICA8Y29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICAgICAgPGZl\nZWM6ZmVlT2ZmZXJpbmdTZWN1cml0eU5hbWU+RGVidDwvZmVlYzpmZWVPZmZlcmluZ1NlY3VyaXR5\nTmFtZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdTaGFyZXM+MTEwMTwvZmVlYzpmZWVPZmZlcmlu\nZ1NoYXJlcz4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4xMDAwLjAwMDA8\nL2ZlZWM6ZmVlT2ZmZXJpbmdBbW91bnRQZXJTaGFyZT4KICAgICAgPGZlZWM6ZmVlT2ZmZXJpbmdB\nZ2dyZWdhdGVQcmljZT4xMTAxMDIuMzY8L2ZlZWM6ZmVlT2ZmZXJpbmdBZ2dyZWdhdGVQcmljZT4K\nICAgIDwvY29yOnN1Ym1pc3Npb25PZmZlcmluZz4KICA8L2NvcjplZGdhckZlZT4KPC9jb3I6ZWRn\nYXJTdWJtaXNzaW9uPg==\n</bul:contents>\n    </bul:attachment>\n    <bul:attachment>\n      <bul:submissionName>8-K.xml</bul:submissionName>\n      <bul:contents>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxjb3I6ZWRnYXJTdWJtaXNzaW9uIHhtbG5zOmNvcj0iaHR0\ncDovL3d3dy5zZWMuZ292L2VkZ2FyL2NvcmVnIiB4bWxuczpjb209Imh0dHA6Ly93d3cuc2VjLmdv\ndi9lZGdhci9jb21tb24iPgogIDxjb3I6bGl2ZVRlc3RGbGFnPlRFU1Q8L2NvcjpsaXZlVGVzdEZs\nYWc+CiAgPGNvcjpmbGFncz4KICAgIDxjb206Y29uZmlybWluZ0NvcHlGbGFnPmZhbHNlPC9jb206\nY29uZmlybWluZ0NvcHlGbGFnPgogICAgPGNvbTpvdmVycmlkZUludGVybmV0RmxhZz5mYWxzZTwv\nY29tOm92ZXJyaWRlSW50ZXJuZXRGbGFnPgogICAgPGNvbTpyZXR1cm5Db3B5RmxhZz5mYWxzZTwv\nY29tOnJldHVybkNvcHlGbGFnPgogIDwvY29yOmZsYWdzPgogIDxjb3I6c3VibWlzc2lvblR5cGU+\nOC1LPC9jb3I6c3VibWlzc2lvblR5cGU+CiAgPGNvcjpmaWxlcj4KICAgIDxjb3I6ZmlsZXJJZD4w\nMzAxNzIyODQ4PC9jb3I6ZmlsZXJJZD4KICAgIDxjb3I6ZmlsZXJDY2M+YmNjOW9lI2U8L2Nvcjpm\naWxlckNjYz4KICA8L2NvcjpmaWxlcj4KICA8Y29yOnNyb3M+CiAgICA8Y29tOnNyb0lkPk5PTkU8\nL2NvbTpzcm9JZD4KICA8L2Nvcjpzcm9zPgogIDxjb3I6aXRlbXM+CiAgICA8Y29yOml0ZW0+MS4w\nMTwvY29yOml0ZW0+CiAgPC9jb3I6aXRlbXM+CiAgPGNvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlG\nbGFnPnRydWU8L2NvcjplbWVyZ2luZ0dyb3d0aENvbXBhbnlGbGFnPgogIDxjb3I6ZG9jdW1lbnRz\nPgogICAgPGNvbTpkb2N1bWVudD4KICAgICAgPGNvbTpjb25mb3JtZWROYW1lPmZpbGUudHh0PC9j\nb206Y29uZm9ybWVkTmFtZT4KICAgICAgPGNvbTpjb25mb3JtZWREb2N1bWVudFR5cGU+OC1LPC9j\nb206Y29uZm9ybWVkRG9jdW1lbnRUeXBlPgogICAgICA8Y29tOmNvbnRlbnRzPmRHVnpkQT09PC9j\nb206Y29udGVudHM+CiAgICA8L2NvbTpkb2N1bWVudD4KICA8L2Nvcjpkb2N1bWVudHM+CjwvY29y\nOmVkZ2FyU3VibWlzc2lvbj4=\n</bul:contents>\n    </bul:attachment>\n  </bul:attachments>\n</bul:edgarBulkSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"44230c24bc6ce1b884cc5b739819d29942\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"EDGAR is not available because EDGAR is reporting that it is not within operating hours.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e47202a3-964e-4bfc-ab70-9a9b1afba525",
+          "name": "Single Live Submission",
+          "request": {
+            "name": "Single Live Submission",
+            "description": {
+              "content": "Allows an authorized filer to transmit a SINGLE LIVE submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return an accession number. EDGAR will then begin processing the submission.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "submission",
+                "single",
+                "live"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                "key": "X-EDGAR-CIK",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                "key": "X-EDGAR-LOGIN-CIK",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/xml"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element>(string)</element>",
+              "options": {
+                "raw": {
+                  "language": "xml"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ae884004-bf35-4a0b-bf97-33d038e5b2a3",
+              "name": "Accepted. The filing has been transmitted to the SINGLE LIVE resource and the EDGAR system has generated an accession number. The submission has begun processing.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "single",
+                    "live"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>LIVE</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"820c24bc6ce9ce84cc5b739819d27742\",\n  \"locator\": \"47a94d\",\n  \"accessionNumber\": \"0000000000-22-000001\",\n  \"type\": \"LIVE\",\n  \"messages\": []\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "57fa9471-36f9-440e-9345-9b3eb919e003",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "single",
+                    "live"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>LIVE</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must not be blank or empty.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b8491eb-7f72-4d0e-9f4d-72f8b286a56c",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "single",
+                    "live"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>LIVE</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "100a1b86-f063-49a8-988b-f7c93b3aefaf",
+              "name": "Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to file (1) for the CIK associated with the Filer API Token and (2) for any CIKs for which filings are being submitted.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "single",
+                    "live"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>LIVE</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d277a26a-5fd3-46cd-9c89-bfa4fb7232fb",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "single",
+                    "live"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>LIVE</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0acf5291-dee5-4ac2-baa7-1d5c8be03f8a",
+              "name": "A request was made to this resource outside of operational hours.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "single",
+                    "live"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>LIVE</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"44230c24bc6ce1b884cc5b739819d29942\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"EDGAR is not available because EDGAR is reporting that it is not within operating hours.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "43be08fb-d429-428f-b573-d4468973d28f",
+          "name": "Single Test Submission",
+          "request": {
+            "name": "Single Test Submission",
+            "description": {
+              "content": "Allows an authorized filer to transmit a SINGLE TEST submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return an accession number. EDGAR will then begin processing the submission.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "submission",
+                "single",
+                "test"
+              ],
+              "host": [
+                "api",
+                "edgarfiling",
+                "sec",
+                "gov"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                "key": "X-EDGAR-CIK",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                "key": "X-EDGAR-LOGIN-CIK",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/xml"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element>(string)</element>",
+              "options": {
+                "raw": {
+                  "language": "xml"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "68e4a7a8-23c5-497d-b778-5dac56ebeb85",
+              "name": "Accepted. The filing has been transmitted to the SINGLE TEST resource and the EDGAR system has generated an accession number. The submission has begun processing.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "single",
+                    "test"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>TEST</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"66ff8850f952de766df03a21da71fe69\",\n  \"locator\": \"47a94d\",\n  \"accessionNumber\": \"0000000000-25-000001\",\n  \"mode\": \"TEST\",\n  \"status\": \"RECEIVED\",\n  \"transmissionStatus\": \"RECEIVED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0dcc08b6-11c5-4b1a-9285-e8ab69366a19",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "single",
+                    "test"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>TEST</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"If the header X-EDGAR-LOGIN-CIK (or X-EDGAR-CIK) is provided it must not be blank or empty.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f1f38f6f-5d69-420d-be8b-f9d9b2169bac",
+              "name": "Unauthorized. This resource is being accessed with invalid or inactive tokens. Please check that the tokens in use are active in Filer Management or are assigned to active individuals.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "single",
+                    "test"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>TEST</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Unauthorized\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0f3f6d70-b2ec-4e68-9118-fbf1049b04f8",
+              "name": "Forbidden. A valid Filer API Token and User Access Token must be provided with this request. Please ensure that the User identified by the User Access Token is authorized to file (1) for the CIK associated with the Filer API Token and (2) for any CIKs for which filings are being submitted.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "single",
+                    "test"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>TEST</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"68e8ce7c1552544bccbdccd2663dced4\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"Forbidden.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e219fc95-a04c-4256-9c48-ed30062d474b",
+              "name": "Server error. An unexpected server-side error has occurred.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "single",
+                    "test"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>TEST</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"937de162bf9f1b6e7fc2bfb1165c1998\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"An unexpected error has occurred.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "81ea3cd0-f2b7-42d8-80ae-52afd812d2d4",
+              "name": "A request was made to this resource outside of operational hours.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "submission",
+                    "single",
+                    "test"
+                  ],
+                  "host": [
+                    "api",
+                    "edgarfiling",
+                    "sec",
+                    "gov"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "DEPRECATED in favor of X-EDGAR-LOGIN-CIK. If a value is sent in X-EDGAR-LOGIN-CIK this header will be ignored. If no header value is sent in X-EDGAR-LOGIN-CIK this header's value (if present) will be used. An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header to use to provide an alternate CIK to use to generate the accession number of the submission. The provided CIK must delegate to the CIK that the Filer API Token belongs to and the User API Token must represent a user that has permission to file for that CIK. This must be a valid CIK and cannot be blank or empty.",
+                    "key": "X-EDGAR-LOGIN-CIK",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element><?xml version=\"1.0\" ?>\n<cor:edgarSubmission xmlns:cor=\"http://www.sec.gov/edgar/coreg\" xmlns:com=\"http://www.sec.gov/edgar/common\">\n  <cor:liveTestFlag>TEST</cor:liveTestFlag>\n  <cor:flags>\n    <com:confirmingCopyFlag>false</com:confirmingCopyFlag>\n    <com:overrideInternetFlag>false</com:overrideInternetFlag>\n    <com:returnCopyFlag>false</com:returnCopyFlag>\n  </cor:flags>\n  <cor:submissionType>8-K</cor:submissionType>\n  <cor:filer>\n    <cor:filerId>1821451321</cor:filerId>\n    <cor:filerCcc>#decb44a</cor:filerCcc>\n  </cor:filer>\n  <cor:sros>\n    <com:sroId>NONE</com:sroId>\n  </cor:sros>\n  <cor:items>\n    <cor:item>1.01</cor:item>\n  </cor:items>\n  <cor:emergingGrowthCompanyFlag>true</cor:emergingGrowthCompanyFlag>\n  <cor:documents>\n    <com:document>\n      <com:conformedName>file.txt</com:conformedName>\n      <com:conformedDocumentType>8-K</com:conformedDocumentType>\n      <com:contents>dGVzdA==</com:contents>\n    </com:document>\n  </cor:documents>\n</cor:edgarSubmission></element>",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tracking\": \"44230c24bc6ce1b884cc5b739819d29942\",\n  \"locator\": \"19ab67\",\n  \"messages\": [\n    {\n      \"type\": \"ERROR\",\n      \"content\": \"EDGAR is not available because EDGAR is reporting that it is not within operating hours.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://data.sec.gov",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "79f19bc7-20fe-4366-8d09-a7f4afecd9cf",
+    "name": "SEC EDGAR Data Company Concept Submission API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.\n\n\nContact Support:\n Name: SEC EDGAR Help",
+      "type": "text/plain"
+    }
+  }
+}

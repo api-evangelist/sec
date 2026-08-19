@@ -1,0 +1,29 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SEC EDGAR Data Company Concept EDGAR Operational Status API API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "EDGAR Operational Status API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "EDGAR System Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.sec.gov/status"
+          },
+          "docs": "Uses EDGAR operating hours logic and communicates with other EDGAR components to determine the ability of the system to receive API calls and submissions."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

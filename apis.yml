@@ -280,6 +280,9 @@ apis:
     url: >-
       https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
 common:
+  - type: CapabilityMap
+    url: capabilities/sec-capability-edges.yml
+    name: SEC EDGAR Business Capability Map
   - type: AgenticAccess
     url: agentic-access/sec-agentic-access.yml
   - type: DomainSecurity

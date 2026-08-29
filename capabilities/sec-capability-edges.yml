@@ -1,0 +1,46 @@
+slug: sec
+provider: SEC EDGAR
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Public Sector & Government
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Company Concept
+  spec_file: sec-company-concept-api-openapi.yml
+  capability_id: BC-200.70
+  capability_id_l1: BC-200
+  capability_name: Statutory & Regulatory Reporting
+  confidence: 0.7
+  evidence: GET /api/xbrl/companyconcept/CIK{cik}/{taxonomy}/{tag}.json Get historical values for one
+    XBRL concept
+  reason: Exposes XBRL structured financial data from statutory SEC filings. The surface is regulator-side
+    publication of statutory/regulatory financial report data; statutory & regulatory reporting is the
+    closest supported capability, though consumption-side use is analytical.
+- tag: Company Facts
+  spec_file: sec-company-facts-api-openapi.yml
+  capability_id: BC-200.70
+  capability_id_l1: BC-200
+  capability_name: Statutory & Regulatory Reporting
+  confidence: 0.7
+  evidence: GET /api/xbrl/companyfacts/CIK{cik}.json Get all XBRL facts for a company
+  reason: All XBRL facts derived from SEC statutory filings — regulatory financial reporting data. Mapped
+    to statutory & regulatory reporting with moderate confidence given the API is a read-only data distribution
+    surface.
+- tag: Submission API
+  spec_file: sec-submission-api-api-openapi.yml
+  capability_id: BC-200.70
+  capability_id_l1: BC-200
+  capability_name: Statutory & Regulatory Reporting
+  confidence: 0.7
+  evidence: '"registered EDGAR filers to submit filings"; POST /submission/single/live  Single Live Submission'
+  reason: Operations submit statutory financial filings to the SEC on behalf of a registrant, which is
+    the machine interface for statutory/regulatory financial submissions. Some ambiguity as the vendor
+    is the regulator, but the surface realises the filer's regulatory reporting act.

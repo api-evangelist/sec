@@ -1,20 +1,16 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: SEC EDGAR Data Company Concept Submission Status API API
-  description: 'The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
-
-    '
-  version: 1.0.0
+  title: SEC EDGAR Filer Management Submission Status API
+  description: The EDGAR Filer Management API provides machine-to-machine access for registered EDGAR filers to submit filings, check submission status, and manage filer accounts. This API requires EDGAR Next authentication via API tokens (Filer API Token and optionally User API Token). Available operations include live and test filing submissions, submission status checks, operational status verification, and user management for filer accounts.
+  version: 1.11.0
   contact:
-    name: SEC EDGAR Help
-    url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany
-  license:
-    name: Public Domain
-    url: https://www.sec.gov/privacy.htm
+    name: EDGAR Filer Support
+    url: https://www.sec.gov/submit-filings/filer-support-resources/
   termsOfService: https://www.sec.gov/privacy.htm
 servers:
-- url: https://data.sec.gov
-  description: SEC EDGAR Data API
+- url: https://api.edgarfiling.sec.gov
+  description: EDGAR Filing API (Production)
+security: []
 tags:
 - name: Submission Status API
   description: "    The Submission Status API provides information from the EDGAR system. It requires a Filer API Token and accession number(s). To obtain information about a submission through the Submission Status API,\n    you must use a Filer API Token that belongs to the CIK that submitted the filing or the CIK that was the filer for the submission. The Submission Status API will only return the detailed information about\n    the filling (like error codes or the filer notification text) once the filing has reached the end of processing signified by the field 'final' being set to true.\n    \n\n    The statuses of filings are retained for limited amounts of time. The statuses of Accepted TEST filings are retained for two (2) days,  Accepted LIVE filings are retained for sixty (60) days, and Suspended filings,\n    regardless of type, are retained for six (6) days.\n"
@@ -364,271 +360,6 @@ paths:
         description: EDGAR Submission API
 components:
   schemas:
-    ZonedDateTime:
-      type: string
-      format: date-time
-      example: '2022-03-10T12:15:50-04:00'
-    SubmissionStatusResponseItem:
-      type: object
-      description: A submission status response is a single item in a list of submission responses.
-      title: Submission Status Response Item
-      properties:
-        submissionAccessionNumber:
-          type: string
-          description: The accession number associated with any item submissions.
-          title: Submission Accession Number
-        submissionFormType:
-          type: string
-          description: The FORM TYPE as it would appear on the Submission Status
-          title: Submission Form Type
-        items:
-          type: array
-          items:
-            type: string
-          description: The list of ITEM(s) as it would appear on the Submission Status
-          title: Items
-        accessionNumber:
-          type:
-          - string
-          - 'null'
-          example: 0000000001-22-000001
-          description: The unique number associated with an transmitted submission.
-          title: Accession Number
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-          description: A list of messages providing details associated with the submission response. This could range from a notification about the filing to errors related to the state of the filing. This should include things like submission error codes as well as other EDGAR output.
-          title: Messages
-        mode:
-          allOf:
-          - $ref: '#/components/schemas/SubmissionMode'
-          type: object
-        status:
-          type: string
-          enum:
-          - PROCESSING
-          - SUSPENDED
-          - DISSEMINATED
-          - NO_STATUS
-          - BLOCKED
-          - DONE
-          - ACCEPTED
-          example: SUSPENDED
-          description: 'A short string that indicates the status of a submission within the EDGAR system.
-
-            * `PROCESSING` - The submission is currently being processed by EDGAR
-
-            * `SUSPENDED` - The submission has been suspended by EDGAR
-
-            * `DISSEMINATED` - The submission has been processed and disseminated
-
-            * `NO_STATUS` - The current status of the submission cannot be determined
-
-            * `BLOCKED` - The submission has reached the blocked status and is awaiting further action
-
-            * `DONE` - The submission has reached the DONE state in the EDGAR system and no further processing is expected
-
-            * `ACCEPTED` - The submission has been accepted by EDGAR
-
-            '
-          title: Submission Processing Status
-        company:
-          type: string
-          description: The COMPANY as it would appear on the Submission Status
-          title: Company Name
-        documentCount:
-          type: integer
-          format: int32
-          description: The number of DOCUMENTS as it would appear on the Submission Status
-          title: Document Count
-        formType:
-          type: string
-          description: The FORM TYPE as it would appear on the Submission Status
-          title: Form Type
-        receivedDate:
-          allOf:
-          - $ref: '#/components/schemas/ZonedDateTime'
-          type: string
-          example: '2025-12-31T11:59:59-05:00'
-          description: The RECEIVED DATE as it would appear on the Submission Status (RFC3339 formatted date-time)
-          title: Received Date
-        filingDate:
-          allOf:
-          - $ref: '#/components/schemas/ZonedDateTime'
-          type: string
-          example: '2025-12-31T11:59:59-05:00'
-          description: The Filing DATE as it would appear on the Submission Status (RFC3339 formatted date-time)
-          title: Filing Date
-        acceptedDate:
-          allOf:
-          - $ref: '#/components/schemas/ZonedDateTime'
-          type: string
-          example: '2025-12-31T11:59:59-05:00'
-          description: 'When present: ACCEPTED DATE as it would appear on the Submission Status (RFC3339 formatted date-time)'
-          title: Accepted Date
-        suspendedDate:
-          allOf:
-          - $ref: '#/components/schemas/ZonedDateTime'
-          type: string
-          example: '2025-12-31T11:59:59-05:00'
-          description: 'When present: SUSPENDED DATE as it would appear on the Submission Status (RFC3339 formatted date-time)'
-          title: Suspended Date
-        final:
-          type: boolean
-          description: A boolean indicator that, when true, indicates that EDGAR has stopped processing the submission and that the current status is the final status. Once a submission is marked as having its final disposition the full details of the filling are available.
-          title: Final Disposition
-        submissionMessages:
-          type: array
-          items:
-            $ref: '#/components/schemas/SEFMessage'
-          description: A list messages that are derived from the Submission Error File. These messages include informationabout the error including a human-readable description and metadata about the message like the line numberor error code.
-          title: Submission Messages
-        fileNumbers:
-          type: array
-          items:
-            type: string
-          description: The list of FILE NUMBER(s) as it would appear on the Submission Status
-          title: File Numbers
-        notification:
-          type: string
-          format: base64
-          description: A base64 encoded string that, when decoded, is the plain text contents of the submission notification file matching the data from the "Retrieve Submission Information" function of the EDGAR Filing application. This field is only populated when the 'final' field is true.
-          title: Notification File
-        registrants:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubmissionRegistrant'
-          description: A list of registrants associated with the submission as they would appear in the REGISTRANT(s) section of the Submission Notification.
-          title: Submission Registrants
-        seriesInformation:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubmissionStatusSeriesItem'
-          description: A list of series information (if present) for the submission.
-          title: Submission Series Items
-        classInformation:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubmissionStatusClassItem'
-          description: A list of class information (if present) for the submission.
-          title: Submission Class Items
-        submissionProcessingStatus:
-          type: string
-          deprecated: true
-          enum:
-          - PROCESSING
-          - SUSPENDED
-          - DISSEMINATED
-          - NO_STATUS
-          - BLOCKED
-          - DONE
-          - ACCEPTED
-          example: SUSPENDED
-          description: 'A short string that indicates the status of a submission within the EDGAR system.
-
-            * `PROCESSING` - The submission is currently being processed by EDGAR
-
-            * `SUSPENDED` - The submission has been suspended by EDGAR
-
-            * `DISSEMINATED` - The submission has been processed and disseminated
-
-            * `NO_STATUS` - The current status of the submission cannot be determined
-
-            * `BLOCKED` - The submission has reached the blocked status and is awaiting further action
-
-            * `DONE` - The submission has reached the DONE state in the EDGAR system and no further processing is expected
-
-            * `ACCEPTED` - The submission has been accepted by EDGAR
-
-            '
-          title: Submission Processing Status
-    Message:
-      type: object
-      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
-      title: Message
-      properties:
-        type:
-          allOf:
-          - $ref: '#/components/schemas/MessageType'
-          type: string
-          example: NOTICE
-          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
-
-            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
-
-            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
-
-            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
-
-            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
-          title: Type
-        content:
-          type: string
-          example: The Filer API Key making this request will expire in less than two weeks.
-          description: The content of the message intended to be interpreted by a human consumer of the API output.
-          title: Content
-    SubmissionStatusClassItem:
-      type: object
-      description: Details about a Class related to a Submission
-      title: Submission Class
-      properties:
-        id:
-          type: string
-          description: Identifier for the class
-          title: ID
-        name:
-          type: string
-          description: Name of the class
-          title: Name
-        oldName:
-          type: string
-          description: Name of the class before the change induced by this filing, if a change was made.
-          title: Old Name
-        seriesId:
-          type: string
-          description: Identifier for the related series
-          title: Series ID
-        tickerSymbol:
-          type: string
-          description: Ticker symbol for the class
-          title: Ticker Symbol
-        oldTickerSymbol:
-          type: string
-          description: Ticker symbol for the class before the change induced by this filing, if a change was made.
-          title: Old Ticker Symbol
-    MultipleAccessionNumberRequest:
-      type: object
-      required:
-      - accessionNumbers
-      description: Allows a list of accession numbers to be presented to the Submission Status resource in order to request status on multiple submissions simultaneously.
-      title: Submission Number Request List
-      properties:
-        accessionNumbers:
-          type: array
-          maxItems: 25
-          minItems: 1
-          items:
-            type: string
-          description: The list of accession numbers that the caller wants to receive status for, maximum 25
-          title: Accession Number List
-    ErrorResponse:
-      type: object
-      description: When an error occurs in the API this is the standard response.
-      title: Error Response
-      properties:
-        tracking:
-          type: string
-          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
-          title: Tracking Identifier
-        locator:
-          type: string
-          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
-          title: Tracking Locator
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
     SEFMessage:
       type: object
       description: A Submission Error Message is a message that has come from EDGAR and is provided when the submission has reached a final disposition after encountering errors in EDGAR
@@ -865,64 +596,6 @@ components:
 
             '
           title: Submission Processing Status
-    SubmissionMode:
-      type: string
-      enum:
-      - LIVE
-      - TEST
-      example: LIVE
-      description: 'The submission mode of a filing:
-
-        * `TEST` - A submission mode that allows a filing to be tested for correctness
-
-        * `LIVE` - A submission mode that allows a filing to be evaluated as an official filing
-
-        For more information see the EDGAR Filing Manual
-
-        '
-      title: Submission Mode
-    ListSubmissionStatusResponse:
-      type: object
-      description: Provides a response that contains a list of submission status responses as well as a top-level list of messages.
-      title: Submission Status Response List
-      properties:
-        tracking:
-          type: string
-          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
-          title: Tracking Identifier
-        locator:
-          type: string
-          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
-          title: Tracking Locator
-        responses:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubmissionStatusResponseItem'
-          description: A list of submission status responses.
-          title: Submission Status Responses
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-          description: A list of messages associated with the submission response list. This should include more process/submission level errors like why a submission might be rejected from the API level.
-          title: Messages
-    SubmissionStatusSeriesItem:
-      type: object
-      description: Details about a Series related to a Submission
-      title: Submission Series
-      properties:
-        id:
-          type: string
-          description: Identifier for the series
-          title: ID
-        name:
-          type: string
-          description: Name of the series
-          title: Name
-        oldName:
-          type: string
-          description: Name of the series before the change induced by this filing, if a change was made.
-          title: Old Name
     SubmissionRegistrant:
       type: object
       description: Data item representing a registrant that can be returned as part of the status for a given submission.
@@ -950,6 +623,23 @@ components:
             type: string
           description: List of File Numbers for this Registrant
           title: File Numbers
+    ErrorResponse:
+      type: object
+      description: When an error occurs in the API this is the standard response.
+      title: Error Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
     MessageType:
       type: string
       enum:
@@ -959,3 +649,320 @@ components:
       - ERROR
       description: The type of the message being returned regarding how severe it is or what type of message it contains.
       title: Message Type
+    Message:
+      type: object
+      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
+      title: Message
+      properties:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/MessageType'
+          type: string
+          example: NOTICE
+          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
+
+            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
+
+            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
+
+            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
+
+            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
+          title: Type
+        content:
+          type: string
+          example: The Filer API Key making this request will expire in less than two weeks.
+          description: The content of the message intended to be interpreted by a human consumer of the API output.
+          title: Content
+    SubmissionStatusClassItem:
+      type: object
+      description: Details about a Class related to a Submission
+      title: Submission Class
+      properties:
+        id:
+          type: string
+          description: Identifier for the class
+          title: ID
+        name:
+          type: string
+          description: Name of the class
+          title: Name
+        oldName:
+          type: string
+          description: Name of the class before the change induced by this filing, if a change was made.
+          title: Old Name
+        seriesId:
+          type: string
+          description: Identifier for the related series
+          title: Series ID
+        tickerSymbol:
+          type: string
+          description: Ticker symbol for the class
+          title: Ticker Symbol
+        oldTickerSymbol:
+          type: string
+          description: Ticker symbol for the class before the change induced by this filing, if a change was made.
+          title: Old Ticker Symbol
+    SubmissionStatusResponseItem:
+      type: object
+      description: A submission status response is a single item in a list of submission responses.
+      title: Submission Status Response Item
+      properties:
+        submissionAccessionNumber:
+          type: string
+          description: The accession number associated with any item submissions.
+          title: Submission Accession Number
+        submissionFormType:
+          type: string
+          description: The FORM TYPE as it would appear on the Submission Status
+          title: Submission Form Type
+        items:
+          type: array
+          items:
+            type: string
+          description: The list of ITEM(s) as it would appear on the Submission Status
+          title: Items
+        accessionNumber:
+          type:
+          - string
+          - 'null'
+          example: 0000000001-22-000001
+          description: The unique number associated with an transmitted submission.
+          title: Accession Number
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages providing details associated with the submission response. This could range from a notification about the filing to errors related to the state of the filing. This should include things like submission error codes as well as other EDGAR output.
+          title: Messages
+        mode:
+          allOf:
+          - $ref: '#/components/schemas/SubmissionMode'
+          type: object
+        status:
+          type: string
+          enum:
+          - PROCESSING
+          - SUSPENDED
+          - DISSEMINATED
+          - NO_STATUS
+          - BLOCKED
+          - DONE
+          - ACCEPTED
+          example: SUSPENDED
+          description: 'A short string that indicates the status of a submission within the EDGAR system.
+
+            * `PROCESSING` - The submission is currently being processed by EDGAR
+
+            * `SUSPENDED` - The submission has been suspended by EDGAR
+
+            * `DISSEMINATED` - The submission has been processed and disseminated
+
+            * `NO_STATUS` - The current status of the submission cannot be determined
+
+            * `BLOCKED` - The submission has reached the blocked status and is awaiting further action
+
+            * `DONE` - The submission has reached the DONE state in the EDGAR system and no further processing is expected
+
+            * `ACCEPTED` - The submission has been accepted by EDGAR
+
+            '
+          title: Submission Processing Status
+        company:
+          type: string
+          description: The COMPANY as it would appear on the Submission Status
+          title: Company Name
+        documentCount:
+          type: integer
+          format: int32
+          description: The number of DOCUMENTS as it would appear on the Submission Status
+          title: Document Count
+        formType:
+          type: string
+          description: The FORM TYPE as it would appear on the Submission Status
+          title: Form Type
+        receivedDate:
+          allOf:
+          - $ref: '#/components/schemas/ZonedDateTime'
+          type: string
+          example: '2025-12-31T11:59:59-05:00'
+          description: The RECEIVED DATE as it would appear on the Submission Status (RFC3339 formatted date-time)
+          title: Received Date
+        filingDate:
+          allOf:
+          - $ref: '#/components/schemas/ZonedDateTime'
+          type: string
+          example: '2025-12-31T11:59:59-05:00'
+          description: The Filing DATE as it would appear on the Submission Status (RFC3339 formatted date-time)
+          title: Filing Date
+        acceptedDate:
+          allOf:
+          - $ref: '#/components/schemas/ZonedDateTime'
+          type: string
+          example: '2025-12-31T11:59:59-05:00'
+          description: 'When present: ACCEPTED DATE as it would appear on the Submission Status (RFC3339 formatted date-time)'
+          title: Accepted Date
+        suspendedDate:
+          allOf:
+          - $ref: '#/components/schemas/ZonedDateTime'
+          type: string
+          example: '2025-12-31T11:59:59-05:00'
+          description: 'When present: SUSPENDED DATE as it would appear on the Submission Status (RFC3339 formatted date-time)'
+          title: Suspended Date
+        final:
+          type: boolean
+          description: A boolean indicator that, when true, indicates that EDGAR has stopped processing the submission and that the current status is the final status. Once a submission is marked as having its final disposition the full details of the filling are available.
+          title: Final Disposition
+        submissionMessages:
+          type: array
+          items:
+            $ref: '#/components/schemas/SEFMessage'
+          description: A list messages that are derived from the Submission Error File. These messages include informationabout the error including a human-readable description and metadata about the message like the line numberor error code.
+          title: Submission Messages
+        fileNumbers:
+          type: array
+          items:
+            type: string
+          description: The list of FILE NUMBER(s) as it would appear on the Submission Status
+          title: File Numbers
+        notification:
+          type: string
+          format: base64
+          description: A base64 encoded string that, when decoded, is the plain text contents of the submission notification file matching the data from the "Retrieve Submission Information" function of the EDGAR Filing application. This field is only populated when the 'final' field is true.
+          title: Notification File
+        registrants:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmissionRegistrant'
+          description: A list of registrants associated with the submission as they would appear in the REGISTRANT(s) section of the Submission Notification.
+          title: Submission Registrants
+        seriesInformation:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmissionStatusSeriesItem'
+          description: A list of series information (if present) for the submission.
+          title: Submission Series Items
+        classInformation:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmissionStatusClassItem'
+          description: A list of class information (if present) for the submission.
+          title: Submission Class Items
+        submissionProcessingStatus:
+          type: string
+          deprecated: true
+          enum:
+          - PROCESSING
+          - SUSPENDED
+          - DISSEMINATED
+          - NO_STATUS
+          - BLOCKED
+          - DONE
+          - ACCEPTED
+          example: SUSPENDED
+          description: 'A short string that indicates the status of a submission within the EDGAR system.
+
+            * `PROCESSING` - The submission is currently being processed by EDGAR
+
+            * `SUSPENDED` - The submission has been suspended by EDGAR
+
+            * `DISSEMINATED` - The submission has been processed and disseminated
+
+            * `NO_STATUS` - The current status of the submission cannot be determined
+
+            * `BLOCKED` - The submission has reached the blocked status and is awaiting further action
+
+            * `DONE` - The submission has reached the DONE state in the EDGAR system and no further processing is expected
+
+            * `ACCEPTED` - The submission has been accepted by EDGAR
+
+            '
+          title: Submission Processing Status
+    MultipleAccessionNumberRequest:
+      type: object
+      required:
+      - accessionNumbers
+      description: Allows a list of accession numbers to be presented to the Submission Status resource in order to request status on multiple submissions simultaneously.
+      title: Submission Number Request List
+      properties:
+        accessionNumbers:
+          type: array
+          maxItems: 25
+          minItems: 1
+          items:
+            type: string
+          description: The list of accession numbers that the caller wants to receive status for, maximum 25
+          title: Accession Number List
+    SubmissionStatusSeriesItem:
+      type: object
+      description: Details about a Series related to a Submission
+      title: Submission Series
+      properties:
+        id:
+          type: string
+          description: Identifier for the series
+          title: ID
+        name:
+          type: string
+          description: Name of the series
+          title: Name
+        oldName:
+          type: string
+          description: Name of the series before the change induced by this filing, if a change was made.
+          title: Old Name
+    SubmissionMode:
+      type: string
+      enum:
+      - LIVE
+      - TEST
+      example: LIVE
+      description: 'The submission mode of a filing:
+
+        * `TEST` - A submission mode that allows a filing to be tested for correctness
+
+        * `LIVE` - A submission mode that allows a filing to be evaluated as an official filing
+
+        For more information see the EDGAR Filing Manual
+
+        '
+      title: Submission Mode
+    ZonedDateTime:
+      type: string
+      format: date-time
+      example: '2022-03-10T12:15:50-04:00'
+    ListSubmissionStatusResponse:
+      type: object
+      description: Provides a response that contains a list of submission status responses as well as a top-level list of messages.
+      title: Submission Status Response List
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        responses:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmissionStatusResponseItem'
+          description: A list of submission status responses.
+          title: Submission Status Responses
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages associated with the submission response list. This should include more process/submission level errors like why a submission might be rejected from the API level.
+          title: Messages
+  securitySchemes:
+    Filer_API_Token_and_User_API_Token:
+      type: http
+      description: A Filer API Token would be required to be presented to use any of the EDGAR APIs—the EDGAR Submission API, EDGAR Submission Status API, and EDGAR Operational Status API. A User API Token would be required to be presented for the EDGAR Submission API only. EDGAR submissions made using the EDGAR Submission API would be subject to the same authentication and validation procedures that apply to submissions made via the EDGAR filing websites.
+      scheme: bearer
+      bearerFormat: JWT
+    Filer_API_Token:
+      type: http
+      description: A Filer API Token would be required to be presented to use any of the EDGAR APIs—the EDGAR Submission API, EDGAR Submission Status API, and EDGAR Operational Status API.
+      scheme: bearer
+      bearerFormat: JWT

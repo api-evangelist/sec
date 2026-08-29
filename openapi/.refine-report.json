@@ -1,30 +1,39 @@
 {
   "provider": "sec",
   "sources": [
-    "sec-company-concept-api-openapi.yml",
-    "sec-company-facts-api-openapi.yml",
-    "sec-edgar-operational-status-api-api-openapi.yml",
-    "sec-filer-management-api-api-openapi.yml",
-    "sec-frames-api-openapi.yml",
-    "sec-search-api-openapi.yml",
-    "sec-submission-api-api-openapi.yml",
-    "sec-submission-status-api-api-openapi.yml",
-    "sec-submissions-api-openapi.yml"
+    "_original/sec-edgar-data-openapi.yml",
+    "_original/sec-edgar-filer-openapi.yml",
+    "_original/sec-edgar-full-text-search-openapi.yml"
   ],
   "outputs": [
     "sec-company-concept-api-openapi.yml",
     "sec-company-facts-api-openapi.yml",
+    "sec-frames-api-openapi.yml",
+    "sec-submissions-api-openapi.yml",
     "sec-edgar-operational-status-api-api-openapi.yml",
     "sec-filer-management-api-api-openapi.yml",
-    "sec-frames-api-openapi.yml",
-    "sec-search-api-openapi.yml",
     "sec-submission-api-api-openapi.yml",
     "sec-submission-status-api-api-openapi.yml",
-    "sec-submissions-api-openapi.yml"
+    "sec-search-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (3 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "sec-edgar-data-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "sec-edgar-filer-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0; renamed 2 component key(s) illegal in 3.x (e.g. Filer API Token)",
+    "sec-edgar-full-text-search-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0"
+  ],
+  "skipped": [
+    "sec-company-concept-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sec-company-facts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sec-edgar-operational-status-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sec-filer-management-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sec-frames-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sec-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sec-submission-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sec-submission-status-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sec-submissions-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

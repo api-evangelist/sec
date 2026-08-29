@@ -1,20 +1,16 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: SEC EDGAR Data Company Concept Submission API API
-  description: 'The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
-
-    '
-  version: 1.0.0
+  title: SEC EDGAR Filer Management Submission API
+  description: The EDGAR Filer Management API provides machine-to-machine access for registered EDGAR filers to submit filings, check submission status, and manage filer accounts. This API requires EDGAR Next authentication via API tokens (Filer API Token and optionally User API Token). Available operations include live and test filing submissions, submission status checks, operational status verification, and user management for filer accounts.
+  version: 1.11.0
   contact:
-    name: SEC EDGAR Help
-    url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany
-  license:
-    name: Public Domain
-    url: https://www.sec.gov/privacy.htm
+    name: EDGAR Filer Support
+    url: https://www.sec.gov/submit-filings/filer-support-resources/
   termsOfService: https://www.sec.gov/privacy.htm
 servers:
-- url: https://data.sec.gov
-  description: SEC EDGAR Data API
+- url: https://api.edgarfiling.sec.gov
+  description: EDGAR Filing API (Production)
+security: []
 tags:
 - name: Submission API
   description: "    Submission of filings to EDGAR by API can be made through the Submission API. The Submission API requires the presentation of a Filer API Token in combination with a User API Token. Optionally,\n    filers could also specify a login CIK if there is a delegation from the EDGAR account corresponding to the login CIK to the filer API token EDGAR account/CIK. Delegations can be established on\n    the Filer Management dashboard under “Manage Delegations and User Groups.” For more information on establishing delegations,\n    see [How Do I “Understand and Manage Delegation.](https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-manage-delegation)”\n\n    Filings transmitted through the Submission API are expected to conform to the filing standard(s) [provided by the SEC](https://www.sec.gov/submit-filings).\n    Information is provided on the required format and contents of filings by the [Technical Specifications](https://www.sec.gov/submit-filings/technical-specifications).\n    Information and guidance on filing can be found in the [EDGAR Filing Manual](https://www.sec.gov/submit-filings/edgar-filer-manual).\n    Information on specific forms can be found in the [SEC Forms Index](https://www.sec.gov/submit-filings/forms-index).\n\n    The Submission API will return accession numbers for the submitted filings. A 202 HTTP status code indicates only that processing will begin in EDGAR and an\n    accession number or accession numbers have been generated. Filings with errors will be processed and suspended by EDGAR. The results of processing (status and errors)\n    are not provided by this endpoint and are instead available to clients using the API through the Submission Status API.\n\n    When using Submission API endpoints, the client can optionally specify the \"Expect: 100-continue\" HTTP request header to allow a response from these API resources\n    to be returned before uploading the entire filing in the event that the EDGAR API determines that the request will not be allowed.\n    This header should only be used for requests that have a body more than 1MiB in size.\n\n    Filings may be transmitted via either SINGLE or BULK transmission. A SINGLE transmission provides a single filling and will result in a response containing an accession number if the filing is transmitted successfully or an error if there is an issue while transmitting the filing. Even if a filing is successfully transmitted through the submission API, the filing may still be suspended by EDGAR if the contents of the filing do not satisfy EDGAR filing requirements. The accession number may be provided to the Submission Status API in order to check whether the filing was accepted by EDGAR.\n\n    A BULK filing, in contrast, is a single document that contains multiple filings to be submitted. If one or more filings are successfully transmitted then one or more accession numbers will be created and returned in the same order filings are included in the BULK filing document. However, if a filing is not successfully transmitted then an accession number may not be created, which means that the filer may have difficulty determining which accession number corresponds to which filing in the BULK filing document. Even if a filing is successfully transmitted through the Submission API, the filing may still be suspended by EDGAR if the contents of the filing do not satisfy EDGAR filing requirements. The relevant accession number may be provided to the Submission Status API in order to check whether the filing was accepted by EDGAR.\n"
@@ -659,31 +655,74 @@ paths:
         description: EDGAR Submission API
 components:
   schemas:
-    Message:
+    SubmissionResponseItem:
       type: object
-      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
-      title: Message
+      description: A submission response item is a one element in a submission response list.
+      title: Submission Response Item
       properties:
-        type:
+        accessionNumber:
+          type:
+          - string
+          - 'null'
+          example: 0000000001-22-000001
+          description: The unique number associated with an transmitted submission.
+          title: Accession Number
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages providing details associated with the submission response. This could range from a notification about the filing to errors related to the state of the filing. This should include things like submission error codes as well as other EDGAR output.
+          title: Messages
+        mode:
           allOf:
-          - $ref: '#/components/schemas/MessageType'
+          - $ref: '#/components/schemas/SubmissionMode'
+          type: object
+        final:
+          type: boolean
+        transmissionStatus:
           type: string
-          example: NOTICE
-          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
+          deprecated: true
+          enum:
+          - RECEIVED
+          - REJECTED
+          - FAILED
+          example: RECEIVED
+          description: 'A short string that indicates the status of filing that was transmitted to EDGAR.
 
-            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
+            * `RECEIVED` - The transmission has been received by EDGAR and an accession number has been generated
 
-            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
+            * `REJECTED` - The transmission was rejected by EDGAR and will not be processed
 
-            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
+            * `FAILED` - The transmission failed to be transmitted to EDGAR and will not be processed`
 
-            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
-          title: Type
-        content:
+            '
+          title: Transmission Status
+    ErrorResponse:
+      type: object
+      description: When an error occurs in the API this is the standard response.
+      title: Error Response
+      properties:
+        tracking:
           type: string
-          example: The Filer API Key making this request will expire in less than two weeks.
-          description: The content of the message intended to be interpreted by a human consumer of the API output.
-          title: Content
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+    MessageType:
+      type: string
+      enum:
+      - INFO
+      - NOTICE
+      - WARNING
+      - ERROR
+      description: The type of the message being returned regarding how severe it is or what type of message it contains.
+      title: Message Type
     ListSubmissionResponse:
       type: object
       description: Provides a response that contains a list of responses as well as a top-level list of messages.
@@ -744,65 +783,31 @@ components:
 
             '
           title: Transmission Status
-    SubmissionResponseItem:
+    Message:
       type: object
-      description: A submission response item is a one element in a submission response list.
-      title: Submission Response Item
+      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
+      title: Message
       properties:
-        accessionNumber:
-          type:
-          - string
-          - 'null'
-          example: 0000000001-22-000001
-          description: The unique number associated with an transmitted submission.
-          title: Accession Number
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-          description: A list of messages providing details associated with the submission response. This could range from a notification about the filing to errors related to the state of the filing. This should include things like submission error codes as well as other EDGAR output.
-          title: Messages
-        mode:
+        type:
           allOf:
-          - $ref: '#/components/schemas/SubmissionMode'
-          type: object
-        final:
-          type: boolean
-        transmissionStatus:
+          - $ref: '#/components/schemas/MessageType'
           type: string
-          deprecated: true
-          enum:
-          - RECEIVED
-          - REJECTED
-          - FAILED
-          example: RECEIVED
-          description: 'A short string that indicates the status of filing that was transmitted to EDGAR.
+          example: NOTICE
+          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
 
-            * `RECEIVED` - The transmission has been received by EDGAR and an accession number has been generated
+            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
 
-            * `REJECTED` - The transmission was rejected by EDGAR and will not be processed
+            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
 
-            * `FAILED` - The transmission failed to be transmitted to EDGAR and will not be processed`
+            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
 
-            '
-          title: Transmission Status
-    ErrorResponse:
-      type: object
-      description: When an error occurs in the API this is the standard response.
-      title: Error Response
-      properties:
-        tracking:
+            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
+          title: Type
+        content:
           type: string
-          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
-          title: Tracking Identifier
-        locator:
-          type: string
-          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
-          title: Tracking Locator
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
+          example: The Filer API Key making this request will expire in less than two weeks.
+          description: The content of the message intended to be interpreted by a human consumer of the API output.
+          title: Content
     SubmissionMode:
       type: string
       enum:
@@ -884,12 +889,14 @@ components:
 
             '
           title: Transmission Status
-    MessageType:
-      type: string
-      enum:
-      - INFO
-      - NOTICE
-      - WARNING
-      - ERROR
-      description: The type of the message being returned regarding how severe it is or what type of message it contains.
-      title: Message Type
+  securitySchemes:
+    Filer_API_Token_and_User_API_Token:
+      type: http
+      description: A Filer API Token would be required to be presented to use any of the EDGAR APIs—the EDGAR Submission API, EDGAR Submission Status API, and EDGAR Operational Status API. A User API Token would be required to be presented for the EDGAR Submission API only. EDGAR submissions made using the EDGAR Submission API would be subject to the same authentication and validation procedures that apply to submissions made via the EDGAR filing websites.
+      scheme: bearer
+      bearerFormat: JWT
+    Filer_API_Token:
+      type: http
+      description: A Filer API Token would be required to be presented to use any of the EDGAR APIs—the EDGAR Submission API, EDGAR Submission Status API, and EDGAR Operational Status API.
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,20 +1,16 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: SEC EDGAR Data Company Concept EDGAR Operational Status API API
-  description: 'The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
-
-    '
-  version: 1.0.0
+  title: SEC EDGAR Filer Management EDGAR Operational Status API
+  description: The EDGAR Filer Management API provides machine-to-machine access for registered EDGAR filers to submit filings, check submission status, and manage filer accounts. This API requires EDGAR Next authentication via API tokens (Filer API Token and optionally User API Token). Available operations include live and test filing submissions, submission status checks, operational status verification, and user management for filer accounts.
+  version: 1.11.0
   contact:
-    name: SEC EDGAR Help
-    url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany
-  license:
-    name: Public Domain
-    url: https://www.sec.gov/privacy.htm
+    name: EDGAR Filer Support
+    url: https://www.sec.gov/submit-filings/filer-support-resources/
   termsOfService: https://www.sec.gov/privacy.htm
 servers:
-- url: https://data.sec.gov
-  description: SEC EDGAR Data API
+- url: https://api.edgarfiling.sec.gov
+  description: EDGAR Filing API (Production)
+security: []
 tags:
 - name: EDGAR Operational Status API
   description: This API reports the status of the EDGAR system. This resource requires presentation of a Filer API Token only.
@@ -128,6 +124,57 @@ paths:
         description: EDGAR Operational Status API
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      description: When an error occurs in the API this is the standard response.
+      title: Error Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+    MessageType:
+      type: string
+      enum:
+      - INFO
+      - NOTICE
+      - WARNING
+      - ERROR
+      description: The type of the message being returned regarding how severe it is or what type of message it contains.
+      title: Message Type
+    Message:
+      type: object
+      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
+      title: Message
+      properties:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/MessageType'
+          type: string
+          example: NOTICE
+          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
+
+            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
+
+            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
+
+            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
+
+            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
+          title: Type
+        content:
+          type: string
+          example: The Filer API Key making this request will expire in less than two weeks.
+          description: The content of the message intended to be interpreted by a human consumer of the API output.
+          title: Content
     Response:
       type: object
       description: Provides information on the current operating state of EDGAR
@@ -171,31 +218,6 @@ components:
           example: EDGAR is not receiving submissions until MM/DD/YYYY at HH:MM AM
           description: Optionally provides additional information if any is required
           title: Message
-    Message:
-      type: object
-      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
-      title: Message
-      properties:
-        type:
-          allOf:
-          - $ref: '#/components/schemas/MessageType'
-          type: string
-          example: NOTICE
-          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
-
-            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
-
-            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
-
-            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
-
-            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
-          title: Type
-        content:
-          type: string
-          example: The Filer API Key making this request will expire in less than two weeks.
-          description: The content of the message intended to be interpreted by a human consumer of the API output.
-          title: Content
     Condition:
       type: string
       enum:
@@ -207,29 +229,14 @@ components:
       - NO_COMMUNICATION
       description: The current operating state of EDGAR
       title: Condition
-    ErrorResponse:
-      type: object
-      description: When an error occurs in the API this is the standard response.
-      title: Error Response
-      properties:
-        tracking:
-          type: string
-          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
-          title: Tracking Identifier
-        locator:
-          type: string
-          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
-          title: Tracking Locator
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-    MessageType:
-      type: string
-      enum:
-      - INFO
-      - NOTICE
-      - WARNING
-      - ERROR
-      description: The type of the message being returned regarding how severe it is or what type of message it contains.
-      title: Message Type
+  securitySchemes:
+    Filer_API_Token_and_User_API_Token:
+      type: http
+      description: A Filer API Token would be required to be presented to use any of the EDGAR APIs—the EDGAR Submission API, EDGAR Submission Status API, and EDGAR Operational Status API. A User API Token would be required to be presented for the EDGAR Submission API only. EDGAR submissions made using the EDGAR Submission API would be subject to the same authentication and validation procedures that apply to submissions made via the EDGAR filing websites.
+      scheme: bearer
+      bearerFormat: JWT
+    Filer_API_Token:
+      type: http
+      description: A Filer API Token would be required to be presented to use any of the EDGAR APIs—the EDGAR Submission API, EDGAR Submission Status API, and EDGAR Operational Status API.
+      scheme: bearer
+      bearerFormat: JWT

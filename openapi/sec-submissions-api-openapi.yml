@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: SEC EDGAR Data Company Concept Submissions API
+  title: SEC EDGAR Data Submissions API
   description: 'The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
 
     '
@@ -52,6 +52,123 @@ paths:
           description: Rate limit exceeded (10 requests per second per user agent)
 components:
   schemas:
+    Address:
+      type: object
+      description: Physical address
+      properties:
+        street1:
+          type: string
+        street2:
+          type:
+          - string
+          - 'null'
+        city:
+          type: string
+        stateOrCountry:
+          type: string
+        zipCode:
+          type: string
+        stateOrCountryDescription:
+          type: string
+    CompanySubmissions:
+      type: object
+      description: Company filing history and metadata
+      properties:
+        cik:
+          type: string
+          description: Central Index Key
+          example: 0000320193
+        entityType:
+          type: string
+          description: Type of entity (e.g., operating, investment company)
+          example: operating
+        sic:
+          type: string
+          description: Standard Industrial Classification code
+          example: '3571'
+        sicDescription:
+          type: string
+          description: SIC code description
+          example: Electronic Computers
+        name:
+          type: string
+          description: Company name
+          example: Apple Inc.
+        tickers:
+          type: array
+          items:
+            type: string
+          description: Stock ticker symbols
+          example:
+          - AAPL
+        exchanges:
+          type: array
+          items:
+            type: string
+          description: Stock exchanges where the company is listed
+          example:
+          - Nasdaq
+        ein:
+          type: string
+          description: Employer Identification Number
+        lei:
+          type:
+          - string
+          - 'null'
+          description: Legal Entity Identifier
+        fiscalYearEnd:
+          type: string
+          description: Fiscal year end date in MMDD format
+          example: 0926
+        stateOfIncorporation:
+          type: string
+          description: State of incorporation code
+          example: CA
+        addresses:
+          type: object
+          description: Mailing and business addresses
+          properties:
+            mailing:
+              $ref: '#/components/schemas/Address'
+            business:
+              $ref: '#/components/schemas/Address'
+        phone:
+          type: string
+          description: Company phone number
+        formerNames:
+          type: array
+          description: Previous company names
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              from:
+                type: string
+                format: date-time
+              to:
+                type: string
+                format: date-time
+        filings:
+          type: object
+          description: Filing history container
+          properties:
+            recent:
+              $ref: '#/components/schemas/FilingList'
+            files:
+              type: array
+              description: References to additional filing files for companies with extensive history
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  filingCount:
+                    type: integer
+                  filingFrom:
+                    type: string
+                  filingTo:
+                    type: string
     FilingList:
       type: object
       description: Arrays of filing metadata (parallel arrays by index)
@@ -128,118 +245,3 @@ components:
           items:
             type: string
           description: Descriptions of primary documents
-    Address:
-      type: object
-      description: Physical address
-      properties:
-        street1:
-          type: string
-        street2:
-          type: string
-          nullable: true
-        city:
-          type: string
-        stateOrCountry:
-          type: string
-        zipCode:
-          type: string
-        stateOrCountryDescription:
-          type: string
-    CompanySubmissions:
-      type: object
-      description: Company filing history and metadata
-      properties:
-        cik:
-          type: string
-          description: Central Index Key
-          example: 0000320193
-        entityType:
-          type: string
-          description: Type of entity (e.g., operating, investment company)
-          example: operating
-        sic:
-          type: string
-          description: Standard Industrial Classification code
-          example: '3571'
-        sicDescription:
-          type: string
-          description: SIC code description
-          example: Electronic Computers
-        name:
-          type: string
-          description: Company name
-          example: Apple Inc.
-        tickers:
-          type: array
-          items:
-            type: string
-          description: Stock ticker symbols
-          example:
-          - AAPL
-        exchanges:
-          type: array
-          items:
-            type: string
-          description: Stock exchanges where the company is listed
-          example:
-          - Nasdaq
-        ein:
-          type: string
-          description: Employer Identification Number
-        lei:
-          type: string
-          nullable: true
-          description: Legal Entity Identifier
-        fiscalYearEnd:
-          type: string
-          description: Fiscal year end date in MMDD format
-          example: 0926
-        stateOfIncorporation:
-          type: string
-          description: State of incorporation code
-          example: CA
-        addresses:
-          type: object
-          description: Mailing and business addresses
-          properties:
-            mailing:
-              $ref: '#/components/schemas/Address'
-            business:
-              $ref: '#/components/schemas/Address'
-        phone:
-          type: string
-          description: Company phone number
-        formerNames:
-          type: array
-          description: Previous company names
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              from:
-                type: string
-                format: date-time
-              to:
-                type: string
-                format: date-time
-        filings:
-          type: object
-          description: Filing history container
-          properties:
-            recent:
-              $ref: '#/components/schemas/FilingList'
-            files:
-              type: array
-              description: References to additional filing files for companies with extensive history
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  filingCount:
-                    type: integer
-                  filingFrom:
-                    type: string
-                  filingTo:
-                    type: string

@@ -1,20 +1,20 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: SEC EDGAR Data Company Concept Search API
-  description: 'The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
+  title: SEC EDGAR Full-Text Search API
+  description: 'The EDGAR Full-Text Search API (EFTS) allows searching across the complete text of filings submitted to EDGAR. The API supports filtering by filing date ranges, form types, entity names, and ticker symbols. Results include document metadata and links to actual filing documents. This endpoint is hosted at efts.sec.gov and is useful for research and analysis requiring discovery of filings by content.
 
     '
   version: 1.0.0
   contact:
     name: SEC EDGAR Help
     url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany
+  termsOfService: https://www.sec.gov/privacy.htm
   license:
     name: Public Domain
     url: https://www.sec.gov/privacy.htm
-  termsOfService: https://www.sec.gov/privacy.htm
 servers:
-- url: https://data.sec.gov
-  description: SEC EDGAR Data API
+- url: https://efts.sec.gov
+  description: SEC EDGAR Full-Text Search API
 tags:
 - name: Search
   description: Full-text search across EDGAR filing documents
@@ -143,6 +143,46 @@ paths:
           description: Rate limit exceeded (10 requests per second)
 components:
   schemas:
+    SearchHit:
+      type: object
+      description: A single filing document matching the search query
+      properties:
+        _id:
+          type: string
+          description: Unique document identifier
+        _score:
+          type: number
+          description: Elasticsearch relevance score
+        _source:
+          $ref: '#/components/schemas/FilingDocument'
+    SearchResponse:
+      type: object
+      description: Full-text search results from EDGAR
+      properties:
+        hits:
+          type: object
+          description: Search hit metadata and results
+          properties:
+            total:
+              type: object
+              description: Total hit count
+              properties:
+                value:
+                  type: integer
+                  description: Number of matching documents
+                  example: 1234
+                relation:
+                  type: string
+                  description: Whether total is exact or approximate
+                  enum:
+                  - eq
+                  - gte
+                  example: eq
+            hits:
+              type: array
+              description: Array of matching filing documents
+              items:
+                $ref: '#/components/schemas/SearchHit'
     FilingDocument:
       type: object
       description: Metadata for an EDGAR filing document
@@ -211,43 +251,3 @@ components:
         file_id:
           type: string
           description: File identifier
-    SearchResponse:
-      type: object
-      description: Full-text search results from EDGAR
-      properties:
-        hits:
-          type: object
-          description: Search hit metadata and results
-          properties:
-            total:
-              type: object
-              description: Total hit count
-              properties:
-                value:
-                  type: integer
-                  description: Number of matching documents
-                  example: 1234
-                relation:
-                  type: string
-                  description: Whether total is exact or approximate
-                  enum:
-                  - eq
-                  - gte
-                  example: eq
-            hits:
-              type: array
-              description: Array of matching filing documents
-              items:
-                $ref: '#/components/schemas/SearchHit'
-    SearchHit:
-      type: object
-      description: A single filing document matching the search query
-      properties:
-        _id:
-          type: string
-          description: Unique document identifier
-        _score:
-          type: number
-          description: Elasticsearch relevance score
-        _source:
-          $ref: '#/components/schemas/FilingDocument'

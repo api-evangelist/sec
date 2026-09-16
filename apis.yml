@@ -1,6 +1,11 @@
 aid: sec
 name: SEC EDGAR
-description: 'The U.S. Securities and Exchange Commission (SEC) EDGAR (Electronic Data Gathering, Analysis, and Retrieval) system provides free public access to corporate financial filings submitted to the SEC. The EDGAR REST API at data.sec.gov delivers JSON-formatted data without requiring authentication or API keys, covering company submissions, XBRL financial facts, and company concept data. Endpoints support CIK lookups, full filing history, structured XBRL financial disclosures across reporting periods, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
+description: 'The U.S. Securities and Exchange Commission (SEC) EDGAR (Electronic Data Gathering, Analysis,
+  and Retrieval) system provides free public access to corporate financial filings submitted to the SEC.
+  The EDGAR REST API at data.sec.gov delivers JSON-formatted data without requiring authentication or
+  API keys, covering company submissions, XBRL financial facts, and company concept data. Endpoints support
+  CIK lookups, full filing history, structured XBRL financial disclosures across reporting periods, and
+  cross-company comparative frames for US-GAAP and IFRS taxonomies.
 
   '
 type: Index
@@ -33,7 +38,7 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/sec.png
 url: https://raw.githubusercontent.com/api-evangelist/sec/refs/heads/main/apis.yml
 created: '2026-06-12'
-modified: '2026-06-12'
+modified: '2026-09-16'
 specificationVersion: '0.23'
 tags:
 - Financial Data
@@ -84,8 +89,9 @@ apis:
   - type: Documentation
     url: https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
 - aid: sec:sec-edgar-operational-status-api-api
-  name: SEC EDGAR EDGAR Operational Status API API
-  description: This API reports the status of the EDGAR system. This resource requires presentation of a Filer API Token only.
+  name: SEC EDGAR Operational Status API
+  description: This API reports the status of the EDGAR system. This resource requires presentation of
+    a Filer API Token only.
   humanURL: https://www.sec.gov/edgar/sec-api-documentation
   baseURL: https://data.sec.gov
   tags:
@@ -102,8 +108,9 @@ apis:
   - type: Documentation
     url: https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
 - aid: sec:sec-filer-management-api-api
-  name: SEC EDGAR Filer Management API API
-  description: A set of API endpoints that allows you to verify permissions, get filer information, manage CCC, manage individuals, and manage delegations.
+  name: SEC EDGAR Filer Management API
+  description: A set of API endpoints that allows you to verify permissions, get filer information, manage
+    CCC, manage individuals, and manage delegations.
   humanURL: https://www.sec.gov/edgar/sec-api-documentation
   baseURL: https://data.sec.gov
   tags:
@@ -156,8 +163,42 @@ apis:
   - type: Documentation
     url: https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
 - aid: sec:sec-submission-api-api
-  name: SEC EDGAR Submission API API
-  description: "Submission of filings to EDGAR by API can be made through the Submission API. The Submission API requires the presentation of a Filer API Token in combination with a User API Token. Optionally,\n    filers could also specify a login CIK if there is a delegation from the EDGAR account corresponding\nto the login CIK to the filer API token EDGAR account/CIK. Delegations can be established on\n    the Filer Management dashboard under “Manage Delegations and User Groups.” For more information\non establishing delegations,\n    see [How Do I “Understand and Manage Delegation.](https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-manage-delegation)”\n\n    Filings transmitted through the Submission API are expected to conform to the filing standard(s)\n[provided by the SEC](https://www.sec.gov/submit-filings).\n    Information is provided on the required format and contents of filings by the [Technical Specifications](https://www.sec.gov/submit-filings/technical-specifications).\n    Information and guidance on filing can be found in the [EDGAR Filing Manual](https://www.sec.gov/submit-filings/edgar-filer-manual).\n    Information on specific forms can be found in the [SEC Forms Index](https://www.sec.gov/submit-filings/forms-index).\n\n    The Submission API will return accession numbers for the submitted filings. A 202 HTTP status\ncode indicates only that processing will begin in EDGAR and an\n    accession number or accession numbers have been generated. Filings with errors will be processed\nand suspended by EDGAR. The results of processing (status and errors)\n    are not provided by this endpoint and are instead available to clients using the API through the\nSubmission Status API.\n\n    When using Submission API endpoints, the client can optionally specify the \"Expect: 100-continue\"\nHTTP request header to allow a response from these API resources\n    to be returned before uploading the entire filing in the event that the EDGAR API determines that\nthe request will not be allowed.\n    This header should only be used for requests that have a body more than 1MiB in size.\n\n    Filings may be transmitted via either SINGLE or BULK transmission. A SINGLE transmission provides\na single filling and will result in a response containing an accession number if the filing is transmitted successfully or an error if there is an issue while transmitting the filing. Even if a filing is successfully transmitted through the submission API, the filing may still be suspended by EDGAR if the contents of the filing do not satisfy EDGAR filing requirements. The accession number may be provided to the Submission Status API in order to check whether the filing was accepted by EDGAR.\n\n    A BULK filing, in contrast, is a single document that contains multiple filings to be submitted.\nIf one or more filings are successfully transmitted then one or more accession numbers will be created and returned in the same order filings are included in the BULK filing document. However, if a filing is not successfully transmitted then an accession number may not be created, which means that the filer may have difficulty determining which accession number corresponds to which filing in the BULK filing document. Even if a filing is successfully transmitted through the Submission API, the filing may still be suspended by EDGAR if the contents of the filing do not satisfy EDGAR filing requirements. The relevant accession number may be provided to the Submission Status API in order to check whether the filing was accepted by EDGAR."
+  name: SEC EDGAR Submission API
+  description: "Submission of filings to EDGAR by API can be made through the Submission API. The Submission\
+    \ API requires the presentation of a Filer API Token in combination with a User API Token. Optionally,\n\
+    \    filers could also specify a login CIK if there is a delegation from the EDGAR account corresponding\n\
+    to the login CIK to the filer API token EDGAR account/CIK. Delegations can be established on\n   \
+    \ the Filer Management dashboard under “Manage Delegations and User Groups.” For more information\n\
+    on establishing delegations,\n    see [How Do I “Understand and Manage Delegation.](https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-manage-delegation)”\n\
+    \n    Filings transmitted through the Submission API are expected to conform to the filing standard(s)\n\
+    [provided by the SEC](https://www.sec.gov/submit-filings).\n    Information is provided on the required\
+    \ format and contents of filings by the [Technical Specifications](https://www.sec.gov/submit-filings/technical-specifications).\n\
+    \    Information and guidance on filing can be found in the [EDGAR Filing Manual](https://www.sec.gov/submit-filings/edgar-filer-manual).\n\
+    \    Information on specific forms can be found in the [SEC Forms Index](https://www.sec.gov/submit-filings/forms-index).\n\
+    \n    The Submission API will return accession numbers for the submitted filings. A 202 HTTP status\n\
+    code indicates only that processing will begin in EDGAR and an\n    accession number or accession\
+    \ numbers have been generated. Filings with errors will be processed\nand suspended by EDGAR. The\
+    \ results of processing (status and errors)\n    are not provided by this endpoint and are instead\
+    \ available to clients using the API through the\nSubmission Status API.\n\n    When using Submission\
+    \ API endpoints, the client can optionally specify the \"Expect: 100-continue\"\nHTTP request header\
+    \ to allow a response from these API resources\n    to be returned before uploading the entire filing\
+    \ in the event that the EDGAR API determines that\nthe request will not be allowed.\n    This header\
+    \ should only be used for requests that have a body more than 1MiB in size.\n\n    Filings may be\
+    \ transmitted via either SINGLE or BULK transmission. A SINGLE transmission provides\na single filling\
+    \ and will result in a response containing an accession number if the filing is transmitted successfully\
+    \ or an error if there is an issue while transmitting the filing. Even if a filing is successfully\
+    \ transmitted through the submission API, the filing may still be suspended by EDGAR if the contents\
+    \ of the filing do not satisfy EDGAR filing requirements. The accession number may be provided to\
+    \ the Submission Status API in order to check whether the filing was accepted by EDGAR.\n\n    A BULK\
+    \ filing, in contrast, is a single document that contains multiple filings to be submitted.\nIf one\
+    \ or more filings are successfully transmitted then one or more accession numbers will be created\
+    \ and returned in the same order filings are included in the BULK filing document. However, if a filing\
+    \ is not successfully transmitted then an accession number may not be created, which means that the\
+    \ filer may have difficulty determining which accession number corresponds to which filing in the\
+    \ BULK filing document. Even if a filing is successfully transmitted through the Submission API, the\
+    \ filing may still be suspended by EDGAR if the contents of the filing do not satisfy EDGAR filing\
+    \ requirements. The relevant accession number may be provided to the Submission Status API in order\
+    \ to check whether the filing was accepted by EDGAR."
   humanURL: https://www.sec.gov/edgar/sec-api-documentation
   baseURL: https://data.sec.gov
   tags:
@@ -174,8 +215,16 @@ apis:
   - type: Documentation
     url: https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/understand-edgar-application-programming-interfaces-apis
 - aid: sec:sec-submission-status-api-api
-  name: SEC EDGAR Submission Status API API
-  description: "The Submission Status API provides information from the EDGAR system. It requires a Filer API Token and accession number(s). To obtain information about a submission through the Submission Status API,\n    you must use a Filer API Token that belongs to the CIK that submitted the filing or the CIK that was the filer for the submission. The Submission Status API will only return the detailed information about\n    the filling (like error codes or the filer notification text) once the filing has reached the end of processing signified by the field 'final' being set to true.\n    \n\n    The statuses of filings are retained for limited amounts of time. The statuses of Accepted TEST filings are retained for two (2) days,  Accepted LIVE filings are retained for sixty (60) days, and Suspended filings,\n    regardless of type, are retained for six (6) days."
+  name: SEC EDGAR Submission Status API
+  description: "The Submission Status API provides information from the EDGAR system. It requires a Filer\
+    \ API Token and accession number(s). To obtain information about a submission through the Submission\
+    \ Status API,\n    you must use a Filer API Token that belongs to the CIK that submitted the filing\
+    \ or the CIK that was the filer for the submission. The Submission Status API will only return the\
+    \ detailed information about\n    the filling (like error codes or the filer notification text) once\
+    \ the filing has reached the end of processing signified by the field 'final' being set to true.\n\
+    \    \n\n    The statuses of filings are retained for limited amounts of time. The statuses of Accepted\
+    \ TEST filings are retained for two (2) days,  Accepted LIVE filings are retained for sixty (60) days,\
+    \ and Suspended filings,\n    regardless of type, are retained for six (6) days."
   humanURL: https://www.sec.gov/edgar/sec-api-documentation
   baseURL: https://data.sec.gov
   tags:
@@ -224,7 +273,9 @@ apis:
     type: Documentation
   - url: https://www.sec.gov/developer
     type: Reference
-  description: The SEC EDGAR (Electronic Data Gathering, Analysis, and Retrieval) system provides REST APIs for accessing company filings, XBRL financial data, and full-text search across SEC submissions. APIs deliver 10-K, 10-Q, 8-K, and other filing data in JSON, XML, and XBRL formats.
+  description: The SEC EDGAR (Electronic Data Gathering, Analysis, and Retrieval) system provides REST
+    APIs for accessing company filings, XBRL financial data, and full-text search across SEC submissions.
+    APIs deliver 10-K, 10-Q, 8-K, and other filing data in JSON, XML, and XBRL formats.
 - aid: sec:sec-edgar-company-facts-api
   name: sec-edgar Company Facts API
   description: Aggregated company financial facts

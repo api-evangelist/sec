@@ -1,9 +1,7 @@
 openapi: 3.2.0
 info:
   title: SEC EDGAR Data Company Concept API
-  description: 'The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
-
-    '
+  description: The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
   version: 1.0.0
   contact:
     name: SEC EDGAR Help
@@ -23,9 +21,7 @@ paths:
     get:
       operationId: getCompanyConcept
       summary: Get historical values for one XBRL concept
-      description: 'Returns historical values for a single XBRL concept for a given company. Results are organized by unit of measure (e.g. USD, shares) and include all reported values with start/end dates, filing accession numbers, form types, and fiscal period information.
-
-        '
+      description: Returns historical values for a single XBRL concept for a given company. Results are organized by unit of measure (e.g. USD, shares) and include all reported values with start/end dates, filing accession numbers, form types, and fiscal period information.
       tags:
       - Company Concept
       parameters:

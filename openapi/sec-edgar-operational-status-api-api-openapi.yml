@@ -150,31 +150,6 @@ components:
       - ERROR
       description: The type of the message being returned regarding how severe it is or what type of message it contains.
       title: Message Type
-    Message:
-      type: object
-      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
-      title: Message
-      properties:
-        type:
-          allOf:
-          - $ref: '#/components/schemas/MessageType'
-          type: string
-          example: NOTICE
-          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
-
-            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
-
-            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
-
-            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
-
-            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
-          title: Type
-        content:
-          type: string
-          example: The Filer API Key making this request will expire in less than two weeks.
-          description: The content of the message intended to be interpreted by a human consumer of the API output.
-          title: Content
     Response:
       type: object
       description: Provides information on the current operating state of EDGAR
@@ -229,6 +204,31 @@ components:
       - NO_COMMUNICATION
       description: The current operating state of EDGAR
       title: Condition
+    Message:
+      type: object
+      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
+      title: Message
+      properties:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/MessageType'
+          type: string
+          example: NOTICE
+          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
+
+            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
+
+            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
+
+            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
+
+            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
+          title: Type
+        content:
+          type: string
+          example: The Filer API Key making this request will expire in less than two weeks.
+          description: The content of the message intended to be interpreted by a human consumer of the API output.
+          title: Content
   securitySchemes:
     Filer_API_Token_and_User_API_Token:
       type: http

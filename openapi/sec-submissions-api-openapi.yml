@@ -1,9 +1,7 @@
 openapi: 3.2.0
 info:
   title: SEC EDGAR Data Submissions API
-  description: 'The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
-
-    '
+  description: The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
   version: 1.0.0
   contact:
     name: SEC EDGAR Help
@@ -23,9 +21,7 @@ paths:
     get:
       operationId: getCompanySubmissions
       summary: Get company submissions
-      description: 'Returns a company''s complete filing history and metadata identified by Central Index Key (CIK). The response includes company name, SIC code, state of incorporation, addresses, phone number, and a list of recent filings with accession numbers, form types, filing dates, and document metadata. For companies with more than 40 filings, additional files are referenced in the response.
-
-        '
+      description: Returns a company's complete filing history and metadata identified by Central Index Key (CIK). The response includes company name, SIC code, state of incorporation, addresses, phone number, and a list of recent filings with accession numbers, form types, filing dates, and document metadata. For companies with more than 40 filings, additional files are referenced in the response.
       tags:
       - Submissions
       parameters:
@@ -52,24 +48,6 @@ paths:
           description: Rate limit exceeded (10 requests per second per user agent)
 components:
   schemas:
-    Address:
-      type: object
-      description: Physical address
-      properties:
-        street1:
-          type: string
-        street2:
-          type:
-          - string
-          - 'null'
-        city:
-          type: string
-        stateOrCountry:
-          type: string
-        zipCode:
-          type: string
-        stateOrCountryDescription:
-          type: string
     CompanySubmissions:
       type: object
       description: Company filing history and metadata
@@ -245,3 +223,21 @@ components:
           items:
             type: string
           description: Descriptions of primary documents
+    Address:
+      type: object
+      description: Physical address
+      properties:
+        street1:
+          type: string
+        street2:
+          type:
+          - string
+          - 'null'
+        city:
+          type: string
+        stateOrCountry:
+          type: string
+        zipCode:
+          type: string
+        stateOrCountryDescription:
+          type: string

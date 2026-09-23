@@ -1,9 +1,7 @@
 openapi: 3.2.0
 info:
   title: SEC EDGAR Data Frames API
-  description: 'The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
-
-    '
+  description: The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
   version: 1.0.0
   contact:
     name: SEC EDGAR Help
@@ -23,9 +21,7 @@ paths:
     get:
       operationId: getXBRLFrame
       summary: Get cross-company data for a concept in a period
-      description: 'Returns data for a given XBRL concept across all companies that reported it for a specific period. This enables cross-company comparisons for any financial metric. Periods can be annual (CY2023), quarterly (CY2023Q1), or instantaneous (CY2023Q1I for point-in-time balance sheet concepts). The response includes each company''s CIK, entity name, accession number, location reference, and reported value.
-
-        '
+      description: Returns data for a given XBRL concept across all companies that reported it for a specific period. This enables cross-company comparisons for any financial metric. Periods can be annual (CY2023), quarterly (CY2023Q1), or instantaneous (CY2023Q1I for point-in-time balance sheet concepts). The response includes each company's CIK, entity name, accession number, location reference, and reported value.
       tags:
       - Frames
       parameters:
@@ -82,6 +78,35 @@ paths:
           description: Rate limit exceeded
 components:
   schemas:
+    FrameDataPoint:
+      type: object
+      description: A single company's value for the frame concept and period
+      properties:
+        accn:
+          type: string
+          description: Accession number
+          example: 0000320193-23-000006
+        cik:
+          type: integer
+          description: Company CIK
+          example: 320193
+        entityName:
+          type: string
+          description: Company name
+          example: Apple Inc.
+        loc:
+          type: string
+          description: XBRL location reference
+          example: 10-Q
+        end:
+          type: string
+          format: date
+          description: Period end or instant date
+          example: '2023-04-01'
+        val:
+          type: number
+          description: Reported value
+          example: 62611000000
     XBRLFrame:
       type: object
       description: Cross-company data for a concept in a specific period
@@ -116,32 +141,3 @@ components:
           description: Array of company data points
           items:
             $ref: '#/components/schemas/FrameDataPoint'
-    FrameDataPoint:
-      type: object
-      description: A single company's value for the frame concept and period
-      properties:
-        accn:
-          type: string
-          description: Accession number
-          example: 0000320193-23-000006
-        cik:
-          type: integer
-          description: Company CIK
-          example: 320193
-        entityName:
-          type: string
-          description: Company name
-          example: Apple Inc.
-        loc:
-          type: string
-          description: XBRL location reference
-          example: 10-Q
-        end:
-          type: string
-          format: date
-          description: Period end or instant date
-          example: '2023-04-01'
-        val:
-          type: number
-          description: Reported value
-          example: 62611000000

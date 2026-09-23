@@ -3,7 +3,9 @@
   "sources": [
     "_original/sec-edgar-data-openapi.yml",
     "_original/sec-edgar-filer-openapi.yml",
-    "_original/sec-edgar-full-text-search-openapi.yml"
+    "_original/sec-edgar-full-text-search-openapi.yml",
+    "sec-full-text-search-api-openapi.yml",
+    "sec-xbrl-api-openapi.yml"
   ],
   "outputs": [
     "sec-company-concept-api-openapi.yml",
@@ -14,16 +16,22 @@
     "sec-filer-management-api-api-openapi.yml",
     "sec-submission-api-api-openapi.yml",
     "sec-submission-status-api-api-openapi.yml",
-    "sec-search-api-openapi.yml"
+    "sec-search-api-openapi.yml",
+    "sec-full-text-search-api-openapi.yml",
+    "sec-xbrl-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
-  "warnings": [],
+  "warnings": [
+    "sec-full-text-search-api-openapi.yml: previously refined output kept for 1 operation(s) no archived document covers (e.g. /LATEST/search-index get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "sec-xbrl-api-openapi.yml: previously refined output kept for 2 operation(s) no archived document covers (e.g. /api/xbrl/companyconcept/CIK{cik}/{taxonomy}/{concept}.json get, /api/xbrl/frames/{taxonomy}/{concept}/{unit}/{period}.json get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth."
+  ],
   "notes": [
     "sourced from openapi/_original/ (3 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "sec-edgar-data-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
     "sec-edgar-filer-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0; renamed 2 component key(s) illegal in 3.x (e.g. Filer API Token)",
-    "sec-edgar-full-text-search-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0"
+    "sec-edgar-full-text-search-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "sec-company-concept-api-openapi.yml: previously refined output, superseded by openapi/_original/",

@@ -1,9 +1,7 @@
 openapi: 3.2.0
 info:
   title: SEC EDGAR Data Company Facts API
-  description: 'The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
-
-    '
+  description: The EDGAR Data API at data.sec.gov provides RESTful access to public company financial filings, XBRL structured financial data, and company metadata without requiring authentication or API keys. The API delivers JSON-formatted responses covering company submissions (filing history), XBRL financial facts across all reporting periods, single XBRL concept values over time, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
   version: 1.0.0
   contact:
     name: SEC EDGAR Help
@@ -23,9 +21,7 @@ paths:
     get:
       operationId: getCompanyFacts
       summary: Get all XBRL facts for a company
-      description: 'Returns all XBRL disclosures for a company across all reporting periods, organized by taxonomy (us-gaap, ifrs-full, dei, srt) and concept name. Each concept contains an array of facts with values, units, filing accession numbers, and period dates. This is the primary endpoint for retrieving historical financial statement data for a given company.
-
-        '
+      description: Returns all XBRL disclosures for a company across all reporting periods, organized by taxonomy (us-gaap, ifrs-full, dei, srt) and concept name. Each concept contains an array of facts with values, units, filing accession numbers, and period dates. This is the primary endpoint for retrieving historical financial statement data for a given company.
       tags:
       - Company Facts
       parameters:
@@ -72,27 +68,6 @@ components:
             description: Taxonomy namespace (e.g., us-gaap, dei, ifrs-full)
             additionalProperties:
               $ref: '#/components/schemas/ConceptFacts'
-    ConceptFacts:
-      type: object
-      description: Facts for a single XBRL concept
-      properties:
-        label:
-          type: string
-          description: Human-readable concept label
-          example: Accounts Payable, Current
-        description:
-          type: string
-          description: Concept definition from the taxonomy
-        entityName:
-          type: string
-          description: Entity name
-        units:
-          type: object
-          description: Units of measure with arrays of reported values
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/FactValue'
     FactValue:
       type: object
       description: A single reported XBRL fact value
@@ -138,3 +113,24 @@ components:
           type: string
           description: Frame identifier for use with the frames endpoint
           example: CY2023Q3I
+    ConceptFacts:
+      type: object
+      description: Facts for a single XBRL concept
+      properties:
+        label:
+          type: string
+          description: Human-readable concept label
+          example: Accounts Payable, Current
+        description:
+          type: string
+          description: Concept definition from the taxonomy
+        entityName:
+          type: string
+          description: Entity name
+        units:
+          type: object
+          description: Units of measure with arrays of reported values
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/FactValue'

@@ -1,9 +1,7 @@
 openapi: 3.2.0
 info:
   title: SEC EDGAR Full-Text Search API
-  description: 'The EDGAR Full-Text Search API (EFTS) allows searching across the complete text of filings submitted to EDGAR. The API supports filtering by filing date ranges, form types, entity names, and ticker symbols. Results include document metadata and links to actual filing documents. This endpoint is hosted at efts.sec.gov and is useful for research and analysis requiring discovery of filings by content.
-
-    '
+  description: The EDGAR Full-Text Search API (EFTS) allows searching across the complete text of filings submitted to EDGAR. The API supports filtering by filing date ranges, form types, entity names, and ticker symbols. Results include document metadata and links to actual filing documents. This endpoint is hosted at efts.sec.gov and is useful for research and analysis requiring discovery of filings by content.
   version: 1.0.0
   contact:
     name: SEC EDGAR Help
@@ -23,9 +21,7 @@ paths:
     get:
       operationId: searchFilings
       summary: Search EDGAR filings by full text
-      description: 'Searches the full text of EDGAR filings using Elasticsearch-backed indexing. Supports keyword queries, boolean operators, phrase matching, and field-specific filters. Results include filing metadata and direct links to matching documents. Rate limited to 10 requests per second.
-
-        '
+      description: Searches the full text of EDGAR filings using Elasticsearch-backed indexing. Supports keyword queries, boolean operators, phrase matching, and field-specific filters. Results include filing metadata and direct links to matching documents. Rate limited to 10 requests per second.
       tags:
       - Search
       parameters:

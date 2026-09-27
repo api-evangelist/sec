@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: SEC EDGAR Submissions & XBRL Company Facts … Full-Text…
+  title: SEC EDGAR Submissions & XBRL Company Facts … Full-Text……
   description: The SEC EDGAR data APIs provide free, authenticated-free access to company filing metadata, XBRL financial data, and full-text search across all SEC submissions. APIs are hosted at data.sec.gov and efts.sec.gov and require a descriptive User-Agent header per SEC fair-access policy.
   version: 1.0.0
   contact:
@@ -102,6 +102,23 @@ paths:
                 $ref: '#/components/schemas/SearchResults'
 components:
   schemas:
+    SearchResults:
+      type: object
+      properties:
+        hits:
+          type: object
+          properties:
+            total:
+              type: object
+              properties:
+                value:
+                  type: integer
+                relation:
+                  type: string
+            hits:
+              type: array
+              items:
+                $ref: '#/components/schemas/SearchHit'
     SearchHit:
       type: object
       properties:
@@ -137,20 +154,3 @@ components:
             type: array
             items:
               type: string
-    SearchResults:
-      type: object
-      properties:
-        hits:
-          type: object
-          properties:
-            total:
-              type: object
-              properties:
-                value:
-                  type: integer
-                relation:
-                  type: string
-            hits:
-              type: array
-              items:
-                $ref: '#/components/schemas/SearchHit'

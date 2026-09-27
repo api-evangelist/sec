@@ -51,6 +51,7 @@ tags:
 - Financial Reporting
 - Company Submissions
 - Securities
+- Government Data
 apis:
 - aid: sec:sec-company-concept-api
   name: SEC EDGAR Company Concept API

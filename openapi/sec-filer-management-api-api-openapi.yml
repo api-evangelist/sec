@@ -29,7 +29,7 @@ paths:
         account administrator, or technical administrator of the CIK for which account information is to be viewed.
 
         The filer API token supplied for the request must either match that CIK or the CIK of the filer API token must have delegation from that CIK.'
-      operationId: View Filer Account Information
+      operationId: ViewFilerAccountInformation
       tags:
       - Filer Management API
       parameters:
@@ -173,6 +173,8 @@ paths:
       servers:
       - url: https://api.edgarfiling.sec.gov
         description: EDGAR Filer Management API
+      x-operation-id-source: normalized
+      x-operation-id-original: View Filer Account Information
   /fm/{cik}/ccc:
     post:
       summary: Generate CCC
@@ -185,7 +187,7 @@ paths:
         must either match the CIK of the EDGAR account for which the CCC is to be generated or the CIK of the filer API token must have
 
         delegation from that CIK.'
-      operationId: Generate CCC
+      operationId: GenerateCCC
       tags:
       - Filer Management API
       parameters:
@@ -267,6 +269,8 @@ paths:
       servers:
       - url: https://api.edgarfiling.sec.gov
         description: EDGAR Filer Management API
+      x-operation-id-source: normalized
+      x-operation-id-original: Generate CCC
     put:
       summary: Create custom CCC
       description: 'The create custom CCC API allows a filer to specify a new CCC. The API will require the following inputs: the filer API token, the user API token,
@@ -276,7 +280,7 @@ paths:
         the user API token must be an account administrator of the EDGAR account/CIK for which the CCC is to be changed. The filer API token supplied for
 
         the request must either match the CIK for which the CCC is to be changed or the CIK of the filer API token must have delegation from that CIK.'
-      operationId: Create Custom CCC
+      operationId: CreateCustomCCC
       tags:
       - Filer Management API
       parameters:
@@ -372,6 +376,8 @@ paths:
       servers:
       - url: https://api.edgarfiling.sec.gov
         description: EDGAR Filer Management API
+      x-operation-id-source: normalized
+      x-operation-id-original: Create Custom CCC
   /fm/{cik}/delegationRequests:
     post:
       summary: Request delegation invitations
@@ -388,7 +394,7 @@ paths:
         request. The individual associated with the user API token must be an account administrator of the CIK requesting a delegation invitation.
 
         The filer API token supplied for the request must match the CIK requesting a delegation invitation.'
-      operationId: Request Delegation Invitations
+      operationId: RequestDelegationInvitations
       tags:
       - Filer Management API
       parameters:
@@ -500,6 +506,8 @@ paths:
       servers:
       - url: https://api.edgarfiling.sec.gov
         description: EDGAR Filer Management API
+      x-operation-id-source: normalized
+      x-operation-id-original: Request Delegation Invitations
   /fm/{cik}/delegations:
     post:
       summary: Send delegation invitations
@@ -512,7 +520,7 @@ paths:
         delegated entity CIKs that will receive the delegation invitation. The individual associated with the user API token must be an account
 
         administrator of the CIK from which delegation invitations are to be sent. The filer API token supplied for the request must match that CIK.'
-      operationId: Send Delegation Invitations
+      operationId: SendDelegationInvitations
       tags:
       - Filer Management API
       parameters:
@@ -625,6 +633,8 @@ paths:
       servers:
       - url: https://api.edgarfiling.sec.gov
         description: EDGAR Filer Management API
+      x-operation-id-source: normalized
+      x-operation-id-original: Send Delegation Invitations
     get:
       summary: View delegations
       description: 'The view delegations API provides the ability for a filer/EDGAR account to retrieve a list of all its delegations to and from other
@@ -634,7 +644,7 @@ paths:
         for which delegation information is to be retrieved. The individual associated with the user API token must be a user or an account
 
         administrator of the CIK for which delegation information is to be retrieved. The filer API token supplied for the request must match that CIK.'
-      operationId: View Delegations
+      operationId: ViewDelegations
       tags:
       - Filer Management API
       parameters:
@@ -712,6 +722,8 @@ paths:
       servers:
       - url: https://api.edgarfiling.sec.gov
         description: EDGAR Filer Management API
+      x-operation-id-source: normalized
+      x-operation-id-original: View Delegations
   /fm/{cik}/individuals:
     post:
       summary: Add individuals
@@ -724,7 +736,7 @@ paths:
         an account administrator of the CIK for which individuals are to be added. The filer API token supplied for the request must either match
 
         the CIK for which individuals are to be added or the CIK of the filer API token must have delegation from that CIK.'
-      operationId: Add Individuals
+      operationId: AddIndividuals
       tags:
       - Filer Management API
       parameters:
@@ -854,6 +866,8 @@ paths:
       servers:
       - url: https://api.edgarfiling.sec.gov
         description: EDGAR Filer Management API
+      x-operation-id-source: normalized
+      x-operation-id-original: Add Individuals
     get:
       summary: View individuals
       description: 'The view individuals API provides the ability to view all individuals with a role for an EDGAR account/CIK. This API will require the following
@@ -863,7 +877,7 @@ paths:
         API token must be an account administrator of the CIK for which individuals are to be viewed. The filer API token supplied for the request must
 
         either match the CIK for which individuals are to be viewed or the CIK of the filer API token must have delegation from that CIK.'
-      operationId: View Individuals
+      operationId: ViewIndividuals
       tags:
       - Filer Management API
       parameters:
@@ -940,6 +954,8 @@ paths:
       servers:
       - url: https://api.edgarfiling.sec.gov
         description: EDGAR Filer Management API
+      x-operation-id-source: normalized
+      x-operation-id-original: View Individuals
     put:
       summary: Change roles
       description: 'The change roles API provides the ability to update roles for individuals for a CIK. This API will require the following inputs: the filer API
@@ -951,7 +967,7 @@ paths:
         the CIK for which roles are to be changed. The filer API token supplied for the request must either match the CIK for which roles are to be
 
         changed or the CIK of the filer API token must have delegation from that CIK.'
-      operationId: Change Roles
+      operationId: ChangeRoles
       tags:
       - Filer Management API
       parameters:
@@ -1072,6 +1088,8 @@ paths:
       servers:
       - url: https://api.edgarfiling.sec.gov
         description: EDGAR Filer Management API
+      x-operation-id-source: normalized
+      x-operation-id-original: Change Roles
     delete:
       summary: Remove individuals
       description: 'The remove individuals API provides the ability to remove one or more individuals. This API will require the following inputs: the filer API
@@ -1083,7 +1101,7 @@ paths:
         of the CIK for which individuals are to be removed. The filer API token supplied for the request must either match the CIK for which individuals
 
         are to be removed or the CIK of the filer API token must have delegation from that CIK.'
-      operationId: Remove Individuals
+      operationId: RemoveIndividuals
       tags:
       - Filer Management API
       parameters:
@@ -1195,6 +1213,8 @@ paths:
       servers:
       - url: https://api.edgarfiling.sec.gov
         description: EDGAR Filer Management API
+      x-operation-id-source: normalized
+      x-operation-id-original: Remove Individuals
   /fm/{cik}/verify:
     get:
       summary: Filing credentials verification
@@ -1207,7 +1227,7 @@ paths:
         credentials are to be verified. The filer API token supplied for the request must either match the CIK for which filing
 
         credentials are to be verified or the CIK of the filer API token must have delegation from that CIK.'
-      operationId: Filing Credentials Verification
+      operationId: FilingCredentialsVerification
       tags:
       - Filer Management API
       parameters:
@@ -1280,25 +1300,52 @@ paths:
       servers:
       - url: https://api.edgarfiling.sec.gov
         description: EDGAR Filer Management API
+      x-operation-id-source: normalized
+      x-operation-id-original: Filing Credentials Verification
 components:
   schemas:
-    ErrorResponse:
+    IndividualRole:
       type: object
-      description: When an error occurs in the API this is the standard response.
-      title: Error Response
+      description: Represents a request to create invites for users for a cik
+      title: Individual Role
       properties:
-        tracking:
+        firstName:
           type: string
-          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
-          title: Tracking Identifier
-        locator:
+          description: String value of the individual's first name that is being invited
+          title: First Name
+        middleName:
           type: string
-          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
-          title: Tracking Locator
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
+          description: String value of the individual's middle name that is being invited
+          title: Middle Name
+        lastName:
+          type: string
+          description: String value of the individual's last name that is being invited
+          title: Last Name
+        email:
+          type: string
+          description: String value of the individual's email that is being invited
+          title: Email
+        inAdminRole:
+          type: boolean
+          description: Boolean value describing if the user is going to be added to the filer administrator role'
+          title: In Admin Role
+        inTechAdminRole:
+          type: boolean
+          description: Boolean value describing if the user is going to be added to the technical administrator role'
+          title: In Technical Admin Role
+        inUserRole:
+          type: boolean
+          description: Boolean value describing if the user is going to be added to the user role'
+          title: In User Role
+    MessageType:
+      type: string
+      enum:
+      - INFO
+      - NOTICE
+      - WARNING
+      - ERROR
+      description: The type of the message being returned regarding how severe it is or what type of message it contains.
+      title: Message Type
     EmailRole:
       type: object
       description: Represents a request for updating the roles of a user in Filer Management
@@ -1355,6 +1402,197 @@ components:
           example: '2025-12-31T11:59:59-05:00'
           description: Timestamp when last delegation record was updated (RFC3339 formatted date-time).
           title: Last Updated
+    FilerCCCResponse:
+      type: object
+      description: 'This response will be used to return the response when a Filer''s CCC has been updated. '
+      title: Filer CCC Update Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages providing details associated with the filer management response.
+          title: Messages
+        filerCCC:
+          type: string
+          example: '@1B2C3d4'
+          description: Returns a Filer's ccc
+          title: Filer's CCC'
+    ZonedDateTime:
+      type: string
+      format: date-time
+      example: '2022-03-10T12:15:50-04:00'
+    Message:
+      type: object
+      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
+      title: Message
+      properties:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/MessageType'
+          type: string
+          example: NOTICE
+          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
+
+            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
+
+            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
+
+            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
+
+            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
+          title: Type
+        content:
+          type: string
+          example: The Filer API Key making this request will expire in less than two weeks.
+          description: The content of the message intended to be interpreted by a human consumer of the API output.
+          title: Content
+    FilerCheckResponse:
+      type: object
+      description: This response returns information about the status of a Filer API Token and User API Token.
+      title: Filer Check Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages providing details associated with the filer management response.
+          title: Messages
+        canFile:
+          type: boolean
+          description: boolean value describing if a filing can be made or not with the provided user api token, filer api token and cik
+          title: Can File
+        confirmationDueDate:
+          allOf:
+          - $ref: '#/components/schemas/ZonedDateTime'
+          type: string
+          example: '2025-12-31T11:59:59-05:00'
+          description: Date that confirmation is due (RFC3339 formatted date-time)
+          title: Confirmation Due Date
+        filerApiTokenExpirationDate:
+          allOf:
+          - $ref: '#/components/schemas/ZonedDateTime'
+          type: string
+          example: '2025-12-31T11:59:59-05:00'
+          description: Date that the Filer API Token expires (RFC3339 formatted date-time)
+          title: Filer API Token Expiration Date
+        userApiTokenExpirationDate:
+          allOf:
+          - $ref: '#/components/schemas/ZonedDateTime'
+          type: string
+          example: '2025-12-31T11:59:59-05:00'
+          description: Date that the User API Token expires (RFC3339 formatted date-time)
+          title: User API Token Expiration Date
+    ErrorResponse:
+      type: object
+      description: When an error occurs in the API this is the standard response.
+      title: Error Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+    IndividualInfo:
+      type: object
+      description: A collection of fields pertaining to an individual
+      title: Individual Information
+      properties:
+        email:
+          type: string
+          example: john@doe.com
+          description: Email of the individual
+          title: Email
+        firstName:
+          type: string
+          example: John
+          description: 'First name of the individual '
+          title: First Name
+        middleName:
+          type: string
+          example: X
+          description: Middle name of the individual
+          title: Middle Name
+        lastName:
+          type: string
+          example: Doe
+          description: Last name of the individual
+          title: Last Name
+        businessPhoneNumber:
+          type: string
+          example: 202-555-1212
+          description: Business phone number of the individual
+          title: Business Phone Number
+        delegatedCik:
+          type: string
+          example: '0000000000'
+          description: Individual's primary CIK (if any)
+          title: Delegated CIK
+        delegatedEntityName:
+          type: string
+          example: DOE Corporation
+          description: Individual's primary CIK entity name (if any)
+          title: Delegated Entity Name
+        inAdminRole:
+          type: boolean
+          example: true
+          description: Is Individual in Account Administration role
+          title: In Account Administrator Role
+        inTechAdminRole:
+          type: boolean
+          example: true
+          description: Is Individual in Technical Administration role
+          title: In Technical Administrator Role
+        inUserRole:
+          type: boolean
+          example: true
+          description: Is Individual in User role
+          title: In User Role
+        inDelegatedAdminRole:
+          type: boolean
+          example: true
+          description: Is Individual in Delegated Administration role
+          title: In Delegated Administrator Role
+        status:
+          type: string
+          example: ACTIVE
+          description: The status of the individual for the CIK
+          title: Individual Status
+        minInviteDate:
+          type: string
+          format: date
+          example: '2025-08-06'
+          description: Earliest invite date user was invited to a role (YYYY-MM-DD)
+          title: Earliest Invite Date
+        maxAcceptDate:
+          type: string
+          format: date
+          example: '2025-08-06'
+          description: Latest date a user can accept the invitation to a role (YYYY-MM-DD)
+          title: Latest Accept Date
     IndividualInfoResponse:
       type: object
       description: A filer info response is a response that encapsulates information regarding a filer
@@ -1382,15 +1620,6 @@ components:
             $ref: '#/components/schemas/IndividualInfo'
           description: An list containing objects made up of properties related individual
           title: Individuals
-    MessageType:
-      type: string
-      enum:
-      - INFO
-      - NOTICE
-      - WARNING
-      - ERROR
-      description: The type of the message being returned regarding how severe it is or what type of message it contains.
-      title: Message Type
     FilerInfoResponse:
       type: object
       description: A filer info response is a response that encapsulates information regarding a filer
@@ -1418,6 +1647,41 @@ components:
             $ref: '#/components/schemas/FilerInfo'
           description: An list containing object that contains a list of fields pertaining to a filer's information
           title: Filer Information
+    DelegationInfoResponse:
+      type: object
+      description: A filer info response is a response that encapsulates information regarding a filer
+      title: Delegation Info Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages providing details associated with the filer management response.
+          title: Messages
+        delegationsTo:
+          type: array
+          oneOf:
+          - $ref: '#/components/schemas/DelegationInfo'
+          items:
+            $ref: '#/components/schemas/DelegationInfo'
+          description: An list containing objects made up of properties related to delegation
+          title: Delegation To Information
+        delegationsFrom:
+          type: array
+          oneOf:
+          - $ref: '#/components/schemas/DelegationInfo'
+          items:
+            $ref: '#/components/schemas/DelegationInfo'
+          description: An list containing objects made up of properties related to delegation
+          title: Delegation From Information
     FilerInfo:
       type: object
       description: A collection of fields pertaining to the overall information on a filer
@@ -1721,224 +1985,6 @@ components:
           items: {}
           description: Series Class information
           title: Series
-    FilerCheckResponse:
-      type: object
-      description: This response returns information about the status of a Filer API Token and User API Token.
-      title: Filer Check Response
-      properties:
-        tracking:
-          type: string
-          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
-          title: Tracking Identifier
-        locator:
-          type: string
-          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
-          title: Tracking Locator
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-          description: A list of messages providing details associated with the filer management response.
-          title: Messages
-        canFile:
-          type: boolean
-          description: boolean value describing if a filing can be made or not with the provided user api token, filer api token and cik
-          title: Can File
-        confirmationDueDate:
-          allOf:
-          - $ref: '#/components/schemas/ZonedDateTime'
-          type: string
-          example: '2025-12-31T11:59:59-05:00'
-          description: Date that confirmation is due (RFC3339 formatted date-time)
-          title: Confirmation Due Date
-        filerApiTokenExpirationDate:
-          allOf:
-          - $ref: '#/components/schemas/ZonedDateTime'
-          type: string
-          example: '2025-12-31T11:59:59-05:00'
-          description: Date that the Filer API Token expires (RFC3339 formatted date-time)
-          title: Filer API Token Expiration Date
-        userApiTokenExpirationDate:
-          allOf:
-          - $ref: '#/components/schemas/ZonedDateTime'
-          type: string
-          example: '2025-12-31T11:59:59-05:00'
-          description: Date that the User API Token expires (RFC3339 formatted date-time)
-          title: User API Token Expiration Date
-    IndividualInfo:
-      type: object
-      description: A collection of fields pertaining to an individual
-      title: Individual Information
-      properties:
-        email:
-          type: string
-          example: john@doe.com
-          description: Email of the individual
-          title: Email
-        firstName:
-          type: string
-          example: John
-          description: 'First name of the individual '
-          title: First Name
-        middleName:
-          type: string
-          example: X
-          description: Middle name of the individual
-          title: Middle Name
-        lastName:
-          type: string
-          example: Doe
-          description: Last name of the individual
-          title: Last Name
-        businessPhoneNumber:
-          type: string
-          example: 202-555-1212
-          description: Business phone number of the individual
-          title: Business Phone Number
-        delegatedCik:
-          type: string
-          example: '0000000000'
-          description: Individual's primary CIK (if any)
-          title: Delegated CIK
-        delegatedEntityName:
-          type: string
-          example: DOE Corporation
-          description: Individual's primary CIK entity name (if any)
-          title: Delegated Entity Name
-        inAdminRole:
-          type: boolean
-          example: true
-          description: Is Individual in Account Administration role
-          title: In Account Administrator Role
-        inTechAdminRole:
-          type: boolean
-          example: true
-          description: Is Individual in Technical Administration role
-          title: In Technical Administrator Role
-        inUserRole:
-          type: boolean
-          example: true
-          description: Is Individual in User role
-          title: In User Role
-        inDelegatedAdminRole:
-          type: boolean
-          example: true
-          description: Is Individual in Delegated Administration role
-          title: In Delegated Administrator Role
-        status:
-          type: string
-          example: ACTIVE
-          description: The status of the individual for the CIK
-          title: Individual Status
-        minInviteDate:
-          type: string
-          format: date
-          example: '2025-08-06'
-          description: Earliest invite date user was invited to a role (YYYY-MM-DD)
-          title: Earliest Invite Date
-        maxAcceptDate:
-          type: string
-          format: date
-          example: '2025-08-06'
-          description: Latest date a user can accept the invitation to a role (YYYY-MM-DD)
-          title: Latest Accept Date
-    IndividualRole:
-      type: object
-      description: Represents a request to create invites for users for a cik
-      title: Individual Role
-      properties:
-        firstName:
-          type: string
-          description: String value of the individual's first name that is being invited
-          title: First Name
-        middleName:
-          type: string
-          description: String value of the individual's middle name that is being invited
-          title: Middle Name
-        lastName:
-          type: string
-          description: String value of the individual's last name that is being invited
-          title: Last Name
-        email:
-          type: string
-          description: String value of the individual's email that is being invited
-          title: Email
-        inAdminRole:
-          type: boolean
-          description: Boolean value describing if the user is going to be added to the filer administrator role'
-          title: In Admin Role
-        inTechAdminRole:
-          type: boolean
-          description: Boolean value describing if the user is going to be added to the technical administrator role'
-          title: In Technical Admin Role
-        inUserRole:
-          type: boolean
-          description: Boolean value describing if the user is going to be added to the user role'
-          title: In User Role
-    ZonedDateTime:
-      type: string
-      format: date-time
-      example: '2022-03-10T12:15:50-04:00'
-    Message:
-      type: object
-      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
-      title: Message
-      properties:
-        type:
-          allOf:
-          - $ref: '#/components/schemas/MessageType'
-          type: string
-          example: NOTICE
-          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
-
-            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
-
-            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
-
-            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
-
-            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
-          title: Type
-        content:
-          type: string
-          example: The Filer API Key making this request will expire in less than two weeks.
-          description: The content of the message intended to be interpreted by a human consumer of the API output.
-          title: Content
-    DelegationInfoResponse:
-      type: object
-      description: A filer info response is a response that encapsulates information regarding a filer
-      title: Delegation Info Response
-      properties:
-        tracking:
-          type: string
-          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
-          title: Tracking Identifier
-        locator:
-          type: string
-          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
-          title: Tracking Locator
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-          description: A list of messages providing details associated with the filer management response.
-          title: Messages
-        delegationsTo:
-          type: array
-          oneOf:
-          - $ref: '#/components/schemas/DelegationInfo'
-          items:
-            $ref: '#/components/schemas/DelegationInfo'
-          description: An list containing objects made up of properties related to delegation
-          title: Delegation To Information
-        delegationsFrom:
-          type: array
-          oneOf:
-          - $ref: '#/components/schemas/DelegationInfo'
-          items:
-            $ref: '#/components/schemas/DelegationInfo'
-          description: An list containing objects made up of properties related to delegation
-          title: Delegation From Information
     UpdateCCC:
       type: object
       description: Used to update the CCC of a filer
@@ -1954,30 +2000,6 @@ components:
           example: '@1B2C3d4'
           description: The new value of the CCC for the filer
           title: New CCC
-    FilerCCCResponse:
-      type: object
-      description: 'This response will be used to return the response when a Filer''s CCC has been updated. '
-      title: Filer CCC Update Response
-      properties:
-        tracking:
-          type: string
-          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
-          title: Tracking Identifier
-        locator:
-          type: string
-          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
-          title: Tracking Locator
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-          description: A list of messages providing details associated with the filer management response.
-          title: Messages
-        filerCCC:
-          type: string
-          example: '@1B2C3d4'
-          description: Returns a Filer's ccc
-          title: Filer's CCC'
   securitySchemes:
     Filer_API_Token_and_User_API_Token:
       type: http

@@ -48,6 +48,24 @@ paths:
           description: Rate limit exceeded (10 requests per second per user agent)
 components:
   schemas:
+    Address:
+      type: object
+      description: Physical address
+      properties:
+        street1:
+          type: string
+        street2:
+          type:
+          - string
+          - 'null'
+        city:
+          type: string
+        stateOrCountry:
+          type: string
+        zipCode:
+          type: string
+        stateOrCountryDescription:
+          type: string
     CompanySubmissions:
       type: object
       description: Company filing history and metadata
@@ -223,21 +241,3 @@ components:
           items:
             type: string
           description: Descriptions of primary documents
-    Address:
-      type: object
-      description: Physical address
-      properties:
-        street1:
-          type: string
-        street2:
-          type:
-          - string
-          - 'null'
-        city:
-          type: string
-        stateOrCountry:
-          type: string
-        zipCode:
-          type: string
-        stateOrCountryDescription:
-          type: string

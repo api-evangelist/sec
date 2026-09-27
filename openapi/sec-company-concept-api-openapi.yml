@@ -69,6 +69,36 @@ paths:
           description: Rate limit exceeded
 components:
   schemas:
+    CompanyConcept:
+      type: object
+      description: Historical values for a single XBRL concept for one company
+      properties:
+        cik:
+          type: integer
+          description: Central Index Key as integer
+        taxonomy:
+          type: string
+          description: XBRL taxonomy
+          example: us-gaap
+        tag:
+          type: string
+          description: XBRL concept tag name
+          example: AccountsPayableCurrent
+        label:
+          type: string
+          description: Human-readable label
+        description:
+          type: string
+          description: Concept definition
+        entityName:
+          type: string
+          description: Company name
+        units:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/FactValue'
     FactValue:
       type: object
       description: A single reported XBRL fact value
@@ -114,33 +144,3 @@ components:
           type: string
           description: Frame identifier for use with the frames endpoint
           example: CY2023Q3I
-    CompanyConcept:
-      type: object
-      description: Historical values for a single XBRL concept for one company
-      properties:
-        cik:
-          type: integer
-          description: Central Index Key as integer
-        taxonomy:
-          type: string
-          description: XBRL taxonomy
-          example: us-gaap
-        tag:
-          type: string
-          description: XBRL concept tag name
-          example: AccountsPayableCurrent
-        label:
-          type: string
-          description: Human-readable label
-        description:
-          type: string
-          description: Concept definition
-        entityName:
-          type: string
-          description: Company name
-        units:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/FactValue'

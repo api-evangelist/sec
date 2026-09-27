@@ -78,35 +78,6 @@ paths:
           description: Rate limit exceeded
 components:
   schemas:
-    FrameDataPoint:
-      type: object
-      description: A single company's value for the frame concept and period
-      properties:
-        accn:
-          type: string
-          description: Accession number
-          example: 0000320193-23-000006
-        cik:
-          type: integer
-          description: Company CIK
-          example: 320193
-        entityName:
-          type: string
-          description: Company name
-          example: Apple Inc.
-        loc:
-          type: string
-          description: XBRL location reference
-          example: 10-Q
-        end:
-          type: string
-          format: date
-          description: Period end or instant date
-          example: '2023-04-01'
-        val:
-          type: number
-          description: Reported value
-          example: 62611000000
     XBRLFrame:
       type: object
       description: Cross-company data for a concept in a specific period
@@ -141,3 +112,32 @@ components:
           description: Array of company data points
           items:
             $ref: '#/components/schemas/FrameDataPoint'
+    FrameDataPoint:
+      type: object
+      description: A single company's value for the frame concept and period
+      properties:
+        accn:
+          type: string
+          description: Accession number
+          example: 0000320193-23-000006
+        cik:
+          type: integer
+          description: Company CIK
+          example: 320193
+        entityName:
+          type: string
+          description: Company name
+          example: Apple Inc.
+        loc:
+          type: string
+          description: XBRL location reference
+          example: 10-Q
+        end:
+          type: string
+          format: date
+          description: Period end or instant date
+          example: '2023-04-01'
+        val:
+          type: number
+          description: Reported value
+          example: 62611000000

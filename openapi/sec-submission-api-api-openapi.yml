@@ -19,7 +19,7 @@ paths:
     post:
       summary: Bulk Live Submission
       description: Allows an authorized filer to transmit a BULK LIVE submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return a list of accession numbers. EDGAR will then begin processing the submissions.
-      operationId: Bulk Live Submission
+      operationId: BulkLiveSubmission
       tags:
       - Submission API
       parameters:
@@ -172,11 +172,13 @@ paths:
       servers:
       - url: https://api.edgarfiling.sec.gov
         description: EDGAR Submission API
+      x-operation-id-source: normalized
+      x-operation-id-original: Bulk Live Submission
   /submission/bulk/test:
     post:
       summary: Bulk Test Submission
       description: Allows an authorized filer to transmit a BULK TEST submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return a list of accession numbers. EDGAR will then begin processing the submissions.
-      operationId: Bulk Test Submission
+      operationId: BulkTestSubmission
       tags:
       - Submission API
       parameters:
@@ -336,11 +338,13 @@ paths:
       servers:
       - url: https://api.edgarfiling.sec.gov
         description: EDGAR Submission API
+      x-operation-id-source: normalized
+      x-operation-id-original: Bulk Test Submission
   /submission/single/live:
     post:
       summary: Single Live Submission
       description: Allows an authorized filer to transmit a SINGLE LIVE submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return an accession number. EDGAR will then begin processing the submission.
-      operationId: Single Live Submission
+      operationId: SingleLiveSubmission
       tags:
       - Submission API
       parameters:
@@ -494,11 +498,13 @@ paths:
       servers:
       - url: https://api.edgarfiling.sec.gov
         description: EDGAR Submission API
+      x-operation-id-source: normalized
+      x-operation-id-original: Single Live Submission
   /submission/single/test:
     post:
       summary: Single Test Submission
       description: Allows an authorized filer to transmit a SINGLE TEST submission file. When an authorized filer transmits a filing to this resource it will transmit the file to EDGAR and return an accession number. EDGAR will then begin processing the submission.
-      operationId: Single Test Submission
+      operationId: SingleTestSubmission
       tags:
       - Submission API
       parameters:
@@ -653,67 +659,26 @@ paths:
       servers:
       - url: https://api.edgarfiling.sec.gov
         description: EDGAR Submission API
+      x-operation-id-source: normalized
+      x-operation-id-original: Single Test Submission
 components:
   schemas:
-    SubmissionResponseItem:
-      type: object
-      description: A submission response item is a one element in a submission response list.
-      title: Submission Response Item
-      properties:
-        accessionNumber:
-          type:
-          - string
-          - 'null'
-          example: 0000000001-22-000001
-          description: The unique number associated with an transmitted submission.
-          title: Accession Number
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-          description: A list of messages providing details associated with the submission response. This could range from a notification about the filing to errors related to the state of the filing. This should include things like submission error codes as well as other EDGAR output.
-          title: Messages
-        mode:
-          allOf:
-          - $ref: '#/components/schemas/SubmissionMode'
-          type: object
-        final:
-          type: boolean
-        transmissionStatus:
-          type: string
-          deprecated: true
-          enum:
-          - RECEIVED
-          - REJECTED
-          - FAILED
-          example: RECEIVED
-          description: 'A short string that indicates the status of filing that was transmitted to EDGAR.
+    SubmissionMode:
+      type: string
+      enum:
+      - LIVE
+      - TEST
+      example: LIVE
+      description: 'The submission mode of a filing:
 
-            * `RECEIVED` - The transmission has been received by EDGAR and an accession number has been generated
+        * `TEST` - A submission mode that allows a filing to be tested for correctness
 
-            * `REJECTED` - The transmission was rejected by EDGAR and will not be processed
+        * `LIVE` - A submission mode that allows a filing to be evaluated as an official filing
 
-            * `FAILED` - The transmission failed to be transmitted to EDGAR and will not be processed`
+        For more information see the EDGAR Filing Manual
 
-            '
-          title: Transmission Status
-    ErrorResponse:
-      type: object
-      description: When an error occurs in the API this is the standard response.
-      title: Error Response
-      properties:
-        tracking:
-          type: string
-          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
-          title: Tracking Identifier
-        locator:
-          type: string
-          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
-          title: Tracking Locator
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
+        '
+      title: Submission Mode
     MessageType:
       type: string
       enum:
@@ -808,22 +773,23 @@ components:
           example: The Filer API Key making this request will expire in less than two weeks.
           description: The content of the message intended to be interpreted by a human consumer of the API output.
           title: Content
-    SubmissionMode:
-      type: string
-      enum:
-      - LIVE
-      - TEST
-      example: LIVE
-      description: 'The submission mode of a filing:
-
-        * `TEST` - A submission mode that allows a filing to be tested for correctness
-
-        * `LIVE` - A submission mode that allows a filing to be evaluated as an official filing
-
-        For more information see the EDGAR Filing Manual
-
-        '
-      title: Submission Mode
+    ErrorResponse:
+      type: object
+      description: When an error occurs in the API this is the standard response.
+      title: Error Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
     SingleSubmissionResponse:
       type: object
       description: A submission response is a response to transmitting a submission.
@@ -871,6 +837,48 @@ components:
 
             '
           title: Transmission Status
+        transmissionStatus:
+          type: string
+          deprecated: true
+          enum:
+          - RECEIVED
+          - REJECTED
+          - FAILED
+          example: RECEIVED
+          description: 'A short string that indicates the status of filing that was transmitted to EDGAR.
+
+            * `RECEIVED` - The transmission has been received by EDGAR and an accession number has been generated
+
+            * `REJECTED` - The transmission was rejected by EDGAR and will not be processed
+
+            * `FAILED` - The transmission failed to be transmitted to EDGAR and will not be processed`
+
+            '
+          title: Transmission Status
+    SubmissionResponseItem:
+      type: object
+      description: A submission response item is a one element in a submission response list.
+      title: Submission Response Item
+      properties:
+        accessionNumber:
+          type:
+          - string
+          - 'null'
+          example: 0000000001-22-000001
+          description: The unique number associated with an transmitted submission.
+          title: Accession Number
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages providing details associated with the submission response. This could range from a notification about the filing to errors related to the state of the filing. This should include things like submission error codes as well as other EDGAR output.
+          title: Messages
+        mode:
+          allOf:
+          - $ref: '#/components/schemas/SubmissionMode'
+          type: object
+        final:
+          type: boolean
         transmissionStatus:
           type: string
           deprecated: true

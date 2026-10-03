@@ -139,18 +139,34 @@ paths:
           description: Rate limit exceeded (10 requests per second)
 components:
   schemas:
-    SearchHit:
+    SearchResponse:
       type: object
-      description: A single filing document matching the search query
+      description: Full-text search results from EDGAR
       properties:
-        _id:
-          type: string
-          description: Unique document identifier
-        _score:
-          type: number
-          description: Elasticsearch relevance score
-        _source:
-          $ref: '#/components/schemas/FilingDocument'
+        hits:
+          type: object
+          description: Search hit metadata and results
+          properties:
+            total:
+              type: object
+              description: Total hit count
+              properties:
+                value:
+                  type: integer
+                  description: Number of matching documents
+                  example: 1234
+                relation:
+                  type: string
+                  description: Whether total is exact or approximate
+                  enum:
+                  - eq
+                  - gte
+                  example: eq
+            hits:
+              type: array
+              description: Array of matching filing documents
+              items:
+                $ref: '#/components/schemas/SearchHit'
     FilingDocument:
       type: object
       description: Metadata for an EDGAR filing document
@@ -219,31 +235,15 @@ components:
         file_id:
           type: string
           description: File identifier
-    SearchResponse:
+    SearchHit:
       type: object
-      description: Full-text search results from EDGAR
+      description: A single filing document matching the search query
       properties:
-        hits:
-          type: object
-          description: Search hit metadata and results
-          properties:
-            total:
-              type: object
-              description: Total hit count
-              properties:
-                value:
-                  type: integer
-                  description: Number of matching documents
-                  example: 1234
-                relation:
-                  type: string
-                  description: Whether total is exact or approximate
-                  enum:
-                  - eq
-                  - gte
-                  example: eq
-            hits:
-              type: array
-              description: Array of matching filing documents
-              items:
-                $ref: '#/components/schemas/SearchHit'
+        _id:
+          type: string
+          description: Unique document identifier
+        _score:
+          type: number
+          description: Elasticsearch relevance score
+        _source:
+          $ref: '#/components/schemas/FilingDocument'

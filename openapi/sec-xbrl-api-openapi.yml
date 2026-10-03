@@ -130,6 +130,38 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/XBRLFact'
+    XBRLFact:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date
+          description: Period end date for duration facts; instant date for point-in-time facts
+        val:
+          type: number
+          description: Reported value
+        accn:
+          type: string
+          description: Accession number of filing
+        fy:
+          type: integer
+          description: Fiscal year
+        fp:
+          type: string
+          description: Fiscal period (FY, Q1, Q2, Q3, Q4)
+        form:
+          type: string
+          description: Form type
+        filed:
+          type: string
+          format: date
+        frame:
+          type: string
+          description: XBRL frame identifier
+        start:
+          type: string
+          format: date
+          description: Period start date (for duration facts)
     XBRLFrames:
       type: object
       properties:
@@ -169,35 +201,3 @@ components:
                 format: date
               val:
                 type: number
-    XBRLFact:
-      type: object
-      properties:
-        end:
-          type: string
-          format: date
-          description: Period end date for duration facts; instant date for point-in-time facts
-        val:
-          type: number
-          description: Reported value
-        accn:
-          type: string
-          description: Accession number of filing
-        fy:
-          type: integer
-          description: Fiscal year
-        fp:
-          type: string
-          description: Fiscal period (FY, Q1, Q2, Q3, Q4)
-        form:
-          type: string
-          description: Form type
-        filed:
-          type: string
-          format: date
-        frame:
-          type: string
-          description: XBRL frame identifier
-        start:
-          type: string
-          format: date
-          description: Period start date (for duration facts)

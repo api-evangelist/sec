@@ -48,27 +48,6 @@ paths:
           description: Rate limit exceeded
 components:
   schemas:
-    ConceptFacts:
-      type: object
-      description: Facts for a single XBRL concept
-      properties:
-        label:
-          type: string
-          description: Human-readable concept label
-          example: Accounts Payable, Current
-        description:
-          type: string
-          description: Concept definition from the taxonomy
-        entityName:
-          type: string
-          description: Entity name
-        units:
-          type: object
-          description: Units of measure with arrays of reported values
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/FactValue'
     FactValue:
       type: object
       description: A single reported XBRL fact value
@@ -134,3 +113,24 @@ components:
             description: Taxonomy namespace (e.g., us-gaap, dei, ifrs-full)
             additionalProperties:
               $ref: '#/components/schemas/ConceptFacts'
+    ConceptFacts:
+      type: object
+      description: Facts for a single XBRL concept
+      properties:
+        label:
+          type: string
+          description: Human-readable concept label
+          example: Accounts Payable, Current
+        description:
+          type: string
+          description: Concept definition from the taxonomy
+        entityName:
+          type: string
+          description: Entity name
+        units:
+          type: object
+          description: Units of measure with arrays of reported values
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/FactValue'

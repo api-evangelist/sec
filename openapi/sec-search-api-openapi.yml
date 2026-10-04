@@ -167,6 +167,18 @@ components:
               description: Array of matching filing documents
               items:
                 $ref: '#/components/schemas/SearchHit'
+    SearchHit:
+      type: object
+      description: A single filing document matching the search query
+      properties:
+        _id:
+          type: string
+          description: Unique document identifier
+        _score:
+          type: number
+          description: Elasticsearch relevance score
+        _source:
+          $ref: '#/components/schemas/FilingDocument'
     FilingDocument:
       type: object
       description: Metadata for an EDGAR filing document
@@ -235,15 +247,3 @@ components:
         file_id:
           type: string
           description: File identifier
-    SearchHit:
-      type: object
-      description: A single filing document matching the search query
-      properties:
-        _id:
-          type: string
-          description: Unique document identifier
-        _score:
-          type: number
-          description: Elasticsearch relevance score
-        _source:
-          $ref: '#/components/schemas/FilingDocument'

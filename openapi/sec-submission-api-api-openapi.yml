@@ -663,6 +663,31 @@ paths:
       x-operation-id-original: Single Test Submission
 components:
   schemas:
+    Message:
+      type: object
+      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
+      title: Message
+      properties:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/MessageType'
+          type: string
+          example: NOTICE
+          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
+
+            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
+
+            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
+
+            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
+
+            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
+          title: Type
+        content:
+          type: string
+          example: The Filer API Key making this request will expire in less than two weeks.
+          description: The content of the message intended to be interpreted by a human consumer of the API output.
+          title: Content
     SubmissionMode:
       type: string
       enum:
@@ -679,48 +704,32 @@ components:
 
         '
       title: Submission Mode
-    SubmissionResponseItem:
+    ErrorResponse:
       type: object
-      description: A submission response item is a one element in a submission response list.
-      title: Submission Response Item
+      description: When an error occurs in the API this is the standard response.
+      title: Error Response
       properties:
-        accessionNumber:
-          type:
-          - string
-          - 'null'
-          example: 0000000001-22-000001
-          description: The unique number associated with an transmitted submission.
-          title: Accession Number
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
         messages:
           type: array
           items:
             $ref: '#/components/schemas/Message'
-          description: A list of messages providing details associated with the submission response. This could range from a notification about the filing to errors related to the state of the filing. This should include things like submission error codes as well as other EDGAR output.
-          title: Messages
-        mode:
-          allOf:
-          - $ref: '#/components/schemas/SubmissionMode'
-          type: object
-        final:
-          type: boolean
-        transmissionStatus:
-          type: string
-          deprecated: true
-          enum:
-          - RECEIVED
-          - REJECTED
-          - FAILED
-          example: RECEIVED
-          description: 'A short string that indicates the status of filing that was transmitted to EDGAR.
-
-            * `RECEIVED` - The transmission has been received by EDGAR and an accession number has been generated
-
-            * `REJECTED` - The transmission was rejected by EDGAR and will not be processed
-
-            * `FAILED` - The transmission failed to be transmitted to EDGAR and will not be processed`
-
-            '
-          title: Transmission Status
+    MessageType:
+      type: string
+      enum:
+      - INFO
+      - NOTICE
+      - WARNING
+      - ERROR
+      description: The type of the message being returned regarding how severe it is or what type of message it contains.
+      title: Message Type
     SingleSubmissionResponse:
       type: object
       description: A submission response is a response to transmitting a submission.
@@ -786,31 +795,48 @@ components:
 
             '
           title: Transmission Status
-    Message:
+    SubmissionResponseItem:
       type: object
-      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
-      title: Message
+      description: A submission response item is a one element in a submission response list.
+      title: Submission Response Item
       properties:
-        type:
+        accessionNumber:
+          type:
+          - string
+          - 'null'
+          example: 0000000001-22-000001
+          description: The unique number associated with an transmitted submission.
+          title: Accession Number
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: A list of messages providing details associated with the submission response. This could range from a notification about the filing to errors related to the state of the filing. This should include things like submission error codes as well as other EDGAR output.
+          title: Messages
+        mode:
           allOf:
-          - $ref: '#/components/schemas/MessageType'
+          - $ref: '#/components/schemas/SubmissionMode'
+          type: object
+        final:
+          type: boolean
+        transmissionStatus:
           type: string
-          example: NOTICE
-          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
+          deprecated: true
+          enum:
+          - RECEIVED
+          - REJECTED
+          - FAILED
+          example: RECEIVED
+          description: 'A short string that indicates the status of filing that was transmitted to EDGAR.
 
-            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
+            * `RECEIVED` - The transmission has been received by EDGAR and an accession number has been generated
 
-            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
+            * `REJECTED` - The transmission was rejected by EDGAR and will not be processed
 
-            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
+            * `FAILED` - The transmission failed to be transmitted to EDGAR and will not be processed`
 
-            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
-          title: Type
-        content:
-          type: string
-          example: The Filer API Key making this request will expire in less than two weeks.
-          description: The content of the message intended to be interpreted by a human consumer of the API output.
-          title: Content
+            '
+          title: Transmission Status
     ListSubmissionResponse:
       type: object
       description: Provides a response that contains a list of responses as well as a top-level list of messages.
@@ -871,32 +897,6 @@ components:
 
             '
           title: Transmission Status
-    MessageType:
-      type: string
-      enum:
-      - INFO
-      - NOTICE
-      - WARNING
-      - ERROR
-      description: The type of the message being returned regarding how severe it is or what type of message it contains.
-      title: Message Type
-    ErrorResponse:
-      type: object
-      description: When an error occurs in the API this is the standard response.
-      title: Error Response
-      properties:
-        tracking:
-          type: string
-          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
-          title: Tracking Identifier
-        locator:
-          type: string
-          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
-          title: Tracking Locator
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
   securitySchemes:
     Filer_API_Token_and_User_API_Token:
       type: http

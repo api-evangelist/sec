@@ -364,31 +364,6 @@ paths:
       x-operation-id-original: Check Single Submission Status
 components:
   schemas:
-    Message:
-      type: object
-      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
-      title: Message
-      properties:
-        type:
-          allOf:
-          - $ref: '#/components/schemas/MessageType'
-          type: string
-          example: NOTICE
-          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
-
-            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
-
-            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
-
-            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
-
-            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
-          title: Type
-        content:
-          type: string
-          example: The Filer API Key making this request will expire in less than two weeks.
-          description: The content of the message intended to be interpreted by a human consumer of the API output.
-          title: Content
     SubmissionRegistrant:
       type: object
       description: Data item representing a registrant that can be returned as part of the status for a given submission.
@@ -416,6 +391,38 @@ components:
             type: string
           description: List of File Numbers for this Registrant
           title: File Numbers
+    MultipleAccessionNumberRequest:
+      type: object
+      required:
+      - accessionNumbers
+      description: Allows a list of accession numbers to be presented to the Submission Status resource in order to request status on multiple submissions simultaneously.
+      title: Submission Number Request List
+      properties:
+        accessionNumbers:
+          type: array
+          maxItems: 25
+          minItems: 1
+          items:
+            type: string
+          description: The list of accession numbers that the caller wants to receive status for, maximum 25
+          title: Accession Number List
+    ErrorResponse:
+      type: object
+      description: When an error occurs in the API this is the standard response.
+      title: Error Response
+      properties:
+        tracking:
+          type: string
+          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
+          title: Tracking Identifier
+        locator:
+          type: string
+          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
+          title: Tracking Locator
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
     SingleSubmissionStatusResponse:
       type: object
       description: A submission status response is a response to a request for submission status. It expands on the Submission Response by including additional data regarding the submission's status in EDGAR.
@@ -598,22 +605,6 @@ components:
 
             '
           title: Submission Processing Status
-    SubmissionMode:
-      type: string
-      enum:
-      - LIVE
-      - TEST
-      example: LIVE
-      description: 'The submission mode of a filing:
-
-        * `TEST` - A submission mode that allows a filing to be tested for correctness
-
-        * `LIVE` - A submission mode that allows a filing to be evaluated as an official filing
-
-        For more information see the EDGAR Filing Manual
-
-        '
-      title: Submission Mode
     SubmissionStatusResponseItem:
       type: object
       description: A submission status response is a single item in a list of submission responses.
@@ -818,49 +809,31 @@ components:
       type: string
       format: date-time
       example: '2022-03-10T12:15:50-04:00'
-    ErrorResponse:
+    Message:
       type: object
-      description: When an error occurs in the API this is the standard response.
-      title: Error Response
+      description: A Message is a response, from EDGAR, giving detail about an interaction with the API. When messages are provided by the API this standard format allows the same parsing to be performed across all instances.
+      title: Message
       properties:
-        tracking:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/MessageType'
           type: string
-          description: A universal tracking identifier that can be used by applications to keep track of individual requests sent to the EDGAR API. The tracking identifier correlates all actions taken in the course of a single request. If seeking support from the EDGAR Help Desk this will be a useful piece of information to provide.
-          title: Tracking Identifier
-        locator:
+          example: NOTICE
+          description: 'The type of the message being returned regarding how severe it is or what type of message it contains.
+
+            * `INFO` - The message is intended only for informational purposes and does not necessarily require action
+
+            * `NOTICE` - There is something that may require human intervention or interaction but it has not prevented filing
+
+            * `WARNING` - There is an issue with the filing itself or some of the information provided but it may not prevent filing
+
+            * `ERROR` - There has been an error that either prevented the filing from being submitted or stopped the processing of the submission'
+          title: Type
+        content:
           type: string
-          description: A short identifier that can be used by the EDGAR Help Desk to locate the tracking identifier within the EDGAR system.
-          title: Tracking Locator
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-    MessageType:
-      type: string
-      enum:
-      - INFO
-      - NOTICE
-      - WARNING
-      - ERROR
-      description: The type of the message being returned regarding how severe it is or what type of message it contains.
-      title: Message Type
-    SubmissionStatusSeriesItem:
-      type: object
-      description: Details about a Series related to a Submission
-      title: Submission Series
-      properties:
-        id:
-          type: string
-          description: Identifier for the series
-          title: ID
-        name:
-          type: string
-          description: Name of the series
-          title: Name
-        oldName:
-          type: string
-          description: Name of the series before the change induced by this filing, if a change was made.
-          title: Old Name
+          example: The Filer API Key making this request will expire in less than two weeks.
+          description: The content of the message intended to be interpreted by a human consumer of the API output.
+          title: Content
     SubmissionStatusClassItem:
       type: object
       description: Details about a Class related to a Submission
@@ -890,6 +863,22 @@ components:
           type: string
           description: Ticker symbol for the class before the change induced by this filing, if a change was made.
           title: Old Ticker Symbol
+    SubmissionMode:
+      type: string
+      enum:
+      - LIVE
+      - TEST
+      example: LIVE
+      description: 'The submission mode of a filing:
+
+        * `TEST` - A submission mode that allows a filing to be tested for correctness
+
+        * `LIVE` - A submission mode that allows a filing to be evaluated as an official filing
+
+        For more information see the EDGAR Filing Manual
+
+        '
+      title: Submission Mode
     SEFMessage:
       type: object
       description: A Submission Error Message is a message that has come from EDGAR and is provided when the submission has reached a final disposition after encountering errors in EDGAR
@@ -944,21 +933,32 @@ components:
           example: INCONSISTENT_TAG_VALUE
           description: A unique label for the error
           title: Error Label
-    MultipleAccessionNumberRequest:
+    SubmissionStatusSeriesItem:
       type: object
-      required:
-      - accessionNumbers
-      description: Allows a list of accession numbers to be presented to the Submission Status resource in order to request status on multiple submissions simultaneously.
-      title: Submission Number Request List
+      description: Details about a Series related to a Submission
+      title: Submission Series
       properties:
-        accessionNumbers:
-          type: array
-          maxItems: 25
-          minItems: 1
-          items:
-            type: string
-          description: The list of accession numbers that the caller wants to receive status for, maximum 25
-          title: Accession Number List
+        id:
+          type: string
+          description: Identifier for the series
+          title: ID
+        name:
+          type: string
+          description: Name of the series
+          title: Name
+        oldName:
+          type: string
+          description: Name of the series before the change induced by this filing, if a change was made.
+          title: Old Name
+    MessageType:
+      type: string
+      enum:
+      - INFO
+      - NOTICE
+      - WARNING
+      - ERROR
+      description: The type of the message being returned regarding how severe it is or what type of message it contains.
+      title: Message Type
   securitySchemes:
     Filer_API_Token_and_User_API_Token:
       type: http

@@ -93,26 +93,6 @@ components:
           type: string
           description: Frame identifier for use with the frames endpoint
           example: CY2023Q3I
-    CompanyFacts:
-      type: object
-      description: All XBRL disclosures for a company across all reporting periods
-      properties:
-        cik:
-          type: integer
-          description: Central Index Key as integer
-          example: 320193
-        entityName:
-          type: string
-          description: Company name
-          example: Apple Inc.
-        facts:
-          type: object
-          description: Facts organized by taxonomy then concept name
-          additionalProperties:
-            type: object
-            description: Taxonomy namespace (e.g., us-gaap, dei, ifrs-full)
-            additionalProperties:
-              $ref: '#/components/schemas/ConceptFacts'
     ConceptFacts:
       type: object
       description: Facts for a single XBRL concept
@@ -134,3 +114,23 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/FactValue'
+    CompanyFacts:
+      type: object
+      description: All XBRL disclosures for a company across all reporting periods
+      properties:
+        cik:
+          type: integer
+          description: Central Index Key as integer
+          example: 320193
+        entityName:
+          type: string
+          description: Company name
+          example: Apple Inc.
+        facts:
+          type: object
+          description: Facts organized by taxonomy then concept name
+          additionalProperties:
+            type: object
+            description: Taxonomy namespace (e.g., us-gaap, dei, ifrs-full)
+            additionalProperties:
+              $ref: '#/components/schemas/ConceptFacts'

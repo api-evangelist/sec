@@ -970,3 +970,9 @@ components:
       description: A Filer API Token would be required to be presented to use any of the EDGAR APIs—the EDGAR Submission API, EDGAR Submission Status API, and EDGAR Operational Status API.
       scheme: bearer
       bearerFormat: JWT
+x-provenance:
+  method: harvested
+  publisher: SEC EDGAR
+  source: https://api.edgarfiling.sec.gov/openapi.yml
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)

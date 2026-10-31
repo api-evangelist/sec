@@ -1,4 +1,4 @@
-# SEC EDGAR (sec)
+# SEC EDGAR
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,43 +66,167 @@
 
 The U.S. Securities and Exchange Commission (SEC) EDGAR (Electronic Data Gathering, Analysis, and Retrieval) system provides free public access to corporate financial filings submitted to the SEC. The EDGAR REST API at data.sec.gov delivers JSON-formatted data without requiring authentication or API keys, covering company submissions, XBRL financial facts, and company concept data. Endpoints support CIK lookups, full filing history, structured XBRL financial disclosures across reporting periods, and cross-company comparative frames for US-GAAP and IFRS taxonomies.
 
-APIs.json: https://raw.githubusercontent.com/api-evangelist/sec/refs/heads/main/apis.yml
+**Areas:** Financial Data · SEC · EDGAR · Public Company Filings · XBRL · Regulatory · Government · Financial Reporting · Company Submissions · Securities · Government Data
 
-Naftiko: https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=sec-api-evangelist&utm_content=repo
+## SEC EDGAR on APIs.io
 
-## Tags
+Everything profiled for SEC EDGAR is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/sec/](https://apis.io/providers/sec/)** — or go straight to one of the APIs or properties below.
 
-Financial Data, SEC, EDGAR, Public Company Filings, XBRL, Regulatory, Government, Financial Reporting, Company Submissions, Securities
+### APIs (12)
 
-## APIs
+- [SEC EDGAR Company Concept API](https://apis.io/apis/sec/sec-company-concept-api/) — Historical values for a single XBRL concept
+- [SEC EDGAR Company Facts API](https://apis.io/apis/sec/sec-company-facts-api/) — XBRL financial disclosures for a company
+- [SEC EDGAR Operational Status API](https://apis.io/apis/sec/sec-edgar-operational-status-api-api/) — This API reports the status of the EDGAR system. This resource requires presentation of a Filer API Token only.
+- [SEC EDGAR Filer Management API](https://apis.io/apis/sec/sec-filer-management-api-api/) — A set of API endpoints that allows you to verify permissions, get filer information, manage CCC, manage individuals, and manage delegations.
+- [SEC EDGAR Frames API](https://apis.io/apis/sec/sec-frames-api/) — Cross-company data for a concept in a specific period
+- [SEC EDGAR Search API](https://apis.io/apis/sec/sec-search-api/) — Full-text search across EDGAR filing documents
+- [SEC EDGAR Submission API](https://apis.io/apis/sec/sec-submission-api-api/) — Submission of filings to EDGAR by API can be made through the Submission API. The Submission API requires the presentation of a Filer API Token in…
+- [SEC EDGAR Submission Status API](https://apis.io/apis/sec/sec-submission-status-api-api/) — The Submission Status API provides information from the EDGAR system. It requires a Filer API Token and accession number(s). To obtain information about a…
+- [SEC EDGAR Submissions API](https://apis.io/apis/sec/sec-submissions-api/) — Company filing history and metadata by CIK
+- [SEC EDGAR Company Filings API](https://apis.io/apis/sec/sec-edgar-company-filings-api/) — The SEC EDGAR (Electronic Data Gathering, Analysis, and Retrieval) system provides REST APIs for accessing company filings, XBRL financial data, and…
+- [SEC EDGAR Full-Text Search API](https://apis.io/apis/sec/sec-full-text-search-api/) — Full-text search across all EDGAR filings
+- [SEC EDGAR XBRL API](https://apis.io/apis/sec/sec-xbrl-api/) — Structured XBRL financial data
 
-- **SEC EDGAR Data API** - RESTful access to public company submissions, XBRL financial facts, company concepts, and cross-company frames via data.sec.gov
-- **SEC EDGAR Full-Text Search API** - Full-text search across all EDGAR filings by content, form type, entity name, and date via efts.sec.gov
-- **SEC EDGAR Filer Management API** - Authenticated filer submission, status, and account management for registered EDGAR filers via api.edgarfiling.sec.gov
+### Published properties
 
-## Plans, Rate Limits, and FinOps
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-- **Plans:** [plans/sec-plans-pricing.yml](plans/sec-plans-pricing.yml) — Single free public tier; no API key, no fees, no registration required
-- **Rate Limits:** [rate-limits/sec-rate-limits.yml](rate-limits/sec-rate-limits.yml) — 10 requests per second per IP; User-Agent header required
-- **FinOps:** [finops/sec-finops.yml](finops/sec-finops.yml) — Zero direct API cost; infrastructure and optimization guidance for consumers
+#### Agentic access (1)
 
-## Timestamps
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- Created: 2026-06-12
-- Modified: 2026-06-12
+- [Sec Agentic Access](https://apis.io/agentic-access/sec/sec-agentic-access/)
 
-## Common
+#### JSON Schema (2)
 
-| Type | URL |
-|------|-----|
-| Website | https://www.sec.gov |
-| Documentation | https://www.sec.gov/edgar/sec-api-documentation |
-| Developer | https://www.sec.gov/about/developer-resources |
-| GitHub Org | https://github.com/sec-gov |
-| LinkedIn | https://www.linkedin.com/company/us-securities-and-exchange-commission |
-| Blog / Newsroom | https://www.sec.gov/newsroom |
-| X (Twitter) | https://x.com/SEC_News |
+The data models the API reads and writes.
 
-## Maintainers
+- [SEC EDGAR Company Submissions](https://apis.io/schemas/sec/sec-company-submissions/)
+- [SEC EDGAR XBRL Fact Value](https://apis.io/schemas/sec/sec-xbrl-fact-value/)
 
-- Kin Lane &lt;kin@apievangelist.com&gt;
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Sec Context](https://apis.io/jsonld/sec/sec-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [SEC EDGAR API Vocabulary](https://apis.io/vocabularies/sec/sec-vocabulary/)
+
+#### Examples (3)
+
+Example requests and responses.
+
+- [Sec Company Submissions Example](https://apis.io/examples/sec/sec-company-submissions-example/)
+- [Sec Xbrl Company Concept Example](https://apis.io/examples/sec/sec-xbrl-company-concept-example/)
+- [Sec Xbrl Frames Example](https://apis.io/examples/sec/sec-xbrl-frames-example/)
+
+#### Collections (9)
+
+Postman and Open Collection request collections.
+
+- [SEC EDGAR Data Company Concept API](https://apis.io/collections/sec/open-sec-company-concept-api/)
+- [SEC EDGAR Data Company Concept Company Facts API](https://apis.io/collections/sec/open-sec-company-facts-api/)
+- [SEC EDGAR Data Company Concept EDGAR Operational Status API API](https://apis.io/collections/sec/open-sec-edgar-operational-status-api-api/)
+- [SEC EDGAR Data Company Concept Filer Management API API](https://apis.io/collections/sec/open-sec-filer-management-api-api/)
+- [SEC EDGAR Data Company Concept Frames API](https://apis.io/collections/sec/open-sec-frames-api/)
+- [SEC EDGAR Data Company Concept Search API](https://apis.io/collections/sec/open-sec-search-api/)
+- [SEC EDGAR Data Company Concept Submission API API](https://apis.io/collections/sec/open-sec-submission-api-api/)
+- [SEC EDGAR Data Company Concept Submission Status API API](https://apis.io/collections/sec/open-sec-submission-status-api-api/)
+- [SEC EDGAR Data Company Concept Submissions API](https://apis.io/collections/sec/open-sec-submissions-api/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [SEC EDGAR — jsonschema rules](https://apis.io/rules/sec/sec-jsonschema-spectral-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Sec Authentication](https://apis.io/security/sec/sec-authentication/)
+- [Sec Domain Security](https://apis.io/security/sec/sec-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Sec Plans Pricing](https://apis.io/plans/sec/sec-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Sec Rate Limits](https://apis.io/rate-limits/sec/sec-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Sec Finops](https://apis.io/finops/sec/sec-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.sec.gov)
+- [Documentation](https://www.sec.gov/edgar/sec-api-documentation)
+- [Pricing](https://www.sec.gov/edgar/sec-api-documentation)
+- [Blog](https://www.sec.gov/newsroom)
+
+## API Evangelist rating
+
+**Kin Score 35.8** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 71.4 |
+| Contract quality | 62.9 |
+| Contract governance | 23.5 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 31.0 |
+| Access clarity | 15.8 |
+
+**Agent readiness 28.7** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 21.3** — Securities & Market Data
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/sec/](https://apis.io/providers/sec/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for SEC EDGAR: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/sec/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
